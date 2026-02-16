@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 
+# TODO: Update version when you can.
 find_package(Boost 1.88.0 REQUIRED COMPONENTS system)
 
 file(GLOB_RECURSE MODULE_INTERFACES
@@ -15,6 +16,10 @@ file(GLOB_RECURSE MODULE_INTERFACES
 add_library(MinecraftServerProtocolCPP STATIC
         src/modules/MinecraftProtocol.cpp
         src/modules/MinecraftProtocol.ixx
+        src/modules/Logger.ixx
+        src/modules/Logger.cpp
+        src/modules/MinecraftServer.ixx
+        src/modules/MinecraftServer.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

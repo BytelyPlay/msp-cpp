@@ -3,44 +3,47 @@ module;
 #include <boost/asio.hpp>
 
 module MinecraftProtocol;
+import Logger;
 
-using namespace boost::asio;
 // PUBLIC
-MinecraftProtocol::MinecraftProtocol(string ip, uint16 port) :
-  ip(ip), port(port)
+MinecraftProtocol::MinecraftProtocol(string ip, uint16 port, uint8 threadCount) :
+  ip(ip), port(port), threadCount(threadCount)
 {
 }
 
 void MinecraftProtocol::init()
 {
-    io_context io;
-    ip::tcp::resolver resolver(io);
-    ip::tcp::resolver::results_type endpoints =
-        resolver.resolve(ip, "daytime");
-    ip::tcp::socket socket(io);
-
-    connect(socket, endpoints);
-
-    std::vector<char> data(32);
-
-    for (;;)
+    try
     {
-        boost::system::error_code error;
+        io = std::make_unique<io_context>(threadCount);
+        // The getting initializes the work guard
+        getWorkGuard();
+        setupThreads();
 
-        size_t size = socket.read_some(buffer(data), error);
-
-        if (!data.empty())
-        {
-            std::cout << string(data.data());
-        }
-
-        if (error == error::eof)
-            break;
-        else if (error)
-        {
-            std::cout << "Error Occurred " + error.message();
-        }
+    } catch (std::exception& e)
+    {
+        Logger::error("Couldn't init Minecraft protocol: " +
+            std::string(e.what()));
     }
 }
 
 // PRIVATE
+executor_work_guard<basic_system_executor<execution::detail::blocking::possibly_t<>,
+execution::detail::relationship::
+fork_t<>, std::allocator<void>>>
+MinecraftProtocol::getWorkGuard() const
+{
+    static auto workGuard = make_work_guard(io);
+    return workGuard;
+}
+
+void MinecraftProtocol::setupThreads()
+{
+    for (int i = 0; i < threadCount; i++)
+    {
+        std::thread t([this]()
+        {
+            io->run();
+        });
+    }
+}
