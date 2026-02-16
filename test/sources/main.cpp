@@ -1,6 +1,5 @@
-
-#include <iostream>
-
+import MinecraftProtocol;
 int main() {
-    std::cout << "Hi, This is a test";
+    MinecraftProtocol server("time-a.nist.gov", 13);
+    server.init();
 }

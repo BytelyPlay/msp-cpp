@@ -16,5 +16,8 @@ export class MinecraftProtocol
 {
 public:
     MinecraftProtocol(string ip, uint16 port);
+    void init();
 private:
+    const string ip;
+    const uint16 port;
 };
