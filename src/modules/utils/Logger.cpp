@@ -1,7 +1,7 @@
 module;
+#include <iostream>
 
 module Logger;
-#include <iostream>
 
 void Logger::debug(std::string s)
 {

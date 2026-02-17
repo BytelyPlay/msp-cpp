@@ -5,8 +5,8 @@ module MinecraftProtocol;
 import Logger;
 
 // PUBLIC
-MinecraftProtocol::MinecraftProtocol(const string ip, const uint16 port, const uint8 threadCount) :
-  ip(ip), port(port), threadCount(threadCount)
+MinecraftProtocol::MinecraftProtocol(const uint8 threadCount) :
+  threadCount(threadCount)
 {
 }
 
@@ -18,12 +18,30 @@ void MinecraftProtocol::init()
         // The getting initializes the work guard
         getWorkGuard();
         setupThreads();
-
     } catch (std::exception& e)
     {
         Logger::error("Couldn't init Minecraft protocol: " +
             std::string(e.what()));
     }
+}
+
+void MinecraftProtocol::shutdown()
+{
+    getWorkGuard().reset();
+    for (auto& t : threads)
+        t.join();
+    shutdownLatch.count_down();
+}
+
+void MinecraftProtocol::awaitShutdown()
+{
+    shutdownLatch.wait();
+}
+
+// PUBLIC
+io_context& MinecraftProtocol::getIo()
+{
+    return *io;
 }
 
 // PRIVATE
@@ -44,5 +62,7 @@ void MinecraftProtocol::setupThreads()
         {
             io->run();
         });
+        t.detach();
+        threads.push_back(std::move(t));
     }
 }

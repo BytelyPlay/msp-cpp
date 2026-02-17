@@ -1,41 +1,41 @@
 module;
 #include <string>
 #include <thread>
-#include <boost/asio/io_context.hpp>
-#include <boost/asio/ip/address.hpp>
+#include <boost/asio.hpp>
+#include <latch>
 
 export module MinecraftProtocol;
 
-using string = std::string;
-
-using uint = unsigned int;
-
-using uint8 = unsigned char;
-using uint16 = unsigned short;
-using uint32 = unsigned int;
-using uint64 = unsigned long;
-
-using namespace boost::asio;
-using namespace ip;
-using namespace boost::system;
+#include "BoostNamespaces.hpp"
+#include "Types.hpp"
 
 export class MinecraftProtocol
 {
 public:
-    MinecraftProtocol(string ip, uint16 port, uint8 threadCount);
+    MinecraftProtocol(uint8 threadCount);
+
     void init();
+    void shutdown();
+
+    // This blocks until the server has shutdown.
+    void awaitShutdown();
+public:
+    io_context& getIo();
 private:
-    executor_work_guard<basic_system_executor<execution::detail::blocking::possibly_t<>, execution::detail::relationship
+    // Annoyingly long return type
+    executor_work_guard<basic_system_executor<execution::detail::blocking::possibly_t<>,
+    execution::detail::relationship
     ::
     fork_t<>, std::allocator<void>>> getWorkGuard() const;
 
     void setupThreads();
 private:
-    const string ip;
-    const uint16 port;
-
     const uint8 threadCount;
     std::unique_ptr<io_context> io;
 
     std::vector<std::thread> threads;
+    std::latch shutdownLatch = std::latch(1);
+public:
+    MinecraftProtocol operator=(const MinecraftProtocol&) = delete;
+    MinecraftProtocol(const MinecraftProtocol&) = delete;
 };
