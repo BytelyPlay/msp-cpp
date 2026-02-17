@@ -14,12 +14,14 @@ file(GLOB_RECURSE MODULE_INTERFACES
 )
 
 add_library(MinecraftServerProtocolCPP STATIC
-        src/modules/MinecraftProtocol.cpp
-        src/modules/MinecraftProtocol.ixx
-        src/modules/Logger.ixx
-        src/modules/Logger.cpp
-        src/modules/MinecraftServer.ixx
-        src/modules/MinecraftServer.cpp
+        src/modules/networking/MinecraftProtocol.cpp
+        src/modules/networking/MinecraftProtocol.ixx
+        src/modules/utils/Logger.ixx
+        src/modules/utils/Logger.cpp
+        src/modules/networking/MinecraftServer.ixx
+        src/modules/networking/MinecraftServer.cpp
+        src/modules/networking/MinecraftClient.ixx
+        src/modules/networking/MinecraftClient.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

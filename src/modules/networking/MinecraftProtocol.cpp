@@ -1,12 +1,11 @@
 module;
-#include <iostream>
 #include <boost/asio.hpp>
 
 module MinecraftProtocol;
 import Logger;
 
 // PUBLIC
-MinecraftProtocol::MinecraftProtocol(string ip, uint16 port, uint8 threadCount) :
+MinecraftProtocol::MinecraftProtocol(const string ip, const uint16 port, const uint8 threadCount) :
   ip(ip), port(port), threadCount(threadCount)
 {
 }

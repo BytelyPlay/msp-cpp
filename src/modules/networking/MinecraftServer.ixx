@@ -22,6 +22,8 @@ export class MinecraftServer
 public:
     MinecraftServer(io_context& io, string listenIp, uint16 port);
 private:
+    void startAccept();
+private:
     io_context& io;
     tcp::acceptor acceptor;
 };

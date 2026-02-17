@@ -12,3 +12,7 @@ io(io), acceptor(io, tcp::endpoint(
 {
 }
 // PRIVATE
+void MinecraftServer::startAccept()
+{
+
+}
