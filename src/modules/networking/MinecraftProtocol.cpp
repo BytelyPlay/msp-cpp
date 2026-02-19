@@ -45,12 +45,10 @@ io_context& MinecraftProtocol::getIo()
 }
 
 // PRIVATE
-executor_work_guard<basic_system_executor<execution::detail::blocking::possibly_t<>,
-execution::detail::relationship::
-fork_t<>, std::allocator<void>>>
+executor_work_guard<io_context::basic_executor_type<std::allocator<void>, 0>>
 MinecraftProtocol::getWorkGuard() const
 {
-    static auto workGuard = make_work_guard(io);
+    static auto workGuard = make_work_guard(io->get_executor());
     return workGuard;
 }
 
