@@ -24,6 +24,13 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/MinecraftClient.cpp
         src/headers/Types.hpp
         src/headers/BoostNamespaces.hpp
+        src/modules/networking/packet/Packets.ixx
+        src/modules/networking/packet/Packets.cpp
+        src/modules/networking/packet/packets/Packet.ixx
+        src/modules/networking/packet/packets/Packet.cpp
+        src/modules/networking/packet/packettypes/PacketType.ixx
+        src/modules/networking/packet/packettypes/PacketType.cpp
+        src/modules/networking/packet/packettypes/PacketTypeDef.ixx
 )
 
 add_executable(MinecraftServerProtocolCPPTests
