@@ -26,16 +26,16 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/headers/BoostNamespaces.hpp
         src/modules/networking/packet/Packets.ixx
         src/modules/networking/packet/Packets.cpp
-        src/modules/networking/packet/packets/Packet.ixx
-        src/modules/networking/packet/packets/Packet.cpp
-        src/modules/networking/packet/packettypes/PacketType.ixx
-        src/modules/networking/packet/packettypes/PacketType.cpp
-        src/modules/networking/packet/packettypes/c2s/PacketTypeC2S.ixx
-        src/modules/networking/packet/packettypes/s2c/PacketTypeS2C.ixx
-        src/modules/networking/packet/packettypes/c2s/PacketTypeC2S.cpp
-        src/modules/networking/packet/packettypes/s2c/PacketTypeS2C.cpp
-        src/modules/networking/packet/packets/c2s/PacketC2S.ixx
-        src/modules/networking/packet/packets/s2c/PacketS2C.ixx
+        src/modules/networking/packet/packets/base/Packet.ixx
+        src/modules/networking/packet/packets/base/Packet.cpp
+        src/modules/networking/packet/packettypes/base/PacketType.ixx
+        src/modules/networking/packet/packettypes/base/PacketType.cpp
+        src/modules/networking/packet/packettypes/c2s/base/PacketTypeC2S.ixx
+        src/modules/networking/packet/packettypes/s2c/base/PacketTypeS2C.ixx
+        src/modules/networking/packet/packettypes/c2s/base/PacketTypeC2S.cpp
+        src/modules/networking/packet/packettypes/s2c/base/PacketTypeS2C.cpp
+        src/modules/networking/packet/packets/c2s/base/PacketC2S.ixx
+        src/modules/networking/packet/packets/s2c/base/PacketS2C.ixx
 )
 
 add_executable(MinecraftServerProtocolCPPTests
