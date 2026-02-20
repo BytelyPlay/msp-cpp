@@ -1,12 +1,10 @@
 module;
+#include <string>
 
 module Packets;
 
-// PUBLIC
-Packets& Packets::getInstance()
+// TODO: Only the identifier should be needed, the id gets taken from reports/packets.json
+void Packets::registerPacket(int id, std::string identifier, PacketType& type)
 {
-    static Packets packets;
-    return packets;
+
 }
-// PRIVATE
-Packets::Packets() = default;
