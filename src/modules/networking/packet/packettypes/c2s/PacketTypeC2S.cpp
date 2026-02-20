@@ -1,4 +1,5 @@
 module;
+#include <functional>
 
 module PacketTypeC2S;
 
