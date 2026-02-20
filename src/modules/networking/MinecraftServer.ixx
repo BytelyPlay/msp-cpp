@@ -27,7 +27,7 @@ private:
     tcp::acceptor acceptor;
 
     MinecraftProtocol& protocol;
-    std::vector<MinecraftClient> clients;
+    std::vector<std::shared_ptr<MinecraftClient>> clients;
 
     std::latch shutdownLatch = std::latch(1);
 };

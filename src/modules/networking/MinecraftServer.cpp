@@ -47,6 +47,8 @@ void MinecraftServer::handleAccept(std::shared_ptr<MinecraftClient> client, erro
 {
     if (!ec)
     {
+        clients.push_back(client);
+
         string s = std::string("Daytime Server Offline");
 
         std::vector<unsigned char> sVector;

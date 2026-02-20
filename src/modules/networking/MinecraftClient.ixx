@@ -13,10 +13,17 @@ public:
     static std::shared_ptr<MinecraftClient> create(MinecraftProtocol& protocol);
 public:
     void init();
+private:
+    void initRead();
+public:
     void disconnect();
 private:
     bool initialized = false;
+    bool disconnected = false;
     tcp::socket socket;
+
+    std::vector<unsigned char> readBuffer =
+        std::vector<unsigned char>(1024);
 
     MinecraftProtocol& protocol;
 public:
@@ -25,8 +32,8 @@ private:
     MinecraftClient(MinecraftProtocol& protocol);
 
     void handleWrite(error_code ec, size_t bytesTransferred);
-    void handleRead();
+    void handleRead(error_code ec, size_t bytesTransferred);
 public:
-    // temporarily public until the packet system is finished.
+    // temporarily public until the packet system is created.
     void write(std::vector<unsigned char> bytes, size_t size);
 };
