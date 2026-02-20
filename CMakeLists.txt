@@ -30,7 +30,12 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packets/Packet.cpp
         src/modules/networking/packet/packettypes/PacketType.ixx
         src/modules/networking/packet/packettypes/PacketType.cpp
-        src/modules/networking/packet/packettypes/PacketTypeDef.ixx
+        src/modules/networking/packet/packettypes/c2s/PacketTypeC2S.ixx
+        src/modules/networking/packet/packettypes/s2c/PacketTypeS2C.ixx
+        src/modules/networking/packet/packettypes/c2s/PacketTypeC2S.cpp
+        src/modules/networking/packet/packettypes/s2c/PacketTypeS2C.cpp
+        src/modules/networking/packet/packets/c2s/PacketC2S.ixx
+        src/modules/networking/packet/packets/s2c/PacketS2C.ixx
 )
 
 add_executable(MinecraftServerProtocolCPPTests

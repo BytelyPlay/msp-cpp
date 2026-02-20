@@ -3,5 +3,12 @@ module;
 #include <vector>
 
 export module PacketType;
-// TODO: A bit of a dirty workaround, find a better way of doing this.
-export import ::def;
+
+export class PacketType
+{
+public:
+    virtual std::string getPacketIdentifier() = 0;
+    virtual int getPacketID() = 0;
+public:
+    virtual ~PacketType() = default;
+};
