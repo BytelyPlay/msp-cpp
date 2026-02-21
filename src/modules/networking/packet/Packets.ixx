@@ -4,7 +4,7 @@ module;
 export module Packets;
 import PacketType;
 
-// TODO: Read from a reports/packet.json and use the identifier to get the protocol ID.
+// TODO: Read from a reports/packets.json and use the identifier to get the protocol ID.
 export namespace Packets
 {
     namespace S2C
