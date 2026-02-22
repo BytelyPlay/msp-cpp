@@ -36,6 +36,13 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packettypes/s2c/base/PacketTypeS2C.cpp
         src/modules/networking/packet/packets/c2s/base/PacketC2S.ixx
         src/modules/networking/packet/packets/s2c/base/PacketS2C.ixx
+        src/modules/io/codecs/base/Codec.ixx
+        src/modules/io/streams/outputstream/TypedOutputStream.ixx
+        src/modules/io/streams/inputstream/TypedInputStream.ixx
+        src/modules/utils/EndiannessUtils.ixx
+        src/modules/utils/EndiannessUtils.cpp
+        src/modules/io/codecs/VarIntCodec.ixx
+        "src/modules/io/codecs/ VarIntCodec.cpp"
 )
 
 add_executable(MinecraftServerProtocolCPPTests

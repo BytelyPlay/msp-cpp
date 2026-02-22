@@ -1,6 +1,5 @@
 #ifndef MINECRAFTSERVERPROTOCOLCPP_TYPES_HPP
 #define MINECRAFTSERVERPROTOCOLCPP_TYPES_HPP
-#include <string>
 
 using string = std::string;
 
