@@ -24,6 +24,12 @@ bool isBigEndianInternal()
 
 bool EndiannessUtils::isBigEndian()
 {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    return false;
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    return true;
+#else
     static bool isBigEndian = isBigEndianInternal();
     return isBigEndian;
+#endif
 }
