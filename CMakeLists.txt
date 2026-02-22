@@ -42,7 +42,7 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/utils/EndiannessUtils.ixx
         src/modules/utils/EndiannessUtils.cpp
         src/modules/io/codecs/VarIntCodec.ixx
-        "src/modules/io/codecs/ VarIntCodec.cpp"
+        "src/modules/io/codecs/VarIntCodec.cpp"
 )
 
 add_executable(MinecraftServerProtocolCPPTests
