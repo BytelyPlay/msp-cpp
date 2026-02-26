@@ -12,6 +12,8 @@ public:
     TypedOutputStream(std::vector<unsigned char>& toFill);
     TypedOutputStream(std::ostream& out);
 public:
+    void writeBytes(std::vector<unsigned char>& bytes);
+public:
     std::vector<unsigned char>& getData();
 private:
     std::ostream& out;
