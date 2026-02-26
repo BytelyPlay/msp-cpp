@@ -46,8 +46,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/base/Codec.cpp
         src/modules/io/streams/inputstream/TypedInputStream.cpp
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
-        src/modules/io/streams/inputstream/VectorStreamBuf.ixx
-        src/modules/io/streams/inputstream/VectorStreamBuf.cpp
+        src/modules/io/streams/inputstream/FlexibleStreamBuf.ixx
+        src/modules/io/streams/inputstream/FlexibleStreamBuf.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
