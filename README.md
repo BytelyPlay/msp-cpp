@@ -3,7 +3,9 @@ This is a Minecraft server protocol implementation in C++. \
 Using Boost.ASIO. \
 This library's goal is simply to implement every single Minecraft packet and make it easy to send and receive packets. \
 This way in the future if anyone would like to they can try to recreate the Minecraft server in C++ easily. \
-The goal is to make packet sending 100% thread-safe.
+The goal is to make packet sending 100% thread-safe, make this multi-threaded \
+and having decent-ish performance \ 
+(although performance will highly depend on your code's quality).
 
 # Build instructions
 On Ubuntu (and likely other debian-based distributions):

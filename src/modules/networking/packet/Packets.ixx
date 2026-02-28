@@ -1,5 +1,6 @@
 module;
 #include <string>
+#include <vector>
 
 export module Packets;
 import PacketType;
@@ -13,7 +14,7 @@ export namespace Packets
     }
     namespace C2S
     {
-
+        void receivedPacket(std::vector<unsigned char> data);
     }
     void registerPacket(int id, std::string identifier, PacketType& type);
 }
