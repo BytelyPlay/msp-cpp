@@ -25,6 +25,8 @@ public:
     T deserialize(
         const std::vector<unsigned char>& data
     ) override;
+protected:
+    Codec();
 public:
     virtual ~Codec() = default;
 };

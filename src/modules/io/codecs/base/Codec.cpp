@@ -18,3 +18,7 @@ T Codec<T>::deserialize(const std::vector<unsigned char>& data)
         data.data() + data.size());
     return deserialize(in);
 }
+// PROTECTED
+template <typename T>
+Codec<T>::Codec()
+= default;

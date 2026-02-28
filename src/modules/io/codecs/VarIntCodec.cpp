@@ -3,6 +3,8 @@ module;
 
 module VarIntCodec;
 import EndiannessUtils;
+import Logger;
+
 // PUBLIC
 void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
 {
@@ -36,6 +38,13 @@ int VarIntCodec::deserialize(TypedInputStream& in)
 
         result |= (b & 0x7F) << shift;
         shift += 7;
+
+        if (shift > 40)
+        {
+            Logger::warn("Cannot deserialize varint, it is too big.");
+            break;
+        }
     }
     return result;
 }
+const VarIntCodec VarIntCodec::CODEC = VarIntCodec();
