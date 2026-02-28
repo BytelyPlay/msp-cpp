@@ -1,4 +1,5 @@
 module;
+#include <bitset>
 #include <vector>
 
 export module VarIntCodec;
@@ -11,5 +12,5 @@ export class VarIntCodec : public Codec<int>
 {
 public:
     void serialize(const int& obj, TypedOutputStream& out) override;
-    int deserialize(const TypedInputStream& in) override;
+    int deserialize(TypedInputStream& in) override;
 };

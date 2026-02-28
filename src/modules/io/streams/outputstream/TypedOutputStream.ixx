@@ -1,7 +1,9 @@
 module;
 #include <vector>
+#include <string>
 
 export module TypedOutputStream;
+#include "Types.hpp"
 
 export class TypedOutputStream
 {
@@ -14,7 +16,8 @@ public:
 public:
     void operator<<(const std::vector<unsigned char>& bytes);
 
-    void operator<<(const unsigned char& byte);
+    template<typename T>
+    void operator<<(T num);
 private:
     std::vector<unsigned char> data;
 public:

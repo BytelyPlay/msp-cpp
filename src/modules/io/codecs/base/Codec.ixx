@@ -16,7 +16,7 @@ public:
         TypedOutputStream& out
     ) = 0;
     virtual T deserialize(
-        const TypedInputStream& in
+        TypedInputStream& in
     ) = 0;
 public:
     std::vector<unsigned char> serialize(
