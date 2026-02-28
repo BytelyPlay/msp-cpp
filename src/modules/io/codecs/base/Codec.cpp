@@ -14,6 +14,7 @@ std::vector<unsigned char> Codec<T>::serialize(const T& obj)
 template <typename T>
 T Codec<T>::deserialize(const std::vector<unsigned char>& data)
 {
-    TypedInputStream in(data);
+    TypedInputStream in(data.data(),
+        data.data() + data.size());
     return deserialize(in);
 }

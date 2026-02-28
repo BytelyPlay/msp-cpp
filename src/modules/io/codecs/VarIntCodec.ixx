@@ -9,6 +9,7 @@ import TypedOutputStream;
 
 export class VarIntCodec : public Codec<int>
 {
+public:
     void serialize(const int& obj, TypedOutputStream& out) override;
     int deserialize(const TypedInputStream& in) override;
 };

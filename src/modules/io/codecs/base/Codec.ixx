@@ -5,8 +5,10 @@ export module Codec;
 import TypedInputStream;
 import TypedOutputStream;
 
+import BasicCodec;
+
 export template<typename T>
-class Codec
+class Codec : public BasicCodec<T>
 {
 public:
     virtual void serialize(
@@ -16,13 +18,13 @@ public:
     virtual T deserialize(
         const TypedInputStream& in
     ) = 0;
-
-    virtual std::vector<unsigned char> serialize(
+public:
+    std::vector<unsigned char> serialize(
         const T& obj
-    );
-    virtual T deserialize(
+    ) override;
+    T deserialize(
         const std::vector<unsigned char>& data
-    );
+    ) override;
 public:
     virtual ~Codec() = default;
 };

@@ -4,7 +4,6 @@ module;
 #include <memory>
 
 export module TypedInputStream;
-import FlexibleStreamBuf;
 
 export class TypedInputStream
 {
@@ -21,9 +20,7 @@ public:
     void operator>>(unsigned char& byte);
     void operator>>(unsigned char* byte);
 private:
-    const unsigned char* begin;
-    const unsigned char* current;
-    const unsigned char* end;
+    const unsigned char *begin, *current, *end;
 public:
     TypedInputStream operator=(const TypedInputStream&) = delete;
     TypedInputStream(const TypedInputStream&) = delete;
