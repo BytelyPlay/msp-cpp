@@ -1,36 +1,41 @@
 module;
-#include <algorithm>
+#include <cstring>
 #include <fstream>
-#include <memory>
 
 module TypedInputStream;
-import FlexibleStreamBuf;
 // PUBLIC
-TypedInputStream::TypedInputStream(std::vector<unsigned char> data)
+TypedInputStream::TypedInputStream(const unsigned char* begin, const unsigned char* end) :
+begin(begin), current(begin), end(end)
 {
-    streambufInternal_ =
-        std::make_unique<FlexibleStreamBuf<unsigned char>>(
-            data.data(),
-            data.data() + data.size()
-        );
-    in =
-        std::basic_istream
-    (
-        streambufInternal_.get()
-    );
-
-    dataInternal_ = data;
 }
 
 // PUBLIC
-std::vector<unsigned char> TypedInputStream::readBytes(long long amount)
+std::vector<unsigned char> TypedInputStream::readBytes(size_t amount)
 {
-    unsigned char bytes[amount];
-    in.readsome(bytes, amount);
+    std::vector<unsigned char> bytes =
+        std::vector<unsigned char>();
 
-    std::vector bytesVec(
-        std::begin(bytes),
-        std::end(bytes)
-    );
-    return bytesVec;
+    ptrdiff_t diff = (current + amount) - end;
+    amount = diff <= 0 ? amount : amount - diff;
+
+    bytes.resize(amount);
+    memcpy(bytes.data(), current, amount);
+
+    current += amount;
+
+    return bytes;
+}
+// PUBLIC
+void TypedInputStream::operator>>(unsigned char& byte)
+{
+    if (current < end)
+    {
+        byte = *(current++);
+    }
+}
+
+void TypedInputStream::operator>>(unsigned char* byte)
+{
+    this->
+    operator>>(*byte);
 }

@@ -1,5 +1,5 @@
 module;
-
+#include <vector>
 module Codec;
 
 // PUBLIC
