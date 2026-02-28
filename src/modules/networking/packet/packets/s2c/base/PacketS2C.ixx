@@ -6,5 +6,4 @@ import Packet;
 export class PacketS2C : Packet
 {
 public:
-    virtual std::vector<unsigned char> deserialize() = 0;
 };

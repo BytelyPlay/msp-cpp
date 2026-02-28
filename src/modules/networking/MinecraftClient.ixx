@@ -4,6 +4,7 @@ module;
 
 export module MinecraftClient;
 import MinecraftProtocol;
+
 #include "BoostNamespaces.hpp"
 #include "Types.hpp"
 
