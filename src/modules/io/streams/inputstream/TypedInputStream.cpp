@@ -10,32 +10,46 @@ begin(begin), current(begin), end(end)
 }
 
 // PUBLIC
-std::vector<unsigned char> TypedInputStream::readBytes(size_t amount)
+size_t TypedInputStream::readBytes(size_t amount,
+    std::vector<unsigned char>& buffer)
 {
-    std::vector<unsigned char> bytes =
-        std::vector<unsigned char>();
-
     ptrdiff_t diff = (current + amount) - end;
     amount = diff <= 0 ? amount : amount - diff;
 
-    bytes.resize(amount);
-    memcpy(bytes.data(), current, amount);
+    buffer.insert(
+        buffer.end(),
+        current,
+        current + amount
+    );
 
     current += amount;
 
-    return bytes;
+    return amount;
 }
+
+uint TypedInputStream::getBytesConsumed()
+{
+    return current - begin;
+}
+
+uint TypedInputStream::getBytesLeft()
+{
+    return end - current;
+}
+
 // PUBLIC
-void TypedInputStream::operator>>(unsigned char& byte)
+bool TypedInputStream::operator>>(unsigned char& byte)
 {
     if (current < end)
     {
         byte = *(current++);
+        return true;
     }
+    return false;
 }
 
-void TypedInputStream::operator>>(unsigned char* byte)
+bool TypedInputStream::operator>>(unsigned char* byte)
 {
-    this->
+    return this->
     operator>>(*byte);
 }

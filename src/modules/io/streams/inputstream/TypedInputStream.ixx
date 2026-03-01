@@ -9,16 +9,36 @@ export class TypedInputStream
 {
 public:
     /**
-     * Constructs a TypedInputStream with 2 pointer representing the first and last byte.
+     * Constructs a TypedInputStream with 2 pointers representing the first and last byte.
      * @param begin First byte to operate on.
      * @param end Last byte to operate on.
      */
     TypedInputStream(const unsigned char* begin, const unsigned char* end);
 public:
-    std::vector<unsigned char> readBytes(size_t amount);
+    /**
+     * Read an amount of bytes to a buffer from this stream.
+     * @param amount Amount to Read
+     * @param buffer Buffer to write to
+     * @return How many bytes were read.
+     */
+    size_t readBytes(size_t amount,
+                     std::vector<unsigned char>& buffer);
+
+    uint getBytesConsumed();
+    uint getBytesLeft();
 public:
-    void operator>>(unsigned char& byte);
-    void operator>>(unsigned char* byte);
+    /**
+     * Read one byte
+     * @param byte Reads one byte to a reference.
+     * @return true if successful
+     */
+    bool operator>>(unsigned char& byte);
+    /**
+     * Read one byte
+     * @param byte Reads one byte to a pointer.
+     * @return true if successful
+     */
+    bool operator>>(unsigned char* byte);
 private:
     const unsigned char *begin, *current, *end;
 public:

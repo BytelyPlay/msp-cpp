@@ -47,6 +47,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/streams/inputstream/TypedInputStream.cpp
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
         src/modules/io/codecs/base/BasicCodec.ixx
+        src/modules/exceptions/CodecParsingException.ixx
+        src/modules/exceptions/CodecParsingException.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

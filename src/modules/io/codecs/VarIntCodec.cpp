@@ -1,11 +1,16 @@
 module;
-#include <bitset>
+#include <string>
 
 module VarIntCodec;
 import EndiannessUtils;
 import Logger;
+import CodecParsingException;
+
+#include "Types.hpp"
 
 // PUBLIC
+VarIntCodec VarIntCodec::CODEC = VarIntCodec();
+
 void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
 {
     // This makes sure to preserve all memory perfectly.
@@ -28,7 +33,10 @@ int VarIntCodec::deserialize(TypedInputStream& in)
 
     while (!isLastByte) {
         unsigned char b = 0;
-        in >> b;
+        if (!(in >> b)) throw CodecParsingException(
+            "Couldn't read from TypedInputStream. "
+            "Perhaps EoF has been reached."
+        );
 
         // cheat sheet for hex: 0 = 0000 1 = 0001 2 = 0010 3 = 0011 4 = 0100
         // 5 = 0101 6 = 0110 7 = 0111 8 = 1000 9 = 1001
@@ -47,4 +55,5 @@ int VarIntCodec::deserialize(TypedInputStream& in)
     }
     return result;
 }
-const VarIntCodec VarIntCodec::CODEC = VarIntCodec();
+// PRIVATE
+VarIntCodec::VarIntCodec() = default;

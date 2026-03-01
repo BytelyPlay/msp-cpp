@@ -5,6 +5,8 @@ module;
 module MinecraftClient;
 import MinecraftProtocol;
 import Logger;
+import VarIntCodec;
+import TypedInputStream;
 
 // PUBLIC
 std::shared_ptr<MinecraftClient> MinecraftClient::create(MinecraftProtocol& protocol)
@@ -73,15 +75,29 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
 {
     if (!ec)
     {
-        unsigned char bytes[bytesTransferred];
-        memcpy(bytes, readBuffer.data(), bytesTransferred);
+        std::vector<unsigned char> bytes;
 
-        std::string s;
-        for (int i = 0; i < bytesTransferred; i++)
+        bytes.insert(
+            bytes.end(),
+            readBuffer.begin(),
+            readBuffer.begin() + bytesTransferred
+        );
+
+        if (packetAccumulator.empty())
         {
-            s += std::format("0x{:02x} ", bytes[i]);
+            // This is a new Packet.
+            currentPacketLength = VarIntCodec::CODEC.deserialize(bytes);
+
+            if (bytes.size() >= currentPacketLength)
+
+            packetAccumulator.insert(
+                packetAccumulator.end(),
+                bytes.begin(),
+                bytes.end()
+            );
+        } else
+        {
         }
-        Logger::debug(s);
     } else if (ec == error::eof)
     {
         disconnected = true;

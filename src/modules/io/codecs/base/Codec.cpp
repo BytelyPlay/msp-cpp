@@ -12,13 +12,11 @@ std::vector<unsigned char> Codec<T>::serialize(const T& obj)
 }
 
 template <typename T>
-T Codec<T>::deserialize(const std::vector<unsigned char>& data)
+T Codec<T>::deserialize(const std::vector<unsigned char>& data, uint& bytesConsumed)
 {
     TypedInputStream in(data.data(),
         data.data() + data.size());
+    bytesConsumed = in.getBytesConsumed();
+
     return deserialize(in);
 }
-// PROTECTED
-template <typename T>
-Codec<T>::Codec()
-= default;

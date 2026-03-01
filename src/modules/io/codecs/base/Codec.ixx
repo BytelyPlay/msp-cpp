@@ -1,11 +1,14 @@
 module;
 #include <vector>
+#include <string>
 
 export module Codec;
 import TypedInputStream;
 import TypedOutputStream;
 
 import BasicCodec;
+
+#include "Types.hpp"
 
 export template<typename T>
 class Codec : public BasicCodec<T>
@@ -23,10 +26,9 @@ public:
         const T& obj
     ) override;
     T deserialize(
-        const std::vector<unsigned char>& data
+        const std::vector<unsigned char>& data,
+        uint& bytesConsumed
     ) override;
-protected:
-    Codec();
 public:
     virtual ~Codec() = default;
 };

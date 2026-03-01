@@ -23,8 +23,12 @@ private:
     bool disconnected = false;
     tcp::socket socket;
 
+    int currentPacketLength = 0;
+
     std::vector<unsigned char> readBuffer =
         std::vector<unsigned char>(1024);
+    std::vector<unsigned char> packetAccumulator =
+        std::vector<unsigned char>();
 
     MinecraftProtocol& protocol;
 public:

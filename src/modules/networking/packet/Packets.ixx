@@ -17,11 +17,6 @@ export namespace Packets
     }
     namespace C2S
     {
-        /**
-         * Handles a Packet being received.
-         * @param data The Data excluding the Packet Length
-         */
-        void receivedPacket(std::vector<unsigned char> data);
     }
 
     class PacketsRegister
@@ -37,7 +32,13 @@ export namespace Packets
         * @param type The Packet Type
         */
         template<typename T>
-        void registerPacket(int id, std::string identifier, T type);
+        T& registerPacket(int id, std::string identifier, T type);
+
+        /**
+        * Handles a Packet being received.
+        * @param data The Data excluding the Packet Length, but including the packet ID.
+        */
+        void receivedPacket(std::vector<unsigned char> data);
     public:
         PacketsRegister(const PacketsRegister&) = delete;
         PacketsRegister operator=(const PacketsRegister&) = delete;
