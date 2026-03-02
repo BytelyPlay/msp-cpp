@@ -5,8 +5,8 @@ module;
 export module Packets;
 import PacketType;
 
-#define DEFINE_PACKET(variableName, id, identifier, type) \
-    const auto variableName = Packets::::registerPacket(id, identifier, type);
+#define DEFINE_PACKET(variableName, type) \
+    const auto variableName = Packets::PacketsRegister::registerPacket(type);
 
 // TODO: Read from a reports/packets.json and use the identifier to get the protocol ID.
 export namespace Packets
@@ -22,7 +22,13 @@ export namespace Packets
     class PacketsRegister
     {
     public:
-        PacketsRegister& getInstance();
+        static PacketsRegister& getInstance();
+    public:
+        /**
+        * Handles a Packet being received.
+        * @param data The Data excluding the Packet Length, but including the packet ID.
+        */
+        void receivedPacket(std::vector<unsigned char> data);
     private:
         /**
         * Registers a packet.
@@ -31,14 +37,16 @@ export namespace Packets
         * @param identifier The stable Identifier (e.g. minecraft:example_packet)
         * @param type The Packet Type
         */
+        // Performance wise, this may be very bad.
+        // Perhaps we shouldn't move twice.
         template<typename T>
-        T& registerPacket(int id, std::string identifier, T type);
-
-        /**
-        * Handles a Packet being received.
-        * @param data The Data excluding the Packet Length, but including the packet ID.
-        */
-        void receivedPacket(std::vector<unsigned char> data);
+        T registerPacket(T type);
+    private:
+        PacketsRegister();
+    private:
+        std::vector<
+            std::reference_wrapper<PacketType>
+        > types;
     public:
         PacketsRegister(const PacketsRegister&) = delete;
         PacketsRegister operator=(const PacketsRegister&) = delete;
