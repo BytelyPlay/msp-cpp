@@ -15,4 +15,9 @@ public:
     virtual std::shared_ptr<Packet> serialize(
         const std::vector<unsigned char>& data
     ) = 0;
+public:
+    int getPacketID() override = 0;
+    std::string getPacketIdentifier() override = 0;
+
+    bool isC2S() override;
 };

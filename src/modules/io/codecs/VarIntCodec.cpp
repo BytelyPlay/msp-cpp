@@ -16,12 +16,13 @@ void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
     // This makes sure to preserve all memory perfectly.
     uint val = reinterpret_cast<const uint&>(valRef);
 
+    if (EndiannessUtils::isBigEndian())
+        val = std::byteswap(val);
+
     while ((val & ~0x7F) != 0) {
         out << (val | 0x80);
         val >>= 7;
     }
-    if (!EndiannessUtils::isBigEndian())
-        val = std::byteswap(val);
     out << val;
 }
 
@@ -53,6 +54,8 @@ int VarIntCodec::deserialize(TypedInputStream& in)
             break;
         }
     }
+    if (EndiannessUtils::isBigEndian())
+        result = std::byteswap(result);
     return result;
 }
 // PRIVATE

@@ -3,6 +3,10 @@ module;
 
 module Packets;
 import VarIntCodec;
+import TypedInputStream;
+import Logger;
+import PacketTypeC2S;
+import PacketC2S;
 
 // Packets::PacketRegister
 // PUBLIC
@@ -17,7 +21,29 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data)
 {
     uint bytesConsumed = 0;
 
-    int id = VarIntCodec::CODEC.deserialize(data, bytesConsumed);
+    TypedInputStream in = TypedInputStream(data.data(),
+        data.data() + data.size());
+    int id = VarIntCodec::CODEC.deserialize(in);
+
+    for (auto typeWrapper : types)
+    {
+        PacketType& type = typeWrapper.get();
+
+        if (type.getPacketID() == id)
+        {
+            if (!type.isC2S())
+            {
+                Logger::warn("Discarding packet: " +
+                    type.getPacketIdentifier() +
+                    " because it is an S2C packet sent to the server.");
+                break;
+            }
+            // Type is a PacketTypeC2S
+            PacketTypeC2S<PacketC2S>& c2sType = static_cast<PacketTypeC2S&>(type);
+
+            break;
+        }
+    }
 }
 
 // PRIVATE
