@@ -23,7 +23,11 @@ void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
         out << (val | 0x80);
         val >>= 7;
     }
-    out << val;
+    // operator<< was used previously, but I do not want changes there to affect this Codec.
+    auto* valBytes = reinterpret_cast<unsigned char*>(&val);
+
+    out.writeBytes(valBytes,
+        valBytes + sizeof(uint));
 }
 
 int VarIntCodec::deserialize(TypedInputStream& in)

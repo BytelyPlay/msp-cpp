@@ -2,11 +2,14 @@ module;
 #include <string>
 
 module Packets;
+
 import VarIntCodec;
 import TypedInputStream;
 import Logger;
 import PacketTypeC2S;
 import PacketC2S;
+import MinecraftServer;
+import MinecraftProtocol;
 
 // Packets::PacketRegister
 // PUBLIC
@@ -17,7 +20,9 @@ Packets::PacketsRegister& Packets::PacketsRegister::getInstance()
     return packetsRegister;
 }
 // PUBLIC
-void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data)
+void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
+    MinecraftServer server,
+    MinecraftProtocol protocol)
 {
     uint bytesConsumed = 0;
 
@@ -40,7 +45,11 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data)
             }
             // Type is a PacketTypeC2S
             PacketTypeC2S<PacketC2S>& c2sType = static_cast<PacketTypeC2S&>(type);
-
+            c2sType.callListener(
+                c2sType.deserialize(in),
+                server,
+                protocol
+            );
             break;
         }
     }

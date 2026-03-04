@@ -4,11 +4,21 @@ module;
 
 module TypedOutputStream;
 import EndiannessUtils;
+
 // PUBLIC
 TypedOutputStream::TypedOutputStream()
 = default;
 
 // PUBLIC
+void TypedOutputStream::writeBytes(const unsigned char* begin, const unsigned char* end)
+{
+    std::copy(
+        begin,
+        end,
+        data
+    );
+}
+
 void TypedOutputStream::writeBytes(const std::vector<unsigned char>& bytes)
 {
     std::copy(

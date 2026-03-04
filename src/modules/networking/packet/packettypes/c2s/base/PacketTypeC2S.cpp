@@ -26,3 +26,14 @@ bool PacketTypeC2S<T>::isC2S()
 {
     return true;
 }
+// PUBLIC
+template <typename T>
+T PacketTypeC2S<T>::deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed)
+{
+    TypedInputStream in(bytes.data(),
+        bytes.data() + bytes.size());
+    T packet = deserialize(in);
+
+    bytesConsumed = in.getBytesConsumed();
+    return packet;
+}

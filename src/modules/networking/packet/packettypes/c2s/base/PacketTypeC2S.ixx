@@ -4,11 +4,13 @@ module;
 #include <vector>
 
 export module PacketTypeC2S;
+
 import PacketType;
 import Packet;
 import PacketC2S;
 import MinecraftServer;
 import MinecraftProtocol;
+import TypedInputStream;
 
 export template<typename T>
 class PacketTypeC2S : public PacketType
@@ -25,6 +27,9 @@ public:
     std::string getPacketIdentifier() override = 0;
 
     bool isC2S() override;
+public:
+    T deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
+    virtual T deserialize(TypedInputStream& in) = 0;
 private:
     std::function<
         void(T, MinecraftServer&, MinecraftProtocol&)
