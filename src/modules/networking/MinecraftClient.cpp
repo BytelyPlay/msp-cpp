@@ -7,6 +7,7 @@ import MinecraftProtocol;
 import Logger;
 import VarIntCodec;
 import TypedInputStream;
+import Packets;
 
 // PUBLIC
 std::shared_ptr<MinecraftClient> MinecraftClient::create(MinecraftProtocol& protocol)
@@ -86,13 +87,20 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
         if (packetAccumulator.empty())
         {
             // This is a new Packet.
-            currentPacketLength = VarIntCodec::CODEC.deserialize(bytes);
+            uint varIntLength;
+            currentPacketLength = VarIntCodec::CODEC
+            .deserialize(bytes,
+            varIntLength
+            );
 
-            if (bytes.size() >= currentPacketLength)
+            if (bytes.size() - varIntLength >= currentPacketLength)
+            {
+                Packets
+            }
 
             packetAccumulator.insert(
                 packetAccumulator.end(),
-                bytes.begin(),
+                bytes.begin() + varIntLength,
                 bytes.end()
             );
         } else
