@@ -27,8 +27,10 @@ export namespace Packets
         /**
         * Handles a Packet being received.
         * @param data The Data excluding the Packet Length, but including the packet ID.
+        * @param server
+        * @param protocol
         */
-        void receivedPacket(std::vector<unsigned char> data);
+        void receivedPacket(std::vector<unsigned char> data, server, protocol);
     private:
         /**
         * Registers a packet.
