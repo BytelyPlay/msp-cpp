@@ -54,7 +54,6 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
         }
     }
 }
-
 // PRIVATE
 template <typename T>
 T Packets::PacketsRegister::registerPacket(T type)
@@ -66,5 +65,8 @@ T Packets::PacketsRegister::registerPacket(T type)
 }
 
 // PRIVATE
+Packets::PacketsRegister::PacketsRegister()
+= default;
+
 // PRIVATE
 // PUBLIC

@@ -119,8 +119,26 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
     }
     initRead();
 }
+// PRIVATE
+void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
+{
+    if (packetAccumulator.size() > currentPacketLength)
+    {
+        Logger::warn("I accumulated more data than I should have.");
+        return;
+    }
+    if (packetAccumulator.size() +
+        newData.size() >= currentPacketLength)
+    {
+        std::copy(
+            newData.begin(),
+            newData.end(),
+            packetAccumulator
+        );
+    }
+}
 
-// Temporarily public
+// PUBLIC
 void MinecraftClient::write(std::vector<unsigned char> bytes, size_t size)
 {
     async_write(getSocket(), buffer(bytes),

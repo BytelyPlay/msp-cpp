@@ -38,6 +38,12 @@ private:
 
     void handleWrite(error_code ec, size_t bytesTransferred);
     void handleRead(error_code ec, size_t bytesTransferred);
+private:
+    /**
+     * Either accumulates data in the vector or calls Packets#receivedPacket
+     * @param newData The data to be accumulated or used.
+     */
+    void accumulateOrReceive(std::vector<unsigned char>&& newData);
 public:
     // temporarily public until the packet system is created.
     void write(std::vector<unsigned char> bytes, size_t size);
