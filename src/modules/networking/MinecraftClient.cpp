@@ -124,17 +124,25 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
 {
     if (packetAccumulator.size() > currentPacketLength)
     {
-        Logger::warn("I accumulated more data than I should have.");
+        Logger::warn("I accumulated more data than I should have. "
+                     "Currently there is no automatic fix as this is a very early version of this library. "
+                     "This should never happen anyways. This socket will break.");
         return;
     }
-    if (packetAccumulator.size() +
-        newData.size() >= currentPacketLength)
+    int newSize = packetAccumulator.size() +
+        newData.size();
+    if (newSize >= currentPacketLength)
     {
         std::copy(
             newData.begin(),
-            newData.end(),
-            packetAccumulator
+            newData.end() - (newSize - currentPacketLength),
+            packetAccumulator.end()
         );
+        currentPacketLength = 0;
+        Packets
+        ::PacketsRegister
+        ::getInstance()
+        .receivedPacket();
     }
 }
 
