@@ -8,6 +8,7 @@ import Logger;
 import VarIntCodec;
 import TypedInputStream;
 import Packets;
+import MinecraftServer;
 
 // PUBLIC
 std::shared_ptr<MinecraftClient> MinecraftClient::create(MinecraftProtocol& protocol)
@@ -129,7 +130,7 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
                      "This should never happen anyways. This socket will break.");
         return;
     }
-    int newSize = packetAccumulator.size() +
+    size_t newSize = packetAccumulator.size() +
         newData.size();
     if (newSize >= currentPacketLength)
     {
@@ -139,10 +140,11 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
             packetAccumulator.end()
         );
         currentPacketLength = 0;
+
         Packets
         ::PacketsRegister
         ::getInstance()
-        .receivedPacket();
+        .receivedPacket(packetAccumulator, *server, protocol);
     }
 }
 

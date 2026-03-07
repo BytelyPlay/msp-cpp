@@ -23,7 +23,7 @@ private:
     bool disconnected = false;
     tcp::socket socket;
 
-    int currentPacketLength = 0;
+    size_t currentPacketLength = 0;
 
     std::vector<unsigned char> readBuffer =
         std::vector<unsigned char>(1024);

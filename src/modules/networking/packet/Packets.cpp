@@ -21,8 +21,8 @@ Packets::PacketsRegister& Packets::PacketsRegister::getInstance()
 }
 // PUBLIC
 void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
-    MinecraftServer server,
-    MinecraftProtocol protocol)
+    MinecraftServer& server,
+    MinecraftProtocol& protocol)
 {
     uint bytesConsumed = 0;
 

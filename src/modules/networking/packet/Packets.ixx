@@ -33,8 +33,8 @@ export namespace Packets
         * @param protocol
         */
         void receivedPacket(std::vector<unsigned char> data,
-            MinecraftServer server,
-            MinecraftProtocol protocol);
+                            MinecraftServer& server,
+                            MinecraftProtocol& protocol);
     private:
         /**
         * Registers a packet.
