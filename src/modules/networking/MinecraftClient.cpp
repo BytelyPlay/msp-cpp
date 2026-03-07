@@ -141,6 +141,14 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
         );
         currentPacketLength = 0;
 
+        /* TODO: Dirty workaround for circular dependency, make an std::function
+        field in this MinecraftClient
+        which is set in the constructor as the method to call with the data,
+        MinecraftServer will set it to Packets::PacketsRegister#receivedPacket
+        which will definitely not be a clean workaround
+        but it's okay for the time being, when this is done this
+        todo should become to find a better way to do this.
+        */
         Packets
         ::PacketsRegister
         ::getInstance()
