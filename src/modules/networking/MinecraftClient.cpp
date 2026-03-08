@@ -85,10 +85,10 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
     {
         std::vector<unsigned char> newBytes;
 
-        std::copy_n(
-            readBuffer.data(),
-            readBuffer.size(),
-            newBytes.end()
+        newBytes.insert(
+            newBytes.end(),
+            readBuffer.begin(),
+            readBuffer.begin() + bytesTransferred
         );
         accumulateOrReceive(
             std::move(newBytes)
@@ -120,6 +120,27 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
     }
     size_t newSize = packetAccumulator.size() +
         newData.size();
+    if (currentPacketLength == 0)
+    {
+        uint bytesConsumed;
+
+        currentPacketLength = VarIntCodec::CODEC.deserialize(newData, bytesConsumed);
+
+        packetAccumulator.insert(
+            packetAccumulator.end(),
+            newData.begin() + bytesConsumed,
+            newData.end()
+        );
+        return;
+    }
+    if (packetAccumulator.size() < currentPacketLength)
+    {
+        packetAccumulator.insert(
+            packetAccumulator.end(),
+            newData.begin(),
+            newData.end()
+        );
+    }
     if (newSize >= currentPacketLength)
     {
         std::copy(

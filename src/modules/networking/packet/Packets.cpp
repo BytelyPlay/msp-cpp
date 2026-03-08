@@ -45,9 +45,9 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
                 break;
             }
             // Type is a PacketTypeC2S
-            auto& c2sType = static_cast<PacketTypeC2S<PacketC2S>&>(type);
-            c2sType.callListener(
-                c2sType.deserialize(in),
+            auto& c2sType = static_cast<PacketTypeC2S&>(type);
+            c2sType.deserializeAndCall(
+                in,
                 server,
                 protocol,
                 client

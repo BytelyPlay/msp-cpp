@@ -14,8 +14,8 @@ int main() {
     TypedOutputStream out;
     out << 1234567;
     
-    /* MinecraftProtocol protocol(4);
+    MinecraftProtocol protocol(4);
     protocol.init();
     MinecraftServer server("127.0.0.1", 24213, protocol);
-    protocol.awaitShutdown(); */
+    protocol.awaitShutdown();
 }

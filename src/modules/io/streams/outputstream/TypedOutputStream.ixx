@@ -33,7 +33,10 @@ public:
     TypedOutputStream(const TypedOutputStream&) = delete;
 };
 
-// As much as I don't want to do this, templates can't have split implementations.
+// PUBLIC
+// PUBLIC
+// PUBLIC
+// PUBLIC
 template <typename T>
 void TypedOutputStream::operator<<(T num)
 {

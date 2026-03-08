@@ -4,8 +4,7 @@ module PacketTypeS2C;
 
 // PUBLIC
 // PUBLIC
-template <typename T>
-bool PacketTypeS2C<T>::isC2S()
+bool PacketTypeS2C::isC2S()
 {
     return false;
 }
