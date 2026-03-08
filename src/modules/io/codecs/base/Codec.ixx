@@ -1,14 +1,13 @@
 module;
 #include <vector>
 #include <string>
+#include <cstdint>
 
 export module Codec;
 import TypedInputStream;
 import TypedOutputStream;
 
 import BasicCodec;
-
-#include "Types.hpp"
 
 export template<typename T>
 class Codec : public BasicCodec<T>

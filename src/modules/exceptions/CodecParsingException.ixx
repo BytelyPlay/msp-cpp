@@ -1,7 +1,7 @@
 module;
+#include <stdexcept>
 
 export module CodecParsingException;
-#include <stdexcept>
 
 export class CodecParsingException : public std::runtime_error
 {

@@ -1,17 +1,21 @@
 module;
 #include <memory>
 #include <boost/asio.hpp>
+#include <cstdint>
 
 export module MinecraftClient;
 import MinecraftProtocol;
 
 #include "BoostNamespaces.hpp"
-#include "Types.hpp"
 
 export class MinecraftClient : public std::enable_shared_from_this<MinecraftClient>
 {
 public:
-    static std::shared_ptr<MinecraftClient> create(MinecraftProtocol& protocol);
+    static std::shared_ptr<MinecraftClient> create(
+        MinecraftProtocol& protocol,
+        std::function<void(std::vector<unsigned char>,
+        MinecraftClient&)> packetReceivedFunc
+    );
 public:
     void init();
 private:
@@ -31,10 +35,22 @@ private:
         std::vector<unsigned char>();
 
     MinecraftProtocol& protocol;
+
+    // This is a dirty, dirty workaround.
+    /* TODO: Please figure out something less dirty, the idea is that
+    we need the MinecraftServer object to call the receive packet function,
+    but we can't make a field with it without importing it and
+    forward declarations for some reason don't work. */
+    std::function<void(std::vector<unsigned char>,
+        MinecraftClient&)> packetDataFunction;
 public:
     tcp::socket& getSocket();
 private:
-    MinecraftClient(MinecraftProtocol& protocol);
+    MinecraftClient(
+        MinecraftProtocol& protocol,
+        std::function<void(std::vector<unsigned char>,
+        MinecraftClient&)> packetReceivedFunc
+    );
 
     void handleWrite(error_code ec, size_t bytesTransferred);
     void handleRead(error_code ec, size_t bytesTransferred);
@@ -43,7 +59,7 @@ private:
      * Either accumulates data in the vector or calls Packets#receivedPacket
      * @param newData The data to be accumulated or used.
      */
-    void accumulateOrReceive(std::vector<unsigned char>&& newData);
+    void accumulateOrReceive(std::vector<unsigned char> newData);
 public:
     // temporarily public until the packet system is created.
     void write(std::vector<unsigned char> bytes, size_t size);

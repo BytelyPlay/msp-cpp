@@ -1,10 +1,9 @@
 module;
 #include <vector>
 #include <string>
+#include <cstdint>
 
 export module BasicCodec;
-
-#include "Types.hpp"
 
 export template<typename T>
 class BasicCodec

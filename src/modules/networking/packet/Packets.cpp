@@ -1,5 +1,6 @@
 module;
 #include <string>
+#include <vector>
 
 module Packets;
 
@@ -10,6 +11,7 @@ import PacketTypeC2S;
 import PacketC2S;
 import MinecraftServer;
 import MinecraftProtocol;
+import MinecraftClient;
 
 // Packets::PacketRegister
 // PUBLIC
@@ -22,10 +24,9 @@ Packets::PacketsRegister& Packets::PacketsRegister::getInstance()
 // PUBLIC
 void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
     MinecraftServer& server,
-    MinecraftProtocol& protocol)
+    MinecraftProtocol& protocol,
+    MinecraftClient& client)
 {
-    uint bytesConsumed = 0;
-
     TypedInputStream in = TypedInputStream(data.data(),
         data.data() + data.size());
     int id = VarIntCodec::CODEC.deserialize(in);
@@ -44,11 +45,12 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
                 break;
             }
             // Type is a PacketTypeC2S
-            PacketTypeC2S<PacketC2S>& c2sType = static_cast<PacketTypeC2S&>(type);
+            auto& c2sType = static_cast<PacketTypeC2S<PacketC2S>&>(type);
             c2sType.callListener(
                 c2sType.deserialize(in),
                 server,
-                protocol
+                protocol,
+                client
             );
             break;
         }

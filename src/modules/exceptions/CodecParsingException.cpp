@@ -1,4 +1,6 @@
 module;
+#include <string>
+#include <stdexcept>
 
 module CodecParsingException;
 

@@ -7,14 +7,18 @@ import MinecraftProtocol;
 import Logger;
 import VarIntCodec;
 import TypedInputStream;
-import Packets;
 import MinecraftServer;
+import Packets;
 
 // PUBLIC
-std::shared_ptr<MinecraftClient> MinecraftClient::create(MinecraftProtocol& protocol)
+std::shared_ptr<MinecraftClient> MinecraftClient::create(
+        MinecraftProtocol& protocol,
+        std::function<void(std::vector<unsigned char>,
+        MinecraftClient&)> packetReceivedFunc
+)
 {
     return
-    std::shared_ptr<MinecraftClient>(new MinecraftClient(protocol));
+    std::shared_ptr<MinecraftClient>(new MinecraftClient(protocol, packetReceivedFunc));
 }
 // PUBLIC
 void MinecraftClient::init()
@@ -57,9 +61,11 @@ tcp::socket& MinecraftClient::getSocket()
 }
 
 // PRIVATE
-MinecraftClient::MinecraftClient(MinecraftProtocol& protocol) :
+MinecraftClient::MinecraftClient(MinecraftProtocol& protocol,
+    std::function<void(std::vector<unsigned char>,
+        MinecraftClient&)> packetReceivedFunc) :
 socket(tcp::socket(protocol.getIo())),
-protocol(protocol)
+protocol(protocol), packetDataFunction(packetReceivedFunc)
 {
 }
 
@@ -77,36 +83,16 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
 {
     if (!ec)
     {
-        std::vector<unsigned char> bytes;
+        std::vector<unsigned char> newBytes;
 
-        bytes.insert(
-            bytes.end(),
-            readBuffer.begin(),
-            readBuffer.begin() + bytesTransferred
+        std::copy_n(
+            readBuffer.data(),
+            readBuffer.size(),
+            newBytes.end()
         );
-
-        if (packetAccumulator.empty())
-        {
-            // This is a new Packet.
-            uint varIntLength;
-            currentPacketLength = VarIntCodec::CODEC
-            .deserialize(bytes,
-            varIntLength
-            );
-
-            if (bytes.size() - varIntLength >= currentPacketLength)
-            {
-                Packets
-            }
-
-            packetAccumulator.insert(
-                packetAccumulator.end(),
-                bytes.begin() + varIntLength,
-                bytes.end()
-            );
-        } else
-        {
-        }
+        accumulateOrReceive(
+            std::move(newBytes)
+        );
     } else if (ec == error::eof)
     {
         disconnected = true;
@@ -121,13 +107,15 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
     initRead();
 }
 // PRIVATE
-void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
+void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
 {
     if (packetAccumulator.size() > currentPacketLength)
     {
         Logger::warn("I accumulated more data than I should have. "
-                     "Currently there is no automatic fix as this is a very early version of this library. "
-                     "This should never happen anyways. This socket will break.");
+                     "Currently there is no automatic \"repair\" "
+                     "as this is a very early version of this library. "
+                     "This should never happen anyways. This socket will break. "
+                     "Behavior is undefined.");
         return;
     }
     size_t newSize = packetAccumulator.size() +
@@ -141,18 +129,9 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char>&& newData)
         );
         currentPacketLength = 0;
 
-        /* TODO: Dirty workaround for circular dependency, make an std::function
-        field in this MinecraftClient
-        which is set in the constructor as the method to call with the data,
-        MinecraftServer will set it to Packets::PacketsRegister#receivedPacket
-        which will definitely not be a clean workaround
-        but it's okay for the time being, when this is done this
-        todo should become to find a better way to do this.
-        */
-        Packets
-        ::PacketsRegister
-        ::getInstance()
-        .receivedPacket(packetAccumulator, *server, protocol);
+        packetDataFunction(std::move(packetAccumulator),
+            *this);
+        packetAccumulator = {};
     }
 }
 

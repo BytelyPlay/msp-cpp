@@ -1,9 +1,10 @@
 module;
 #include <vector>
 #include <string>
+#include <cstdint>
 
 export module TypedOutputStream;
-#include "Types.hpp"
+import EndiannessUtils;
 
 /**
  * An output stream with types,
@@ -31,3 +32,21 @@ public:
     TypedOutputStream operator=(const TypedOutputStream&) = delete;
     TypedOutputStream(const TypedOutputStream&) = delete;
 };
+
+// As much as I don't want to do this, templates can't have split implementations.
+template <typename T>
+void TypedOutputStream::operator<<(T num)
+{
+    static_assert(std::is_fundamental_v<T>);
+
+    if (!EndiannessUtils::isBigEndian())
+        num = std::byteswap(num);
+
+    const auto bytes = reinterpret_cast<const unsigned char*>(&num);
+
+    data.insert(
+    data.end(),
+        bytes,
+        bytes + sizeof(T)
+    );
+}

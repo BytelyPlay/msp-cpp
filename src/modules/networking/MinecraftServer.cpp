@@ -2,15 +2,17 @@ module;
 #include <boost/asio.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio.hpp>
+#include <utility>
 
 module MinecraftServer;
 import MinecraftProtocol;
 import MinecraftClient;
 import Logger;
+import Packets;
 
 // PUBLIC
-MinecraftServer::MinecraftServer(string listenIp,
-    uint16 port, MinecraftProtocol& protocol) :
+MinecraftServer::MinecraftServer(std::string listenIp,
+    uint16_t port, MinecraftProtocol& protocol) :
 io(protocol.getIo()), protocol(protocol), acceptor(io, tcp::endpoint(
     make_address(listenIp),
     port
@@ -34,7 +36,17 @@ void MinecraftServer::awaitShutdown()
 void MinecraftServer::startAccept()
 {
     auto client =
-        MinecraftClient::create(protocol);
+        MinecraftClient::create(protocol,
+            // not really worth making a whole new function for
+            // It is really just a small call.
+            [this](std::vector<unsigned char> vec, MinecraftClient& client)
+            {
+                Packets::PacketsRegister::getInstance()
+                .receivedPacket(std::move(vec),
+                    *this,
+                    protocol,
+                    client);
+            });
 
     acceptor.async_accept(
         client->getSocket(),
@@ -49,7 +61,7 @@ void MinecraftServer::handleAccept(std::shared_ptr<MinecraftClient> client, erro
     {
         clients.push_back(client);
 
-        string s = std::string("Daytime Server Offline");
+        std::string s = std::string("Daytime Server Offline");
 
         std::vector<unsigned char> sVector;
         sVector.append_range(s);

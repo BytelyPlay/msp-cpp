@@ -22,7 +22,6 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/MinecraftServer.cpp
         src/modules/networking/MinecraftClient.ixx
         src/modules/networking/MinecraftClient.cpp
-        src/headers/Types.hpp
         src/headers/BoostNamespaces.hpp
         src/modules/networking/packet/Packets.ixx
         src/modules/networking/packet/Packets.cpp

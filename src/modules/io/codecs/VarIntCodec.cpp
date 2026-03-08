@@ -1,12 +1,11 @@
 module;
 #include <string>
+#include <cstdint>
 
 module VarIntCodec;
 import EndiannessUtils;
 import Logger;
 import CodecParsingException;
-
-#include "Types.hpp"
 
 // PUBLIC
 VarIntCodec VarIntCodec::CODEC = VarIntCodec();

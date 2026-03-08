@@ -3,16 +3,16 @@ module;
 #include <thread>
 #include <boost/asio.hpp>
 #include <latch>
+#include <cstdint>
 
 export module MinecraftProtocol;
 
 #include "BoostNamespaces.hpp"
-#include "Types.hpp"
 
 export class MinecraftProtocol
 {
 public:
-    MinecraftProtocol(uint8 threadCount);
+    MinecraftProtocol(uint8_t threadCount);
 
     void init();
     void shutdown();
@@ -27,7 +27,7 @@ private:
 
     void setupThreads();
 private:
-    const uint8 threadCount;
+    const uint8_t threadCount;
     std::unique_ptr<io_context> io;
 
     std::vector<std::thread> threads;

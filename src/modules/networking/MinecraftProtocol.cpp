@@ -5,7 +5,7 @@ module MinecraftProtocol;
 import Logger;
 
 // PUBLIC
-MinecraftProtocol::MinecraftProtocol(const uint8 threadCount) :
+MinecraftProtocol::MinecraftProtocol(const uint8_t threadCount) :
   threadCount(threadCount)
 {
 }

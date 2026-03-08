@@ -6,6 +6,7 @@ export module Packets;
 import PacketType;
 import MinecraftServer;
 import MinecraftProtocol;
+import MinecraftClient;
 
 #define DEFINE_PACKET(variableName, type) \
     const auto variableName = Packets::PacketsRegister::registerPacket(type);
@@ -34,7 +35,8 @@ export namespace Packets
         */
         void receivedPacket(std::vector<unsigned char> data,
                             MinecraftServer& server,
-                            MinecraftProtocol& protocol);
+                            MinecraftProtocol& protocol,
+                            MinecraftClient& client);
     private:
         /**
         * Registers a packet.

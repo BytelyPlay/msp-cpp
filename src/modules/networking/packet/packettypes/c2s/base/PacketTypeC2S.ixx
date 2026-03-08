@@ -11,6 +11,7 @@ import PacketC2S;
 import MinecraftServer;
 import MinecraftProtocol;
 import TypedInputStream;
+import MinecraftClient;
 
 export template<typename T>
 class PacketTypeC2S : public PacketType
@@ -21,7 +22,8 @@ public:
 
     void callListener(T packet,
         MinecraftServer& server,
-        MinecraftProtocol& protocol);
+        MinecraftProtocol& protocol,
+        MinecraftClient& client);
 public:
     int getPacketID() override = 0;
     std::string getPacketIdentifier() override = 0;
@@ -31,9 +33,8 @@ public:
     T deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
     virtual T deserialize(TypedInputStream& in) = 0;
 private:
-    std::function<
-        void(T, MinecraftServer&, MinecraftProtocol&)
-    > listener = std::function(
-         [](T, MinecraftServer&, MinecraftProtocol&) {}
+    std::function<void(T, MinecraftServer&, MinecraftProtocol&, MinecraftClient&)> listener =
+        std::function(
+         [](T, MinecraftServer&, MinecraftProtocol&, MinecraftClient&) {}
         );
 };

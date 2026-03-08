@@ -1,13 +1,13 @@
 module;
 #include <string>
+#include <cstdint>
 
 module EndiannessUtils;
 import Logger;
-#include "Types.hpp"
 
 bool isBigEndianInternal()
 {
-    uint16 i = 1;
+    uint16_t i = 1;
     auto* bytes = reinterpret_cast<
         unsigned char*
     >(&i);

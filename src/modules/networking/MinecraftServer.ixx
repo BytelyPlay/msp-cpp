@@ -2,18 +2,19 @@ module;
 #include <string>
 #include <boost/asio.hpp>
 #include <latch>
+#include <cstdint>
+#include <string>
 
 export module MinecraftServer;
 import MinecraftProtocol;
 import MinecraftClient;
 
 #include "BoostNamespaces.hpp"
-#include "Types.hpp"
 
 export class MinecraftServer
 {
 public:
-    MinecraftServer(string listenIp, uint16 port,
+    MinecraftServer(std::string listenIp, uint16_t port,
         MinecraftProtocol& protocol);
 public:
     void shutdown();

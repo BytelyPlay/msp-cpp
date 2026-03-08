@@ -1,6 +1,7 @@
 module;
 #include <functional>
-
+#include <sys/types.h>
+#include <cstdint>
 module PacketTypeC2S;
 
 // PUBLIC
@@ -15,9 +16,11 @@ void PacketTypeC2S<T>::setListener(std::function<void(T,
 }
 
 template <typename T>
-void PacketTypeC2S<T>::callListener(T packet, MinecraftServer& server, MinecraftProtocol& protocol)
+void PacketTypeC2S<T>::callListener(T packet, MinecraftServer& server,
+    MinecraftProtocol& protocol,
+    MinecraftClient& client)
 {
-    listener(packet, server, protocol);
+    listener(packet, server, protocol, client);
 }
 
 // PUBLIC

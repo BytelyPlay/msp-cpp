@@ -1,6 +1,7 @@
 module;
 #include <bit>
-#include <cstring>
+#include <algorithm>
+#include <vector>
 
 module TypedOutputStream;
 import EndiannessUtils;
@@ -15,7 +16,7 @@ void TypedOutputStream::writeBytes(const unsigned char* begin, const unsigned ch
     std::copy(
         begin,
         end,
-        data
+        data.end()
     );
 }
 
@@ -24,7 +25,7 @@ void TypedOutputStream::writeBytes(const std::vector<unsigned char>& bytes)
     std::copy(
         bytes.begin(),
         bytes.end(),
-        data
+        data.end()
     );
 }
 
@@ -38,18 +39,4 @@ std::vector<unsigned char> TypedOutputStream::getData()
 void TypedOutputStream::operator<<(const std::vector<unsigned char>& bytes)
 {
     writeBytes(bytes);
-}
-
-template <typename T>
-void TypedOutputStream::operator<<(T num)
-{
-    static_assert(std::is_fundamental_v<T>);
-
-    if (!EndiannessUtils::isBigEndian())
-        num = std::byteswap(num);
-    const auto bytes = reinterpret_cast<const unsigned char*>(&num);
-
-    data.insert(data.end(),
-        bytes,
-        bytes + sizeof(T));
 }
