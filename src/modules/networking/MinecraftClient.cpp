@@ -90,6 +90,11 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
             readBuffer.begin(),
             readBuffer.begin() + bytesTransferred
         );
+        std::string hexBytes;
+        for (int i = 0; i < newBytes.size(); i++)
+        {
+            hexBytes += std::format("%1$2x", newBytes[i]);
+        }
         accumulateOrReceive(
             std::move(newBytes)
         );
@@ -107,8 +112,13 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
     initRead();
 }
 // PRIVATE
+// TODO: Make more methods instead of one giant method. And also completely rewrite this.
 void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
 {
+    uint remaining = currentPacketLength -
+        packetAccumulator.size();
+    size_t newSize = packetAccumulator.size() +
+        newData.size();
     if (packetAccumulator.size() > currentPacketLength)
     {
         Logger::warn("I accumulated more data than I should have. "
@@ -118,14 +128,30 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
                      "Behavior is undefined.");
         return;
     }
-    size_t newSize = packetAccumulator.size() +
-        newData.size();
     if (currentPacketLength == 0)
     {
         uint bytesConsumed;
 
         currentPacketLength = VarIntCodec::CODEC.deserialize(newData, bytesConsumed);
 
+        if (newData.size() - bytesConsumed > remaining)
+        {
+            // TODO: Merge into one function
+            packetAccumulator.insert(
+          packetAccumulator.end(),
+               newData.begin(),
+               newData.begin() + remaining
+            );
+            std::vector<unsigned char> bytesNotConsumed;
+
+            bytesNotConsumed.insert(
+                bytesNotConsumed.end(),
+                newData.begin() + bytesConsumed,
+                newData.begin() + bytesConsumed + remaining
+            );
+            currentPacketLength = 0;
+            accumulateOrReceive(bytesNotConsumed);
+        }
         packetAccumulator.insert(
             packetAccumulator.end(),
             newData.begin() + bytesConsumed,
@@ -135,11 +161,32 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
     }
     if (packetAccumulator.size() < currentPacketLength)
     {
+        if (newData.size() < remaining)
+        {
+            packetAccumulator.insert(
+                packetAccumulator.end(),
+                newData.begin(),
+                newData.end()
+            );
+            return;
+        }
+        // TODO: Merge into one function
         packetAccumulator.insert(
             packetAccumulator.end(),
             newData.begin(),
+            newData.begin() + remaining
+        );
+        std::vector<unsigned char> bytesNotConsumed;
+
+        bytesNotConsumed.insert(
+            bytesNotConsumed.end(),
+            newData.begin() + remaining,
             newData.end()
         );
+        currentPacketLength = 0;
+        accumulateOrReceive(bytesNotConsumed);
+
+        return;
     }
     if (newSize >= currentPacketLength)
     {
