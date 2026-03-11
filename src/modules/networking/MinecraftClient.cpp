@@ -9,6 +9,7 @@ import VarIntCodec;
 import TypedInputStream;
 import MinecraftServer;
 import Packets;
+import CodecParsingException;
 
 // PUBLIC
 std::shared_ptr<MinecraftClient> MinecraftClient::create(
@@ -91,10 +92,11 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
             readBuffer.begin() + bytesTransferred
         );
         std::string hexBytes;
-        for (int i = 0; i < newBytes.size(); i++)
+        for (unsigned char& newByte : newBytes)
         {
-            hexBytes += std::format("%1$2x", newBytes[i]);
+            hexBytes += std::format("%1$2x", newByte);
         }
+        Logger::debug(hexBytes);
         accumulateOrReceive(
             std::move(newBytes)
         );
@@ -115,92 +117,96 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
 // TODO: Make more methods instead of one giant method. And also completely rewrite this.
 void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
 {
-    uint remaining = currentPacketLength -
-        packetAccumulator.size();
-    size_t newSize = packetAccumulator.size() +
-        newData.size();
-    if (packetAccumulator.size() > currentPacketLength)
-    {
-        Logger::warn("I accumulated more data than I should have. "
-                     "Currently there is no automatic \"repair\" "
-                     "as this is a very early version of this library. "
-                     "This should never happen anyways. This socket will break. "
-                     "Behavior is undefined.");
-        return;
-    }
+    uint newSize = newData.size() + packetAccumulator.size();
+
     if (currentPacketLength == 0)
     {
-        uint bytesConsumed;
+        // New Packet
+        createNewPacket(newData);
+    } else if (packetAccumulator.size() > currentPacketLength)
+    {
+        // Something went wrong
+        // We collected too much data.
+        Logger::warn("Accidentally accumulated too much data for the packet, "
+                     "there is no recovery. "
+                     "This means the client this happened on is broken.");
+    } else if (newSize >= currentPacketLength)
+    {
+        // Packet collected, and there is also a second one.
+        size_t amountOfBytesLeft = currentPacketLength - packetAccumulator.size();
 
-        currentPacketLength = VarIntCodec::CODEC.deserialize(newData, bytesConsumed);
-
-        if (newData.size() - bytesConsumed > remaining)
-        {
-            // TODO: Merge into one function
-            packetAccumulator.insert(
-          packetAccumulator.end(),
-               newData.begin(),
-               newData.begin() + remaining
-            );
-            std::vector<unsigned char> bytesNotConsumed;
-
-            bytesNotConsumed.insert(
-                bytesNotConsumed.end(),
-                newData.begin() + bytesConsumed,
-                newData.begin() + bytesConsumed + remaining
-            );
-            currentPacketLength = 0;
-            accumulateOrReceive(bytesNotConsumed);
-        }
         packetAccumulator.insert(
             packetAccumulator.end(),
-            newData.begin() + bytesConsumed,
+            newData.begin(),
+            newData.begin() + amountOfBytesLeft
+        );
+        packetDataFunction(std::move(packetAccumulator), *this);
+        packetAccumulator = {};
+
+        // This makes newSize > currentPacketLength always true.
+        currentPacketLength = 0;
+        Logger::debug("REMOVE: " + std::to_string(amountOfBytesLeft));
+
+        // TODO: Fix indefinite recursion
+        if (newSize > currentPacketLength)
+            createNewPacket(
+                removeFirstBytes(
+                    amountOfBytesLeft,
+                    newData
+                )
+            );
+    } else
+    {
+        // std::copy is quite optimized for this. We use it for that reason.
+        packetAccumulator.insert(
+            packetAccumulator.end(),
+            newData.begin(),
             newData.end()
         );
-        return;
     }
-    if (packetAccumulator.size() < currentPacketLength)
-    {
-        if (newData.size() < remaining)
+}
+
+void MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
+{
+    try {
+        uint bytesConsumedByVarInt;
+
+        // TODO: Handle edge case: not the whole packet length was sent.
+        currentPacketLength =
+            VarIntCodec::CODEC.deserialize(newData, bytesConsumedByVarInt);
+
+        if (currentPacketLength <= 0)
+        {
+            Logger::warn("Packet Length is less than or equals 0... " +
+                std::to_string(currentPacketLength));
+        }
+
+        if (newData.size() < currentPacketLength)
         {
             packetAccumulator.insert(
-                packetAccumulator.end(),
-                newData.begin(),
+            packetAccumulator.end(),
+                newData.begin() + bytesConsumedByVarInt,
                 newData.end()
             );
-            return;
+        } else if (newData.size() >= currentPacketLength) {
+            accumulateOrReceive(
+                removeFirstBytes(bytesConsumedByVarInt, newData)
+            );
         }
-        // TODO: Merge into one function
-        packetAccumulator.insert(
-            packetAccumulator.end(),
-            newData.begin(),
-            newData.begin() + remaining
-        );
-        std::vector<unsigned char> bytesNotConsumed;
-
-        bytesNotConsumed.insert(
-            bytesNotConsumed.end(),
-            newData.begin() + remaining,
-            newData.end()
-        );
-        currentPacketLength = 0;
-        accumulateOrReceive(bytesNotConsumed);
-
-        return;
-    }
-    if (newSize >= currentPacketLength)
+    } catch (CodecParsingException& e)
     {
-        std::copy(
-            newData.begin(),
-            newData.end() - (newSize - currentPacketLength),
-            packetAccumulator.end()
-        );
-        currentPacketLength = 0;
-
-        packetDataFunction(std::move(packetAccumulator),
-            *this);
-        packetAccumulator = {};
+        Logger::warn(std::string("Couldn't parse Packet Length, "
+                     "I do not handle the possible edge case where "
+                     "the packet length isn't fully sent, "
+                     "this may be what is happening. e.what(): ") + e.what());
     }
+}
+
+std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,
+    std::vector<unsigned char> data)
+{
+    return { data.begin() + amount,
+        data.end() };
 }
 
 // PUBLIC

@@ -60,6 +60,10 @@ private:
      * @param newData The data to be accumulated or used.
      */
     void accumulateOrReceive(std::vector<unsigned char> newData);
+    void createNewPacket(std::vector<unsigned char> newData);
+
+    std::vector<unsigned char> removeFirstBytes(size_t amount,
+        std::vector<unsigned char> data);
 public:
     // temporarily public until the packet system is created.
     void write(std::vector<unsigned char> bytes, size_t size);
