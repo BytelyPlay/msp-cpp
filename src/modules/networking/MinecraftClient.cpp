@@ -91,12 +91,14 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
             readBuffer.begin(),
             readBuffer.begin() + bytesTransferred
         );
+        // Temporary for debugging.
         std::string hexBytes;
         for (unsigned char& newByte : newBytes)
         {
-            hexBytes += std::format("%1$2x", newByte);
+            hexBytes += std::format("{:02X} ", newByte);
         }
         Logger::debug(hexBytes);
+
         accumulateOrReceive(
             std::move(newBytes)
         );
@@ -144,7 +146,6 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
         packetAccumulator = {};
 
         currentPacketLength = 0;
-        Logger::debug("REMOVE: " + std::to_string(amountOfBytesLeft));
 
         if (newData.size() - amountOfBytesLeft > 0)
             createNewPacket(
