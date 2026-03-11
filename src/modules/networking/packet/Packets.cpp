@@ -42,7 +42,7 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
                 Logger::warn("Discarding packet: " +
                     type.getPacketIdentifier() +
                     " because it is an S2C packet sent to the server.");
-                break;
+                return;
             }
             // Type is a PacketTypeC2S
             auto& c2sType = static_cast<PacketTypeC2S&>(type);
@@ -52,9 +52,11 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
                 protocol,
                 client
             );
-            break;
+            return;
         }
     }
+    Logger::warn("No Packet Type found for packet ID: " +
+        std::to_string(id));
 }
 // PRIVATE
 template <typename T>
