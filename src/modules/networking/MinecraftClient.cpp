@@ -119,7 +119,7 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
 {
     uint newSize = newData.size() + packetAccumulator.size();
 
-    if (currentPacketLength == 0)
+    if (currentPacketLength <= 0)
     {
         // New Packet
         createNewPacket(newData);
@@ -143,12 +143,10 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
         packetDataFunction(std::move(packetAccumulator), *this);
         packetAccumulator = {};
 
-        // This makes newSize > currentPacketLength always true.
         currentPacketLength = 0;
         Logger::debug("REMOVE: " + std::to_string(amountOfBytesLeft));
 
-        // TODO: Fix indefinite recursion
-        if (newSize > currentPacketLength)
+        if (newData.size() - amountOfBytesLeft > 0)
             createNewPacket(
                 removeFirstBytes(
                     amountOfBytesLeft,
@@ -177,18 +175,20 @@ void MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
 
         if (currentPacketLength <= 0)
         {
-            Logger::warn("Packet Length is less than or equals 0... " +
+            Logger::warn("Packet Length is less than or equals 0... Something is wrong, "
+                         "the packet length is " +
                 std::to_string(currentPacketLength));
+            // return;
         }
 
-        if (newData.size() < currentPacketLength)
+        if (newData.size() - bytesConsumedByVarInt < currentPacketLength)
         {
             packetAccumulator.insert(
             packetAccumulator.end(),
                 newData.begin() + bytesConsumedByVarInt,
                 newData.end()
             );
-        } else if (newData.size() >= currentPacketLength) {
+        } else if (newData.size() - bytesConsumedByVarInt >= currentPacketLength) {
             accumulateOrReceive(
                 removeFirstBytes(bytesConsumedByVarInt, newData)
             );

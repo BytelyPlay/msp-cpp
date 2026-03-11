@@ -47,7 +47,9 @@ T Codec<T>::deserialize(const std::vector<unsigned char>& data, uint& bytesConsu
 {
     TypedInputStream in(data.data(),
         data.data() + data.size());
+
+    T val = deserialize(in);
     bytesConsumed = in.getBytesConsumed();
 
-    return deserialize(in);
+    return val;
 }
