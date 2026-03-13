@@ -15,11 +15,14 @@ import CodecParsingException;
 std::shared_ptr<MinecraftClient> MinecraftClient::create(
         MinecraftProtocol& protocol,
         std::function<void(std::vector<unsigned char>,
-        MinecraftClient&)> packetReceivedFunc
+        MinecraftClient&)> packetReceivedListener,
+        std::function<void(MinecraftClient&)> shutdownListener
 )
 {
     return
-    std::shared_ptr<MinecraftClient>(new MinecraftClient(protocol, packetReceivedFunc));
+    std::shared_ptr<MinecraftClient>(new MinecraftClient(protocol,
+        packetReceivedListener,
+        shutdownListener));
 }
 // PUBLIC
 void MinecraftClient::init()
@@ -64,9 +67,11 @@ tcp::socket& MinecraftClient::getSocket()
 // PRIVATE
 MinecraftClient::MinecraftClient(MinecraftProtocol& protocol,
     std::function<void(std::vector<unsigned char>,
-        MinecraftClient&)> packetReceivedFunc) :
+        MinecraftClient&)> packetReceivedListener,
+        std::function<void(MinecraftClient&)> shutdownListener) :
 socket(tcp::socket(protocol.getIo())),
-protocol(protocol), packetDataFunction(packetReceivedFunc)
+protocol(protocol), packetDataListener(packetReceivedListener),
+clientShutdownListener(shutdownListener)
 {
 }
 
@@ -108,6 +113,8 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
         getSocket().shutdown(socket_base::shutdown_both);
         getSocket().close();
 
+        clientShutdownListener(*this);
+
         return;
     } else
     {
@@ -124,14 +131,21 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
     if (currentPacketLength <= 0)
     {
         // New Packet
-        createNewPacket(newData);
+        if (!createNewPacket(newData))
+        {
+            Logger::warn("Something went wrong beginning "
+                         "the accumulation of a new packet... "
+                         "There should be something logged");
+            return;
+        }
     } else if (packetAccumulator.size() > currentPacketLength)
     {
         // Something went wrong
         // We collected too much data.
         Logger::warn("Accidentally accumulated too much data for the packet, "
                      "there is no recovery. "
-                     "This means the client this happened on is broken.");
+                     "This means the client this happened on is broken. "
+                     "This Should never happen...");
     } else if (newSize >= currentPacketLength)
     {
         // Packet collected, and there is also a second one.
@@ -142,7 +156,7 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
             newData.begin(),
             newData.begin() + amountOfBytesLeft
         );
-        packetDataFunction(std::move(packetAccumulator), *this);
+        packetDataListener(std::move(packetAccumulator), *this);
         packetAccumulator = {};
 
         currentPacketLength = 0;
@@ -165,7 +179,7 @@ void MinecraftClient::accumulateOrReceive(std::vector<unsigned char> newData)
     }
 }
 
-void MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
+bool MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
 {
     try {
         uint bytesConsumedByVarInt;
@@ -179,7 +193,7 @@ void MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
             Logger::warn("Packet Length is less than or equals 0... Something is wrong, "
                          "the packet length is " +
                 std::to_string(currentPacketLength));
-            // return;
+            return false;
         }
 
         if (newData.size() - bytesConsumedByVarInt < currentPacketLength)
@@ -200,7 +214,9 @@ void MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
                      "I do not handle the possible edge case where "
                      "the packet length isn't fully sent, "
                      "this may be what is happening. e.what(): ") + e.what());
+        return false;
     }
+    return true;
 }
 
 std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,

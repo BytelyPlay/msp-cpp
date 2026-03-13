@@ -1,8 +1,7 @@
 module;
 #include <boost/asio.hpp>
-#include <boost/asio.hpp>
-#include <boost/asio.hpp>
 #include <utility>
+#include <algorithm>
 
 module MinecraftServer;
 import MinecraftProtocol;
@@ -36,16 +35,16 @@ void MinecraftServer::awaitShutdown()
 void MinecraftServer::startAccept()
 {
     auto client =
-        MinecraftClient::create(protocol,
-            // not really worth making a whole new function for
-            // It is really just a small call.
-            [this](std::vector<unsigned char> vec, MinecraftClient& client)
+        MinecraftClient::create(
+            protocol,
+        [this](std::vector<unsigned char> vec,
+                MinecraftClient& client)
             {
-                Packets::PacketsRegister::getInstance()
-                .receivedPacket(std::move(vec),
-                    *this,
-                    protocol,
-                    client);
+                packetDataListener(std::move(vec), client);
+            },
+            [this](MinecraftClient& client)
+            {
+                clientShutdownListener(client);
             });
 
     acceptor.async_accept(
@@ -73,4 +72,24 @@ void MinecraftServer::handleAccept(std::shared_ptr<MinecraftClient> client, erro
         Logger::warn("Error in handling accept: " + ec.message());
     }
     startAccept();
+}
+// PRIVATE
+void MinecraftServer::packetDataListener(std::vector<unsigned char> vec,
+    MinecraftClient& client)
+{
+    Packets::PacketsRegister::getInstance().receivedPacket(vec,
+        *this,
+        protocol,
+        client);
+}
+
+void MinecraftServer::clientShutdownListener(MinecraftClient& client)
+{
+    std::erase_if(
+        clients,
+        [&client](std::shared_ptr<MinecraftClient> client1)
+        {
+            return &client == client1.get();
+        }
+    );
 }

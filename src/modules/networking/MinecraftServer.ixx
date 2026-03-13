@@ -24,6 +24,14 @@ private:
     void startAccept();
     void handleAccept(std::shared_ptr<MinecraftClient>, error_code);
 private:
+    void packetDataListener(
+        std::vector<unsigned char> vec,
+        MinecraftClient& client
+    );
+    void clientShutdownListener(
+        MinecraftClient& client
+    );
+private:
     io_context& io;
     tcp::acceptor acceptor;
 
