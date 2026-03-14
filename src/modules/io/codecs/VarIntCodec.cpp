@@ -57,8 +57,6 @@ int VarIntCodec::deserialize(TypedInputStream& in)
             break;
         }
     }
-    if (EndiannessUtils::isBigEndian())
-        result = std::byteswap(result);
     return result;
 }
 // PRIVATE

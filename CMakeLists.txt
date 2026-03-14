@@ -49,6 +49,11 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/exceptions/CodecParsingException.ixx
         src/modules/exceptions/CodecParsingException.cpp
         src/modules/networking/Phases.ixx
+        src/modules/networking/packet/packettypes/c2s/handshake/C2SIntentionPacketType.ixx
+        src/modules/networking/packet/packettypes/c2s/handshake/C2SIntentionPacketType.cpp
+        src/modules/networking/packet/packets/c2s/handshake/C2SIntentionPacket.ixx
+        src/modules/networking/packet/packets/c2s/handshake/C2SIntentionPacket.cpp
+        src/modules/networking/packet/packets/c2s/base/PacketC2S.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

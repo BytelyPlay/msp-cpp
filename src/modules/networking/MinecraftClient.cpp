@@ -50,8 +50,10 @@ Phase MinecraftClient::getPhase() const
 }
 
 // PUBLIC
-void MinecraftClient::disconnect()
+void MinecraftClient::disconnect(std::string reason)
 {
+    // TODO: Use reason and actually send a disconnect packet.
+
     if (disconnected)
     {
         Logger::warn("Tried to disconnect twice.");

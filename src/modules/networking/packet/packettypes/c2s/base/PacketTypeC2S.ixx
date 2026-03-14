@@ -42,10 +42,18 @@ public:
 
     bool isC2S() override;
 public:
-    PacketC2S& deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
-    virtual PacketC2S& deserialize(TypedInputStream& in) = 0;
+    PacketC2S&
+    deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
+
+    /* TODO: Perhaps use a memory arena's
+    memory for an std::shared_ptr
+    instead of the heap, maybe use std::allocate_shared */
+    virtual PacketC2S&
+    deserialize(TypedInputStream& in) = 0;
 private:
-    std::function<void(PacketC2S&, MinecraftServer&, MinecraftProtocol&, MinecraftClient&)> listener =
+    std::function<void(PacketC2S&, MinecraftServer&,
+        MinecraftProtocol&,
+        MinecraftClient&)> listener =
         std::function<
             void(PacketC2S&, MinecraftServer&,
                 MinecraftProtocol&, MinecraftClient&)

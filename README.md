@@ -12,3 +12,7 @@ On Ubuntu (and likely other debian-based distributions):
 1. Make sure the apt package libboost-all-dev is installed
 2. clone this repo
 3. TODO
+
+# Current Version
+It is not yet versioned since it is in the very early development phase.
+It should target Minecraft 1.21.11.

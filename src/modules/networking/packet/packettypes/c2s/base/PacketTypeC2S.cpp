@@ -10,7 +10,7 @@ void PacketTypeC2S::deserializeAndCall(
     MinecraftProtocol& protocol, MinecraftClient& client
 )
 {
-    PacketC2S& packet = deserialize(in);
+    auto packet = deserialize(in);
     callListener(packet, server, protocol, client);
 }
 // PUBLIC
@@ -22,7 +22,7 @@ void PacketTypeC2S::setListener(std::function<void(PacketC2S&,
     this->listener = listener;
 }
 
-void PacketTypeC2S::callListener(PacketC2S& packet, MinecraftServer& server,
+void PacketTypeC2S::callListener(std::shared_ptr<PacketC2S> packet, MinecraftServer& server,
     MinecraftProtocol& protocol,
     MinecraftClient& client)
 {

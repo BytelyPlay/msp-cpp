@@ -3,8 +3,10 @@ module;
 
 export module PacketC2S;
 import Packet;
+import PacketType;
 
 export class PacketC2S : public Packet
 {
-    virtual std::vector<unsigned char> deserialize() = 0;
+public:
+    PacketType& getPacketType() override = 0;
 };

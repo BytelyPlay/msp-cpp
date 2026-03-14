@@ -26,7 +26,7 @@ public:
 private:
     void initRead();
 public:
-    void disconnect();
+    void disconnect(std::string reason);
 private:
     bool initialized = false;
     bool disconnected = false;

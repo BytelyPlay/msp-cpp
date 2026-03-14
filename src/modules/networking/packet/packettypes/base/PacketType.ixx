@@ -5,6 +5,9 @@ module;
 export module PacketType;
 import Phase;
 
+/**
+ * All subclasses should be a singleton
+ */
 export class PacketType
 {
 public:
