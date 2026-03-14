@@ -54,6 +54,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packets/c2s/handshake/C2SIntentionPacket.ixx
         src/modules/networking/packet/packets/c2s/handshake/C2SIntentionPacket.cpp
         src/modules/networking/packet/packets/c2s/base/PacketC2S.cpp
+        src/modules/io/memory/CustomMemoryArena.ixx
+        src/modules/io/memory/CustomMemoryArena.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
