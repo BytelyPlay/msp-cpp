@@ -48,6 +48,7 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/base/BasicCodec.ixx
         src/modules/exceptions/CodecParsingException.ixx
         src/modules/exceptions/CodecParsingException.cpp
+        src/modules/networking/Phases.ixx
 )
 
 add_executable(MinecraftServerProtocolCPPTests

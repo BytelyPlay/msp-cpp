@@ -12,6 +12,7 @@ import MinecraftServer;
 import MinecraftProtocol;
 import TypedInputStream;
 import MinecraftClient;
+import Phase;
 
 export class PacketTypeC2S : public PacketType
 {
@@ -34,7 +35,9 @@ public:
                       MinecraftProtocol& protocol,
                       MinecraftClient& client);
 public:
+    Phase getPhase() override = 0;
     int getPacketID() override = 0;
+
     std::string getPacketIdentifier() override = 0;
 
     bool isC2S() override;

@@ -39,6 +39,16 @@ void MinecraftClient::initRead()
     );
 }
 
+void MinecraftClient::setPhase(Phase phase)
+{
+    this->currentPhase = phase;
+}
+
+Phase MinecraftClient::getPhase() const
+{
+    return this->currentPhase;
+}
+
 // PUBLIC
 void MinecraftClient::disconnect()
 {

@@ -5,6 +5,7 @@ module;
 
 export module MinecraftClient;
 import MinecraftProtocol;
+import Phase;
 
 #include "BoostNamespaces.hpp"
 
@@ -19,6 +20,9 @@ public:
     );
 public:
     void init();
+
+    void setPhase(Phase phase);
+    Phase getPhase() const;
 private:
     void initRead();
 public:
@@ -26,9 +30,11 @@ public:
 private:
     bool initialized = false;
     bool disconnected = false;
+
     tcp::socket socket;
 
     size_t currentPacketLength = 0;
+    Phase currentPhase = HANDSHAKE;
 
     std::vector<unsigned char> readBuffer =
         std::vector<unsigned char>(1024);

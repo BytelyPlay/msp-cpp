@@ -35,7 +35,9 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
     {
         PacketType& type = typeWrapper.get();
 
-        if (type.getPacketID() == id)
+        if (type.getPacketID() == id &&
+            type.getPhase() ==
+            client.getPhase())
         {
             if (!type.isC2S())
             {
@@ -56,7 +58,7 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
         }
     }
     Logger::warn("No Packet Type found for packet ID: " +
-        std::to_string(id));
+        std::to_string(id) + " in phase: " + std::to_string());
 }
 // PRIVATE
 template <typename T>
