@@ -2,6 +2,7 @@ module;
 #include <vector>
 #include <string>
 #include <memory>
+#include <sys/stat.h>
 
 module C2SIntentionPacketType;
 import VarIntCodec;
@@ -30,13 +31,13 @@ std::string C2SIntentionPacketType::getPacketIdentifier()
 }
 
 // PUBLIC
-std::shared_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream& in)
+PacketC2S& C2SIntentionPacketType::deserialize(TypedInputStream& in)
 {
     // START PROTOCOL VERSION
     VarIntCodec& varIntCodec = VarIntCodec::CODEC;
-    std::shared_ptr<C2SIntentionPacket> packet;
+    C2SIntentionPacket packet;
 
-    packet->protocolVersion = varIntCodec.deserialize(in);
+    packet.protocolVersion = varIntCodec.deserialize(in);
     // END PROTOCOL VERSION
 
     // START SERVER ADDRESS
@@ -47,17 +48,19 @@ std::shared_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream&
 
     serverAddressBytes.push_back(0x00);
 
-    packet->serverAddress = std::string(
+    packet.serverAddress = std::string(
         serverAddressBytes.begin(), serverAddressBytes.end()
     );
     // END SERVER ADDRESS
 
     // START INTENT
-    packet->intent = static_cast<C2SIntentionPacket::Intent>(
+    packet.intent = static_cast<C2SIntentionPacket::Intent>(
         varIntCodec.deserialize(in)
     );
     // END INTENT
-    return packet;
+    return static_cast
+    <PacketC2S&>
+    (packet);
 }
 // PRIVATE
 C2SIntentionPacketType::C2SIntentionPacketType()
