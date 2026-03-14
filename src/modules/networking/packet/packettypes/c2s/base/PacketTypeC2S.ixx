@@ -47,7 +47,9 @@ public:
 
     /* TODO: Perhaps use a memory arena's
     memory for an std::shared_ptr
-    instead of the heap, maybe use std::allocate_shared */
+    instead of the heap, maybe use std::allocate_shared
+    Me from the future: actually make a copy-on-assign or whatever pointer.
+    It should use a memory arena */
     virtual PacketC2S&
     deserialize(TypedInputStream& in) = 0;
 private:
