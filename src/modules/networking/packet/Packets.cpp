@@ -58,7 +58,7 @@ void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
         }
     }
     Logger::warn("No Packet Type found for packet ID: " +
-        std::to_string(id) + " in phase: " + std::to_string());
+        std::to_string(id) + " in phase: " + std::to_string(client.getPhase()));
 }
 // PRIVATE
 template <typename T>
