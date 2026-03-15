@@ -9,6 +9,10 @@ import EndiannessUtils;
 import TypedInputStream;
 import TypedOutputStream;
 import CustomMemoryArena;
+import C2SIntentionPacketType;
+import MinecraftClient;
+import PacketC2S;
+
 int main() {
     Logger::debug("Is Big Endian: " +
         std::string((EndiannessUtils::isBigEndian() ? "Yes" : "No")));
@@ -18,6 +22,14 @@ int main() {
 
     MinecraftProtocol protocol(4);
     protocol.init();
+    C2SIntentionPacketType::getInstance().setListener([](
+        std::unique_ptr<PacketC2S>,
+        MinecraftServer&,
+        MinecraftProtocol&,
+        MinecraftClient&)
+    {
+        Logger::debug("hi");
+    });
     MinecraftServer server("127.0.0.1", 24213, protocol);
     protocol.awaitShutdown();
 }

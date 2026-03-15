@@ -50,6 +50,7 @@ void Packets::PacketsRegister::receivedPacket(
             }
             // Type is a PacketTypeC2S
             auto& c2sType = static_cast<PacketTypeC2S&>(type);
+
             c2sType.deserializeAndCall(
                 in,
                 server,
@@ -62,15 +63,7 @@ void Packets::PacketsRegister::receivedPacket(
     Logger::warn("No Packet Type found for packet ID: " +
         std::to_string(id) + " in phase: " + std::to_string(client.getPhase()));
 }
-// PRIVATE
-template <typename T>
-T Packets::PacketsRegister::registerPacket(T type)
-{
-    static_assert(std::is_base_of_v<PacketType, T>);
-
-    types.push_back(type);
-    return type;
-}
+// PUBLIC
 
 // PRIVATE
 Packets::PacketsRegister::PacketsRegister()

@@ -23,4 +23,10 @@ public:
     deserialize(TypedInputStream& in) override;
 private:
     C2SIntentionPacketType();
+public:
+    C2SIntentionPacketType(const C2SIntentionPacketType&) = delete;
+    C2SIntentionPacketType operator=(const C2SIntentionPacketType&) = delete;
+
+    C2SIntentionPacketType(C2SIntentionPacketType&&) = delete;
+    C2SIntentionPacketType operator=(C2SIntentionPacketType&&) = delete;
 };

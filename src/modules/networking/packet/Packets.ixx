@@ -9,21 +9,16 @@ import PacketType;
 import MinecraftServer;
 import MinecraftProtocol;
 import MinecraftClient;
+import C2SIntentionPacketType;
 
 #define DEFINE_PACKET(variableName, type) \
-    const auto variableName = Packets::PacketsRegister::registerPacket(type);
+        const auto& variableName = \
+        Packets::PacketsRegister::getInstance() \
+        .registerPacket(type);
 
 // TODO: Read from a reports/packets.json and use the identifier to get the protocol ID.
 export namespace Packets
 {
-    namespace S2C
-    {
-
-    }
-    namespace C2S
-    {
-    }
-
     class PacketsRegister
     {
     public:
@@ -39,18 +34,18 @@ export namespace Packets
                             MinecraftServer& server,
                             MinecraftProtocol& protocol,
                             MinecraftClient& client);
-    private:
+    public:
         /**
-        * Registers a packet.
-        * @tparam T Has to be a PacketType subclass.
-        * @param id Protocol Packet ID (will be replaced with the reports/packets.json thing)
-        * @param identifier The stable Identifier (e.g. minecraft:example_packet)
-        * @param type The Packet Type
+         * Registers a packet.
+         * @tparam T Has to be a PacketType subclass.
+         * @param id Protocol Packet ID (will be replaced with the reports/packets.json thing)
+         * @param identifier The stable Identifier (e.g. minecraft:example_packet)
+         * @param type The Packet Type
         */
         // Performance wise, this may be very bad.
         // Perhaps we shouldn't move twice.
         template<typename T>
-        T registerPacket(T type);
+        T& registerPacket(T& type);
     private:
         PacketsRegister();
     private:
@@ -61,4 +56,29 @@ export namespace Packets
         PacketsRegister(const PacketsRegister&) = delete;
         PacketsRegister operator=(const PacketsRegister&) = delete;
     };
+
+    namespace S2C
+    {
+
+    }
+    namespace C2S
+    {
+        DEFINE_PACKET(C2S_INTENTION_PACKET,
+            C2SIntentionPacketType::getInstance());
+    }
 }
+
+// PUBLIC
+// PUBLIC
+// PUBLIC
+template <typename T>
+T& Packets::PacketsRegister::registerPacket(T& type)
+{
+    static_assert(std::is_base_of_v<PacketType, T>);
+
+    types.push_back(type);
+    return type;
+}
+// PRIVATE
+// PRIVATE
+// PUBLIC

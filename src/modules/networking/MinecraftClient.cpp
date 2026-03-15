@@ -222,7 +222,7 @@ bool MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
         }
     } catch (CodecParsingException& e)
     {
-        Logger::warn(std::string("Couldn't parse Packet Length, "
+        Logger::warn(std::string("Couldn't parse something, "
                      "I do not handle the possible edge case where "
                      "the packet length isn't fully sent, "
                      "this may be what is happening. e.what(): ") + e.what());

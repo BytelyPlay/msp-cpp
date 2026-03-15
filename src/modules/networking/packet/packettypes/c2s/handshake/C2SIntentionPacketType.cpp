@@ -34,7 +34,8 @@ std::unique_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream&
 {
     // START PROTOCOL VERSION
     VarIntCodec& varIntCodec = VarIntCodec::CODEC;
-    std::unique_ptr<C2SIntentionPacket> packet;
+    std::unique_ptr<C2SIntentionPacket> packet =
+        std::make_unique<C2SIntentionPacket>();
 
     packet->protocolVersion = varIntCodec.deserialize(in);
     // END PROTOCOL VERSION
