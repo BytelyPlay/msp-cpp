@@ -46,13 +46,13 @@ std::unique_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream&
     std::vector<unsigned char> serverAddressBytes;
     in.readBytes(stringLength, serverAddressBytes);
 
-    serverAddressBytes.push_back(0x00);
-
     packet->serverAddress = std::string(
         serverAddressBytes.begin(), serverAddressBytes.end()
     );
     // END SERVER ADDRESS
-
+    // START SERVER PORT
+    in >> packet->serverPort;
+    // END SERVER PORT
     // START INTENT
     packet->intent = static_cast<C2SIntentionPacket::Intent>(
         varIntCodec.deserialize(in)

@@ -4,6 +4,7 @@ module;
 #include <memory>
 
 export module TypedInputStream;
+import EndiannessUtils;
 
 export class TypedInputStream
 {
@@ -39,9 +40,35 @@ public:
      * @return true if successful
      */
     bool operator>>(unsigned char* byte);
+
+    template<typename T>
+    bool operator>>(T&);
 private:
     const unsigned char *begin, *current, *end;
 public:
     TypedInputStream operator=(const TypedInputStream&) = delete;
     TypedInputStream(const TypedInputStream&) = delete;
 };
+
+// PUBLIC
+// PUBLIC
+// PUBLIC
+template <typename T>
+bool TypedInputStream::operator>>(T& ref)
+{
+    static_assert(std::is_fundamental_v<T>);
+
+    unsigned char bytes[sizeof(T)];
+    for (int i = 0; i < sizeof(T); i++)
+        if (!(*this >> bytes[i])) return false;
+
+    T val = *(reinterpret_cast<T*>(bytes));
+    if (!EndiannessUtils::isBigEndian())
+        val = std::byteswap(val);
+
+    ref = val;
+    return true;
+}
+
+// PRIVATE
+// PUBLIC
