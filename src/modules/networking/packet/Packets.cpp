@@ -1,4 +1,5 @@
 module;
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -22,7 +23,8 @@ Packets::PacketsRegister& Packets::PacketsRegister::getInstance()
     return packetsRegister;
 }
 // PUBLIC
-void Packets::PacketsRegister::receivedPacket(std::vector<unsigned char> data,
+void Packets::PacketsRegister::receivedPacket(
+    std::vector<unsigned char> data,
     MinecraftServer& server,
     MinecraftProtocol& protocol,
     MinecraftClient& client)

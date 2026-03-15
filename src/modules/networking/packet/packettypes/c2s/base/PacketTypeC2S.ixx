@@ -17,7 +17,10 @@ import Phase;
 export class PacketTypeC2S : public PacketType
 {
 public:
-    void setListener(std::function<void(PacketC2S&, MinecraftServer&, MinecraftProtocol&, MinecraftClient&)> listener);
+    void setListener(std::function<void(std::unique_ptr<PacketC2S>,
+        MinecraftServer&,
+        MinecraftProtocol&,
+        MinecraftClient&)> listener);
 
     /**
      * Calls the listener of this packet type. Or doesn't if it doesn't exist.
@@ -26,7 +29,7 @@ public:
      * @param protocol The Protocol Object
      * @param client The Client Object
      */
-    void callListener(PacketC2S& packet,
+    void callListener(std::unique_ptr<PacketC2S> packet,
                       MinecraftServer& server,
                       MinecraftProtocol& protocol,
                       MinecraftClient& client);
@@ -42,7 +45,7 @@ public:
 
     bool isC2S() override;
 public:
-    PacketC2S&
+    std::unique_ptr<PacketC2S>
     deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
 
     /* TODO: Perhaps use a memory arena's
@@ -50,16 +53,19 @@ public:
     instead of the heap, maybe use std::allocate_shared
     Me from the future: actually make a copy-on-assign or whatever pointer.
     It should use a memory arena */
-    virtual PacketC2S&
+    virtual std::unique_ptr<PacketC2S>
     deserialize(TypedInputStream& in) = 0;
 private:
-    std::function<void(PacketC2S&, MinecraftServer&,
+    std::function<void(std::unique_ptr<PacketC2S>, MinecraftServer&,
         MinecraftProtocol&,
         MinecraftClient&)> listener =
         std::function<
-            void(PacketC2S&, MinecraftServer&,
+            void(std::unique_ptr<PacketC2S>, MinecraftServer&,
                 MinecraftProtocol&, MinecraftClient&)
     >(
-         [](PacketC2S&, MinecraftServer&, MinecraftProtocol&, MinecraftClient&) {}
+         [](std::unique_ptr<PacketC2S>,
+             MinecraftServer&,
+             MinecraftProtocol&,
+             MinecraftClient&) {}
         );
 };

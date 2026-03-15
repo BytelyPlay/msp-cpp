@@ -19,7 +19,7 @@ public:
 
     std::string getPacketIdentifier() override;
 public:
-    PacketC2S&
+    std::unique_ptr<PacketC2S>
     deserialize(TypedInputStream& in) override;
 private:
     C2SIntentionPacketType();

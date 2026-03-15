@@ -10,9 +10,6 @@ import TypedInputStream;
 import TypedOutputStream;
 import CustomMemoryArena;
 int main() {
-
-    return 0;
-
     Logger::debug("Is Big Endian: " +
         std::string((EndiannessUtils::isBigEndian() ? "Yes" : "No")));
 
