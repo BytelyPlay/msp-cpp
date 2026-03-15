@@ -3,7 +3,7 @@ module;
 
 export module CustomMemoryArena;
 
-export class CustomMemoryArena
+/* export */ class CustomMemoryArena
 {
 private:
     struct Block

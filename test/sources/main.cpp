@@ -1,3 +1,4 @@
+#include <chrono>
 #include <string>
 #include <cstdint>
 
@@ -9,12 +10,6 @@ import TypedInputStream;
 import TypedOutputStream;
 import CustomMemoryArena;
 int main() {
-    CustomMemoryArena arena(1024 * 1024);
-    void* mem = arena.alloc(1024, 32);
-
-    auto* memAsBytes = reinterpret_cast<unsigned char*>(mem);
-    memAsBytes[1024] = 59;
-    Logger::debug(std::to_string(memAsBytes[1024]));
 
     return 0;
 
