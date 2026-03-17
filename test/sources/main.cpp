@@ -23,16 +23,6 @@ int main() {
 
     MinecraftProtocol protocol(4);
     protocol.init();
-    C2SIntentionPacketType::getInstance().setListener([](
-        std::unique_ptr<PacketC2S> basePacket,
-        MinecraftServer&,
-        MinecraftProtocol&,
-        MinecraftClient&)
-    {
-        auto* packet = static_cast<C2SIntentionPacket*>(basePacket.get());
-
-        Logger::debug("hi " + std::to_string(packet->intent) + " " + packet->serverAddress + " " + std::to_string(packet->serverPort));
-    });
     MinecraftServer server("127.0.0.1", 24213, protocol);
     protocol.awaitShutdown();
 }

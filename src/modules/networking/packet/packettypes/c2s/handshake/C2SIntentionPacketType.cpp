@@ -5,6 +5,9 @@ module;
 
 module C2SIntentionPacketType;
 import VarIntCodec;
+import MinecraftClient;
+import MinecraftProtocol;
+import MinecraftServer;
 
 // PUBLIC
 C2SIntentionPacketType& C2SIntentionPacketType::getInstance()
@@ -62,4 +65,24 @@ std::unique_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream&
 }
 // PRIVATE
 C2SIntentionPacketType::C2SIntentionPacketType()
-= default;
+{
+    this->setListener([](
+    std::unique_ptr<PacketC2S> basePacket,
+    MinecraftServer&,
+    MinecraftProtocol&,
+    MinecraftClient& client)
+{
+    auto* packet = static_cast<C2SIntentionPacket*>(basePacket.get());
+
+    if (packet->intent == C2SIntentionPacket::LOGIN)
+    {
+        client.setPhase(LOGIN);
+    } else if (packet->intent == C2SIntentionPacket::STATUS)
+    {
+        client.setPhase(STATUS);
+    } else if (packet->intent == C2SIntentionPacket::TRANSFER)
+    {
+        client.disconnect("Transferring is currently not supported.");
+    }
+});
+}
