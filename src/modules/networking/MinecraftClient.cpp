@@ -10,6 +10,8 @@ import TypedInputStream;
 import MinecraftServer;
 import Packets;
 import CodecParsingException;
+import PacketTypeS2C;
+import PacketType;
 
 // PUBLIC
 std::shared_ptr<MinecraftClient> MinecraftClient::create(
@@ -29,6 +31,16 @@ void MinecraftClient::init()
 {
     initRead();
 }
+
+void MinecraftClient::setPhase(Phase phase)
+{
+    this->currentPhase = phase;
+}
+
+Phase MinecraftClient::getPhase() const
+{
+    return this->currentPhase;
+}
 // PRIVATE
 void MinecraftClient::initRead()
 {
@@ -39,14 +51,24 @@ void MinecraftClient::initRead()
     );
 }
 
-void MinecraftClient::setPhase(Phase phase)
+void MinecraftClient::initWrite()
 {
-    this->currentPhase = phase;
-}
+    auto nextPacket
+    = std::move(packetQueue[0]);
+    auto& nextPacketType = static_cast
+    <PacketTypeS2C&>
+    (nextPacket->getPacketType());
 
-Phase MinecraftClient::getPhase() const
-{
-    return this->currentPhase;
+    packetQueue.erase(packetQueue.begin());
+
+    async_write(getSocket(), buffer(
+            nextPacketType.serialize(std::move(nextPacket))
+        ), std::bind(
+        &MinecraftClient::handleWrite,
+        shared_from_this(),
+        placeholders::error,
+        placeholders::bytes_transferred
+    ));
 }
 
 // PUBLIC
@@ -64,6 +86,8 @@ void MinecraftClient::disconnect(std::string reason)
         socket_base::shutdown_both,
         error);
     getSocket().close(error);
+
+    clientShutdownListener(*this);
 
     if (error)
         Logger::warn("Error occurred during shutdown: " + error.what());
@@ -91,10 +115,16 @@ void MinecraftClient::handleWrite(
     error_code ec, size_t bytesTransferred
     )
 {
-    if (ec)
+    if (ec == error::eof)
+    {
+        Logger::debug("Client abruptly disconnected.");
+        disconnect()
+        return;
+    } else if (ec)
     {
         Logger::warn("Couldn't write to tcp socket: " + ec.what());
     }
+    async_write()
 }
 
 void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)

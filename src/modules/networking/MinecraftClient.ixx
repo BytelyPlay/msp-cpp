@@ -6,6 +6,7 @@ module;
 export module MinecraftClient;
 import MinecraftProtocol;
 import Phase;
+import PacketS2C;
 
 #include "BoostNamespaces.hpp"
 
@@ -25,6 +26,7 @@ public:
     Phase getPhase() const;
 private:
     void initRead();
+    void initWrite();
 public:
     void disconnect(std::string reason);
 private:
@@ -38,8 +40,9 @@ private:
 
     std::vector<unsigned char> readBuffer =
         std::vector<unsigned char>(1024);
-    std::vector<unsigned char> packetAccumulator =
-        std::vector<unsigned char>();
+
+    std::vector<unsigned char> packetAccumulator;
+    std::vector<std::unique_ptr<PacketS2C>> packetQueue;
 
     MinecraftProtocol& protocol;
 

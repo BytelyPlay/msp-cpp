@@ -10,8 +10,8 @@ import Packet;
 export class PacketTypeS2C : public PacketType
 {
 public:
-    virtual std::unique_ptr<Packet> serialize(
-        const std::vector<unsigned char>& data
+    virtual std::vector<unsigned char> serialize(
+        std::unique_ptr<PacketS2C>
     ) = 0;
 public:
     int getPacketID() override = 0;
