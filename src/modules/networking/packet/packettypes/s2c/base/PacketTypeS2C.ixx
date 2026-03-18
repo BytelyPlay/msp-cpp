@@ -10,7 +10,7 @@ import Packet;
 export class PacketTypeS2C : public PacketType
 {
 public:
-    virtual std::shared_ptr<Packet> serialize(
+    virtual std::unique_ptr<Packet> serialize(
         const std::vector<unsigned char>& data
     ) = 0;
 public:

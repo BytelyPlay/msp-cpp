@@ -3,7 +3,9 @@ module;
 
 export module CustomMemoryArena;
 
-/* export */ class CustomMemoryArena
+/**
+ * It's more of an allocator.
+*/ /* export */ class CustomMemoryArena
 {
 private:
     struct Block
