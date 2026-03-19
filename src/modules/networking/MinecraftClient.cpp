@@ -53,13 +53,22 @@ void MinecraftClient::initRead()
 
 void MinecraftClient::initWrite()
 {
+    std::unique_lock
+    lock(packetQueueMutex);
+
+    cv.wait(lock, [this]()
+    {
+       return !packetQueue.empty();
+    });
+
     auto nextPacket
-    = std::move(packetQueue[0]);
+    = std::move(packetQueue.front());
+
+    packetQueue.pop();
+
     auto& nextPacketType = static_cast
     <PacketTypeS2C&>
     (nextPacket->getPacketType());
-
-    packetQueue.erase(packetQueue.begin());
 
     async_write(getSocket(), buffer(
             nextPacketType.serialize(std::move(nextPacket))
@@ -118,13 +127,18 @@ void MinecraftClient::handleWrite(
     if (ec == error::eof)
     {
         Logger::debug("Client abruptly disconnected.");
-        disconnect()
+        disconnected = true;
+        getSocket().shutdown(socket_base::shutdown_both);
+        getSocket().close();
+
+        clientShutdownListener(*this);
+
         return;
     } else if (ec)
     {
         Logger::warn("Couldn't write to tcp socket: " + ec.what());
     }
-    async_write()
+    initWrite();
 }
 
 void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)

@@ -2,7 +2,8 @@ module;
 #include <memory>
 #include <boost/asio.hpp>
 #include <cstdint>
-
+#include <queue>
+#include <shared_mutex>
 export module MinecraftClient;
 import MinecraftProtocol;
 import Phase;
@@ -42,7 +43,11 @@ private:
         std::vector<unsigned char>(1024);
 
     std::vector<unsigned char> packetAccumulator;
-    std::vector<std::unique_ptr<PacketS2C>> packetQueue;
+
+    std::queue<std::unique_ptr<PacketS2C>> packetQueue;
+    std::mutex packetQueueMutex;
+
+    std::condition_variable cv;
 
     MinecraftProtocol& protocol;
 
