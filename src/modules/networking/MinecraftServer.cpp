@@ -60,13 +60,7 @@ void MinecraftServer::handleAccept(std::shared_ptr<MinecraftClient> client, erro
     {
         clients.push_back(client);
 
-        std::string s = std::string("Daytime Server Offline");
-
-        std::vector<unsigned char> sVector;
-        sVector.append_range(s);
-
         client->init();
-        client->write(std::move(sVector), s.size());
     } else
     {
         Logger::warn("Error in handling accept: " + ec.message());

@@ -13,6 +13,7 @@ import C2SIntentionPacketType;
 import MinecraftClient;
 import PacketC2S;
 import C2SIntentionPacket;
+import Base64Utils;
 
 int main() {
     Logger::debug("Is Big Endian: " +

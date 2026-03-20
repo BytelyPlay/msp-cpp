@@ -31,7 +31,7 @@ void Packets::PacketsRegister::receivedPacket(
 {
     TypedInputStream in = TypedInputStream(data.data(),
         data.data() + data.size());
-    int id = VarIntCodec::CODEC.deserialize(in);
+    int id = VarIntCodec::getInstance().deserialize(in);
 
     for (auto typeWrapper : types)
     {

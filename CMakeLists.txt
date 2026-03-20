@@ -68,6 +68,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/types/Property.ixx
         src/modules/io/codecs/PrefixedOptionalCodec.ixx
         src/modules/io/codecs/PrefixedOptionalCodec.cpp
+        src/modules/utils/Base64Utils.ixx
+        src/modules/utils/Base64Utils.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

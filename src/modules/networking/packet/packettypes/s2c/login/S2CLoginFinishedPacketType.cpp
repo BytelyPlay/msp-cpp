@@ -1,8 +1,10 @@
 module;
+#include <cassert>
+#include <vector>
+#include <memory>
 
 module S2CLoginFinishedPacketType;
 import S2CLoginFinishedPacket;
-#include <assert.h>
 
 // PUBLIC
 S2CLoginFinishedPacketType& S2CLoginFinishedPacketType::getInstance()

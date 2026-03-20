@@ -9,7 +9,7 @@ and having decent-ish performance \
 
 # Build instructions
 On Ubuntu (and likely other debian-based distributions):
-1. Make sure the apt package libboost-all-dev is installed
+1. Make sure the apt package libboost-all-dev is installed and openssl
 2. clone this repo
 3. TODO
 

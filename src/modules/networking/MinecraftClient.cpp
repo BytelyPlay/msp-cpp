@@ -242,7 +242,7 @@ bool MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
 
         // TODO: Handle edge case: not the whole packet length was sent.
         currentPacketLength =
-            VarIntCodec::CODEC.deserialize(newData, bytesConsumedByVarInt);
+            VarIntCodec::getInstance().deserialize(newData, bytesConsumedByVarInt);
 
         if (currentPacketLength <= 0)
         {
@@ -286,7 +286,7 @@ std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,
 void MinecraftClient::queue(std::unique_ptr<PacketS2C> packet)
 {
     std::unique_lock lock(packetQueueMutex);
-    packetQueue.push(packet);
+    packetQueue.push(std::move(packet));
 }
 
 // PUBLIC

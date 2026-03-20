@@ -5,5 +5,5 @@ export module UUID;
 
 export struct UUID
 {
-    std::array<std::byte, 16> uuid;
+    std::array<unsigned char, 16> uuid;
 };
