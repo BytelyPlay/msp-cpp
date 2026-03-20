@@ -6,6 +6,7 @@ export module PacketTypeS2C;
 import PacketType;
 import PacketS2C;
 import Packet;
+import Phase;
 
 export class PacketTypeS2C : public PacketType
 {
@@ -16,6 +17,7 @@ public:
 public:
     int getPacketID() override = 0;
     std::string getPacketIdentifier() override = 0;
+    Phase getPhase() override = 0;
 
     bool isC2S() override;
 };

@@ -9,7 +9,7 @@ import TypedOutputStream;
 export class VarIntCodec : public Codec<int>
 {
 public:
-    static VarIntCodec CODEC;
+    static VarIntCodec& getInstance();
 
     using Codec::deserialize;
     using Codec::serialize;

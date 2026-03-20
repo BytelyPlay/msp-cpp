@@ -8,7 +8,11 @@ import Logger;
 import CodecParsingException;
 
 // PUBLIC
-VarIntCodec VarIntCodec::CODEC = VarIntCodec();
+VarIntCodec& VarIntCodec::getInstance()
+{
+    static VarIntCodec codec;
+    return codec;
+}
 
 void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
 {

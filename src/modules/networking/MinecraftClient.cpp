@@ -283,10 +283,10 @@ std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,
 }
 
 // PUBLIC
-void MinecraftClient::write(std::vector<unsigned char> bytes, size_t size)
+void MinecraftClient::queue(std::unique_ptr<PacketS2C> packet)
 {
-    async_write(getSocket(), buffer(bytes),
-        std::bind(&MinecraftClient::handleWrite, shared_from_this(),
-            placeholders::error,
-            placeholders::bytes_transferred));
+    std::unique_lock lock(packetQueueMutex);
+    packetQueue.push(packet);
 }
+
+// PUBLIC

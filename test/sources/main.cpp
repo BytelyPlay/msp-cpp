@@ -1,5 +1,3 @@
-#define MSP_CPP_ENABLE_DEFAULT_PACKET_LISTENERS
-
 #include <chrono>
 #include <string>
 #include <cstdint>
