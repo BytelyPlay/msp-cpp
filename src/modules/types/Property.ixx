@@ -8,5 +8,6 @@ export struct Property
 {
     std::string name;
     std::string value;
+
     std::optional<std::string> signature;
 };

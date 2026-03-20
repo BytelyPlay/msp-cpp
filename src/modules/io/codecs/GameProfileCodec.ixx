@@ -5,7 +5,7 @@ import Codec;
 import GameProfile;
 import TypedOutputStream;
 import TypedInputStream;
-export class GameProfileCodec : Codec<GameProfile>
+export class GameProfileCodec : public Codec<GameProfile>
 {
 public:
    static GameProfileCodec getInstance();
