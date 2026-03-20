@@ -15,4 +15,12 @@ public:
 public:
    void serialize(const GameProfile& obj, TypedOutputStream& out) override;
    GameProfile deserialize(TypedInputStream& in) override;
+private:
+   GameProfileCodec();
+public:
+   GameProfileCodec(const GameProfileCodec&) = delete;
+   GameProfileCodec operator=(const GameProfileCodec&) = delete;
+
+   GameProfileCodec(GameProfileCodec&&) = delete;
+   GameProfileCodec operator=(GameProfileCodec&&) = delete;
 };
