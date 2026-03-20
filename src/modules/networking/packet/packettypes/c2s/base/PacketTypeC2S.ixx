@@ -48,14 +48,10 @@ public:
     std::unique_ptr<PacketC2S>
     deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
 
-    /* TODO: Perhaps use a memory arena's
-    memory for an std::shared_ptr
-    instead of the heap, maybe use std::allocate_shared
-    Me from the future: actually make a copy-on-assign or whatever pointer.
-    It should use a memory arena */
     virtual std::unique_ptr<PacketC2S>
     deserialize(TypedInputStream& in) = 0;
 private:
+    // TODO: An option to make default listeners not get set.
     std::function<void(std::unique_ptr<PacketC2S>, MinecraftServer&,
         MinecraftProtocol&,
         MinecraftClient&)> listener =

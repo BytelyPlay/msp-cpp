@@ -82,8 +82,7 @@ private:
     std::vector<unsigned char> removeFirstBytes(size_t amount,
         std::vector<unsigned char> data);
 public:
-    // temporarily public until the packet system is created.
-    void write(std::vector<unsigned char> bytes, size_t size);
+    void queue(std::unique_ptr<PacketS2C> packet);
 public:
     MinecraftClient(const MinecraftClient&) = delete;
     MinecraftClient operator=(const MinecraftClient&) = delete;
