@@ -23,7 +23,9 @@ public:
     io_context& getIo();
 private:
     // Annoyingly long return type
-    executor_work_guard<io_context::basic_executor_type<std::allocator<void>, 0>> getWorkGuard() const;
+    executor_work_guard
+    <io_context::basic_executor_type<std::allocator<void>, 0>>
+    getWorkGuard() const;
 
     void setupThreads();
 private:
