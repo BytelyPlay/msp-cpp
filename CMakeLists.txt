@@ -46,7 +46,6 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/base/Codec.cpp
         src/modules/io/streams/inputstream/TypedInputStream.cpp
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
-        src/modules/io/codecs/base/BasicCodec.ixx
         src/modules/exceptions/CodecParsingException.ixx
         src/modules/exceptions/CodecParsingException.cpp
         src/modules/networking/Phases.ixx
@@ -76,6 +75,10 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/UUIDCodec.cpp
         src/modules/utils/RandUtils.ixx
         src/modules/utils/RandUtils.cpp
+        src/modules/io/codecs/ArrayCodec.ixx
+        src/modules/io/codecs/ArrayCodec.cpp
+        src/modules/io/codecs/base/CodecRequiringCodec.ixx
+        src/modules/io/codecs/base/CodecRequiringCodecd.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

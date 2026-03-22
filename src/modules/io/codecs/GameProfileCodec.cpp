@@ -1,6 +1,8 @@
 module;
+#include <string>
 
 module GameProfileCodec;
+import PrefixedOptionalCodec;
 
 // PUBLIC
 

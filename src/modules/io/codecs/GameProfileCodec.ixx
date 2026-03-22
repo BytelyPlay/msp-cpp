@@ -1,10 +1,13 @@
 module;
+#include <string>
 
 export module GameProfileCodec;
 import Codec;
 import GameProfile;
 import TypedOutputStream;
 import TypedInputStream;
+import PrefixedOptionalCodec;
+
 export class GameProfileCodec : public Codec<GameProfile>
 {
 public:

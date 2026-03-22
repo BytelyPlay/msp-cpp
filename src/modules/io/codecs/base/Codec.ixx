@@ -7,11 +7,9 @@ export module Codec;
 import TypedInputStream;
 import TypedOutputStream;
 
-import BasicCodec;
-
 // TODO: To be honest, the only thing the codec system is lacking is a MapCodec
 export template<typename T>
-class Codec : public BasicCodec<T>
+class Codec
 {
 public:
     virtual void serialize(
@@ -24,11 +22,11 @@ public:
 public:
     std::vector<unsigned char> serialize(
         const T& obj
-    ) override;
+    );
     T deserialize(
         const std::vector<unsigned char>& data,
         uint& bytesConsumed
-    ) override;
+    );
 public:
     virtual ~Codec() = default;
 };
