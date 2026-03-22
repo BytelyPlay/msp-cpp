@@ -14,10 +14,20 @@ import MinecraftClient;
 import PacketC2S;
 import C2SIntentionPacket;
 import Base64Utils;
+import UUID;
 
 int main() {
     Logger::debug("Is Big Endian: " +
         std::string((EndiannessUtils::isBigEndian() ? "Yes" : "No")));
+
+    UUID uuid = generateUUID();
+
+    std::string hexBytes;
+    for (unsigned char& newByte : uuid.uuid)
+    {
+        hexBytes += std::format("{:02X} ", newByte);
+    }
+    Logger::debug(hexBytes);
 
     TypedOutputStream out;
     out << 1234567;

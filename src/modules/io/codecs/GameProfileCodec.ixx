@@ -8,7 +8,7 @@ import TypedInputStream;
 export class GameProfileCodec : public Codec<GameProfile>
 {
 public:
-   static GameProfileCodec getInstance();
+   static GameProfileCodec& getInstance();
 
    using Codec::serialize;
    using Codec::deserialize;

@@ -10,9 +10,17 @@ import TypedInputStream;
 import TypedOutputStream;
 
 export template<typename T>
-// This Codec is a bit of an exception,
-// since you're supposed to initialize it. And then reuse it...
-// and it also doesn't inherit from Codec, due to it being simpler that way.
+/* This Codec is a bit of an exception,
+since you're supposed to initialize it. And then reuse it...
+and it also doesn't inherit from Codec, due to it having requirements that force that.
+
+TODO: Replace with a MapCodec-like thing or something,
+point is, a subclass of Codec... Or not just yeah
+There is a possibility that this is just an exception
+that won't be a subclass...
+maybe it's best that way
+*/
+
 class PrefixedOptionalCodec
 {
 public:

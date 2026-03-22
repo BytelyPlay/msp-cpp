@@ -9,6 +9,7 @@ import TypedOutputStream;
 
 import BasicCodec;
 
+// TODO: To be honest, the only thing the codec system is lacking is a MapCodec
 export template<typename T>
 class Codec : public BasicCodec<T>
 {

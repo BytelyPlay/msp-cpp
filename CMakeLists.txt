@@ -70,6 +70,12 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/PrefixedOptionalCodec.cpp
         src/modules/utils/Base64Utils.ixx
         src/modules/utils/Base64Utils.cpp
+        src/modules/io/codecs/StringCodec.ixx
+        src/modules/io/codecs/UUIDCodec.ixx
+        src/modules/io/codecs/StringCodec.cpp
+        src/modules/io/codecs/UUIDCodec.cpp
+        src/modules/utils/RandUtils.ixx
+        src/modules/utils/RandUtils.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
