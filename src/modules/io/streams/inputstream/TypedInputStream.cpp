@@ -11,20 +11,42 @@ begin(begin), current(begin), end(end)
 
 // PUBLIC
 size_t TypedInputStream::readBytes(size_t amount,
-    std::vector<unsigned char>& buffer)
+    std::vector<unsigned char>& buffer,
+    bool peek)
 {
-    ptrdiff_t diff = (current + amount) - end;
-    amount = diff <= 0 ? amount : amount - diff;
+    ptrdiff_t dataLeft = this->end - this->current;
 
-    buffer.insert(
-        buffer.end(),
-        current,
-        current + amount
-    );
+    if (amount > dataLeft)
+        amount = dataLeft;
 
-    current += amount;
+    if (buffer.size() < amount) buffer.resize(amount);
+
+    memcpy(buffer.data(), this->current, amount);
+
+    if (!peek) current += amount;
 
     return amount;
+}
+
+size_t TypedInputStream::readBytes(unsigned char* begin,
+    unsigned char* end,
+    bool peek)
+{
+    ptrdiff_t amount = end - begin;
+    ptrdiff_t dataLeft = this->end - this->current;
+
+    if (amount > dataLeft)
+        amount = dataLeft;
+
+    memcpy(begin, this->current, amount);
+
+    if (!peek) current += amount;
+    return amount;
+}
+
+unsigned char TypedInputStream::peek()
+{
+    return *current;
 }
 
 uint TypedInputStream::getBytesConsumed()

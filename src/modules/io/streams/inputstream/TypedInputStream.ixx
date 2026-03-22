@@ -18,12 +18,29 @@ public:
 public:
     /**
      * Read an amount of bytes to a buffer from this stream.
+     * Will overwrite any data in the buffer.
      * @param amount Amount to Read
      * @param buffer Buffer to write to
+     * @param peek Should peek, if true the current pointer won't advance. Defaults to false
      * @return How many bytes were read.
      */
     size_t readBytes(size_t amount,
-                     std::vector<unsigned char>& buffer);
+                     std::vector<unsigned char>& buffer,
+                     bool peek = false);
+    /**
+     * @param begin First Byte to read into
+     * @param end Last byte to read into
+     * @param peek Should peek, if true the current pointer won't advance. Defaults to false
+     * @return Amount of bytes read
+     */
+    size_t readBytes(unsigned char* begin,
+                     unsigned char* end,
+                     bool peek= false);
+    /**
+     * Peeks, reads the next byte without forwarding the pointer.
+     * @return What the next byte would be, if you read.
+     */
+    unsigned char peek();
 
     uint getBytesConsumed();
     uint getBytesLeft();

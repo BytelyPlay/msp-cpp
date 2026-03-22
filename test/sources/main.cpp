@@ -27,7 +27,7 @@ int main() {
     {
         hexBytes += std::format("{:02X} ", newByte);
     }
-    Logger::debug(hexBytes);
+    Logger::debug(hexBytes + "         " + uuid.toString());
 
     TypedOutputStream out;
     out << 1234567;

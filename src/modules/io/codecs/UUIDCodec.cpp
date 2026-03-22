@@ -11,12 +11,16 @@ UUIDCodec& UUIDCodec::getInstance()
 
 void UUIDCodec::serialize(const UUID& obj, TypedOutputStream& out)
 {
-
+    out.writeBytes(obj.uuid.data(),
+        obj.uuid.data() + obj.uuid.size());
 }
 
 UUID UUIDCodec::deserialize(TypedInputStream& in)
 {
-
+    UUID uuid {};
+    in.readBytes(uuid.uuid.data(),
+        uuid.uuid.data() + uuid.uuid.size());
+    return uuid;
 }
 
 // PRIVATE

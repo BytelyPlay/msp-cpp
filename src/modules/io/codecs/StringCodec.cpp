@@ -4,6 +4,7 @@ module;
 
 module StringCodec;
 import VarIntCodec;
+import Logger;
 
 // PUBLIC
 StringCodec& StringCodec::getInstance()
@@ -29,7 +30,10 @@ std::string StringCodec::deserialize(TypedInputStream& in)
     std::vector<unsigned char> string;
 
     int size = VarIntCodec::getInstance().deserialize(in);
-    in.readBytes(size, string);
+    size_t bytesRead = in.readBytes(size, string);
+
+    if (bytesRead < size)
+        Logger::warn("unable to read the full string in StringCodec");
 
     return { string.begin(), string.end() };
 }
