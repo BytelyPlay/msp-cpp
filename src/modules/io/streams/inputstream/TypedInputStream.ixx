@@ -62,6 +62,9 @@ public:
 
     template<Concepts::Fundamental T>
     bool operator>>(T&);
+
+    template<Concepts::String T>
+    bool operator>>(T&);
 private:
     const unsigned char *begin, *current, *end;
 public:
@@ -85,6 +88,11 @@ bool TypedInputStream::operator>>(T& ref)
 
     ref = val;
     return true;
+}
+// TODO
+template <Concepts::String T>
+bool operator>>(T& ref)
+{
 }
 
 // PRIVATE
