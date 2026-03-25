@@ -79,6 +79,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/ArrayCodec.cpp
         src/modules/io/codecs/Codecs.ixx
         src/modules/io/codecs/Codecs.cpp
+        src/modules/utils/Concepts.ixx
+        src/modules/utils/Concepts.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

@@ -5,6 +5,8 @@ module;
 
 export module TypedInputStream;
 import EndiannessUtils;
+import Concepts;
+import Logger;
 
 export class TypedInputStream
 {
@@ -58,7 +60,7 @@ public:
      */
     bool operator>>(unsigned char* byte);
 
-    template<typename T>
+    template<Concepts::Fundamental T>
     bool operator>>(T&);
 private:
     const unsigned char *begin, *current, *end;
@@ -70,11 +72,9 @@ public:
 // PUBLIC
 // PUBLIC
 // PUBLIC
-template <typename T>
+template <Concepts::Fundamental T>
 bool TypedInputStream::operator>>(T& ref)
 {
-    static_assert(std::is_fundamental_v<T>);
-
     unsigned char bytes[sizeof(T)];
     for (int i = 0; i < sizeof(T); i++)
         if (!(*this >> bytes[i])) return false;

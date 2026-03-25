@@ -7,7 +7,10 @@ export module Codec;
 import TypedInputStream;
 import TypedOutputStream;
 
-// TODO: To be honest, the only thing the codec system is lacking is a MapCodec
+/* TODO: This is the stupidest thing yet, Codecs aren't really made for networking. I have
+written a lot of non-flexible stuff so I'll just have to fill in the gaps for now...
+But when we get to NBT and whatnot I will have to split up Codecs and Packet serialization.
+*/
 export template<typename T>
 class Codec
 {
