@@ -80,7 +80,7 @@ bool TypedInputStream::operator>>(T& ref)
         if (!(*this >> bytes[i])) return false;
 
     T val = *(reinterpret_cast<T*>(bytes));
-    if (!EndiannessUtils::isBigEndian())
+    if (!EndiannessUtils::isBigEndian() && !std::is_floating_point_v<T>)
         val = std::byteswap(val);
 
     ref = val;

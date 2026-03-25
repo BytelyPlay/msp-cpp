@@ -42,7 +42,7 @@ void TypedOutputStream::operator<<(T num)
 {
     static_assert(std::is_fundamental_v<T>);
 
-    if (!EndiannessUtils::isBigEndian())
+    if (!EndiannessUtils::isBigEndian() && !std::is_floating_point_v<T>)
         num = std::byteswap(num);
 
     const auto bytes = reinterpret_cast<const unsigned char*>(&num);

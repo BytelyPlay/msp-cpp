@@ -21,7 +21,7 @@ public:
         TypedInputStream& in
     ) override;
 private:
-    Codec<std::vector<T>>& codec;
+    Codec<T>& codec;
 private:
     ArrayCodec(Codec<T>& codec);
 public:

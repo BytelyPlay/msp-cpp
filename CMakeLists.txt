@@ -77,6 +77,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/utils/RandUtils.cpp
         src/modules/io/codecs/ArrayCodec.ixx
         src/modules/io/codecs/ArrayCodec.cpp
+        src/modules/io/codecs/Codecs.ixx
+        src/modules/io/codecs/Codecs.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
