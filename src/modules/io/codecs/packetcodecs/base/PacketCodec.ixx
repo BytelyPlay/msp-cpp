@@ -3,7 +3,8 @@ module;
 #include <string>
 #include <cstdint>
 
-export module Codec;
+export module PacketCodec;
+
 import TypedInputStream;
 import TypedOutputStream;
 
@@ -12,7 +13,7 @@ written a lot of non-flexible stuff so I'll just have to fill in the gaps for no
 But when we get to NBT and whatnot I will have to split up Codecs and Packet serialization.
 */
 export template<typename T>
-class Codec
+class PacketCodec
 {
 public:
     virtual void serialize(
@@ -31,13 +32,13 @@ public:
         uint& bytesConsumed
     );
 public:
-    virtual ~Codec() = default;
+    virtual ~PacketCodec() = default;
 };
 
 // PUBLIC
 // PUBLIC
 template <typename T>
-std::vector<unsigned char> Codec<T>::serialize(const T& obj)
+std::vector<unsigned char> PacketCodec<T>::serialize(const T& obj)
 {
     TypedOutputStream out;
     serialize(obj, out);
@@ -45,7 +46,7 @@ std::vector<unsigned char> Codec<T>::serialize(const T& obj)
 }
 
 template <typename T>
-T Codec<T>::deserialize(const std::vector<unsigned char>& data, uint& bytesConsumed)
+T PacketCodec<T>::deserialize(const std::vector<unsigned char>& data, uint& bytesConsumed)
 {
     TypedInputStream in(data.data(),
         data.data() + data.size());

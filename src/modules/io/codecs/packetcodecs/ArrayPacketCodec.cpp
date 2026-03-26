@@ -4,15 +4,15 @@ module;
 #include <unordered_map>
 #include <vector>
 
-module ArrayCodec;
+module ArrayPacketCodec;
 
 // PUBLIC
 template <typename T>
-ArrayCodec<T>& ArrayCodec<T>::getInstance(Codec<T>& codec)
+ArrayPacketCodec<T>& ArrayPacketCodec<T>::getInstance(Codec<T>& codec)
 {
     static
     std::unordered_map
-    <Codec<T>*, ArrayCodec<T>> codecInstances;
+    <Codec<T>*, ArrayPacketCodec<T>> codecInstances;
 
     static std::shared_mutex codecInstancesMutex;
     std::shared_lock lock(codecInstancesMutex);
@@ -34,21 +34,21 @@ ArrayCodec<T>& ArrayCodec<T>::getInstance(Codec<T>& codec)
 }
 
 template <typename T>
-void ArrayCodec<T>::serialize(const std::vector<T>& obj, TypedOutputStream& out)
+void ArrayPacketCodec<T>::serialize(const std::vector<T>& obj, TypedOutputStream& out)
 {
     for (T& val : obj)
         codec.serialize(val, out);
 }
 
 template <typename T>
-std::vector<T> ArrayCodec<T>::deserialize(TypedInputStream& in)
+std::vector<T> ArrayPacketCodec<T>::deserialize(TypedInputStream& in)
 {
 
 }
 
 // PRIVATE
 template <typename T>
-ArrayCodec<T>::ArrayCodec(Codec<T>& codec)
+ArrayPacketCodec<T>::ArrayPacketCodec(Codec<T>& codec)
 : codec(codec)
 {
 }

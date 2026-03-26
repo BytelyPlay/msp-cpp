@@ -36,14 +36,14 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packettypes/s2c/base/PacketTypeS2C.cpp
         src/modules/networking/packet/packets/c2s/base/PacketC2S.ixx
         src/modules/networking/packet/packets/s2c/base/PacketS2C.ixx
-        src/modules/io/codecs/base/Codec.ixx
+        src/modules/io/codecs/packetcodecs/base/PacketCodec.ixx
         src/modules/io/streams/outputstream/TypedOutputStream.ixx
         src/modules/io/streams/inputstream/TypedInputStream.ixx
         src/modules/utils/EndiannessUtils.ixx
         src/modules/utils/EndiannessUtils.cpp
-        src/modules/io/codecs/VarIntCodec.ixx
-        "src/modules/io/codecs/VarIntCodec.cpp"
-        src/modules/io/codecs/base/Codec.cpp
+        src/modules/io/codecs/packetcodecs/VarIntCodec.ixx
+        "src/modules/io/codecs/packetcodecs/VarIntCodec.cpp"
+        src/modules/io/codecs/packetcodecs/base/PacketCodec.cpp
         src/modules/io/streams/inputstream/TypedInputStream.cpp
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
         src/modules/exceptions/CodecParsingException.ixx
@@ -60,25 +60,25 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packettypes/s2c/login/S2CLoginFinishedPacketType.cpp
         src/modules/networking/packet/packets/s2c/login/S2CLoginFinishedPacket.ixx
         src/modules/networking/packet/packets/s2c/login/S2CLoginFinishedPacket.cpp
-        src/modules/io/codecs/GameProfileCodec.ixx
-        src/modules/io/codecs/GameProfileCodec.cpp
+        src/modules/io/codecs/packetcodecs/GameProfileCodec.ixx
+        src/modules/io/codecs/packetcodecs/GameProfileCodec.cpp
         src/modules/types/GameProfile.ixx
         src/modules/types/UUID.ixx
         src/modules/types/Property.ixx
-        src/modules/io/codecs/PrefixedOptionalCodec.ixx
-        src/modules/io/codecs/PrefixedOptionalCodec.cpp
+        src/modules/io/codecs/packetcodecs/PrefixedOptionalCodec.ixx
+        src/modules/io/codecs/packetcodecs/PrefixedOptionalCodec.cpp
         src/modules/utils/Base64Utils.ixx
         src/modules/utils/Base64Utils.cpp
-        src/modules/io/codecs/StringCodec.ixx
-        src/modules/io/codecs/UUIDCodec.ixx
-        src/modules/io/codecs/StringCodec.cpp
-        src/modules/io/codecs/UUIDCodec.cpp
+        src/modules/io/codecs/packetcodecs/StringCodec.ixx
+        src/modules/io/codecs/packetcodecs/UUIDCodec.ixx
+        src/modules/io/codecs/packetcodecs/StringCodec.cpp
+        src/modules/io/codecs/packetcodecs/UUIDCodec.cpp
         src/modules/utils/RandUtils.ixx
         src/modules/utils/RandUtils.cpp
-        src/modules/io/codecs/ArrayCodec.ixx
-        src/modules/io/codecs/ArrayCodec.cpp
-        src/modules/io/codecs/Codecs.ixx
-        src/modules/io/codecs/Codecs.cpp
+        src/modules/io/codecs/packetcodecs/ArrayPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/ArrayPacketCodec.cpp
+        src/modules/io/codecs/packetcodecs/Codecs.ixx
+        src/modules/io/codecs/packetcodecs/Codecs.cpp
         src/modules/utils/Concepts.ixx
         src/modules/utils/Concepts.cpp
 )

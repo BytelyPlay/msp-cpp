@@ -3,7 +3,7 @@ module;
 #include <sys/types.h>
 #include <cstdint>
 
-module Codec;
+module PacketCodec;
 
 // PUBLIC
 // PUBLIC
