@@ -8,9 +8,7 @@ export module PacketCodec;
 import TypedInputStream;
 import TypedOutputStream;
 
-/* TODO: This is the stupidest thing yet, Codecs aren't really made for networking. I have
-written a lot of non-flexible stuff so I'll just have to fill in the gaps for now...
-But when we get to NBT and whatnot I will have to split up Codecs and Packet serialization.
+/* TODO: This codec needs to be more flexible
 */
 export template<typename T>
 class PacketCodec
