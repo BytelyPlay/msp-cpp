@@ -2,20 +2,20 @@ module;
 #include <vector>
 #include <string>
 
-module StringCodec;
-import VarIntCodec;
+module StringPacketCodec;
+import VarIntPacketCodec;
 import Logger;
 
 // PUBLIC
-StringCodec& StringCodec::getInstance()
+StringPacketCodec& StringPacketCodec::getInstance()
 {
-    static StringCodec codec;
+    static StringPacketCodec codec;
     return codec;
 }
 
-void StringCodec::serialize(const std::string& obj, TypedOutputStream& out)
+void StringPacketCodec::serialize(const std::string& obj, TypedOutputStream& out)
 {
-    VarIntCodec::getInstance().serialize(obj.size(), out);
+    VarIntPacketCodec::getInstance().serialize(obj.size(), out);
     out.writeBytes(
         reinterpret_cast
         <const unsigned char*>(obj.data()),
@@ -25,11 +25,11 @@ void StringCodec::serialize(const std::string& obj, TypedOutputStream& out)
     );
 }
 
-std::string StringCodec::deserialize(TypedInputStream& in)
+std::string StringPacketCodec::deserialize(TypedInputStream& in)
 {
     std::vector<unsigned char> string;
 
-    int size = VarIntCodec::getInstance().deserialize(in);
+    int size = VarIntPacketCodec::getInstance().deserialize(in);
     size_t bytesRead = in.readBytes(size, string);
 
     if (bytesRead < size)
@@ -39,7 +39,7 @@ std::string StringCodec::deserialize(TypedInputStream& in)
 }
 
 // PRIVATE
-StringCodec::StringCodec()
+StringPacketCodec::StringPacketCodec()
 = default;
 
 // PUBLIC

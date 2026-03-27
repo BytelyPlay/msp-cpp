@@ -5,7 +5,7 @@ module;
 
 module Packets;
 
-import VarIntCodec;
+import VarIntPacketCodec;
 import TypedInputStream;
 import Logger;
 import PacketTypeC2S;
@@ -31,7 +31,7 @@ void Packets::PacketsRegister::receivedPacket(
 {
     TypedInputStream in = TypedInputStream(data.data(),
         data.data() + data.size());
-    int id = VarIntCodec::getInstance().deserialize(in);
+    int id = VarIntPacketCodec::getInstance().deserialize(in);
 
     for (auto typeWrapper : types)
     {

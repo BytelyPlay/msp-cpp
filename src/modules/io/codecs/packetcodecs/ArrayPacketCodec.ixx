@@ -11,7 +11,7 @@ export template<typename T>
 class ArrayPacketCodec : public PacketCodec<std::vector<T>>
 {
 public:
-    static ArrayPacketCodec& getInstance(Codec<T>& codec);
+    static ArrayPacketCodec& getInstance(PacketCodec<T>& codec);
 
     void serialize(
         const std::vector<T>& obj,
@@ -21,9 +21,9 @@ public:
         TypedInputStream& in
     ) override;
 private:
-    Codec<T>& codec;
+    PacketCodec<T>& codec;
 private:
-    ArrayPacketCodec(Codec<T>& codec);
+    ArrayPacketCodec(PacketCodec<T>& codec);
 public:
     ArrayPacketCodec(const ArrayPacketCodec&) = delete;
     ArrayPacketCodec operator=(const ArrayPacketCodec&) = delete;

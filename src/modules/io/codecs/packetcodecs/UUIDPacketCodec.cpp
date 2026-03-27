@@ -1,21 +1,21 @@
 module;
 
-module UUIDCodec;
+module UUIDPacketCodec;
 
 // PUBLIC
-UUIDCodec& UUIDCodec::getInstance()
+UUIDPacketCodec& UUIDPacketCodec::getInstance()
 {
-    static UUIDCodec codec;
+    static UUIDPacketCodec codec;
     return codec;
 }
 
-void UUIDCodec::serialize(const UUID& obj, TypedOutputStream& out)
+void UUIDPacketCodec::serialize(const UUID& obj, TypedOutputStream& out)
 {
     out.writeBytes(obj.uuid.data(),
         obj.uuid.data() + obj.uuid.size());
 }
 
-UUID UUIDCodec::deserialize(TypedInputStream& in)
+UUID UUIDPacketCodec::deserialize(TypedInputStream& in)
 {
     UUID uuid {};
     in.readBytes(uuid.uuid.data(),
@@ -24,7 +24,7 @@ UUID UUIDCodec::deserialize(TypedInputStream& in)
 }
 
 // PRIVATE
-UUIDCodec::UUIDCodec()
+UUIDPacketCodec::UUIDPacketCodec()
 = default;
 
 // PUBLIC

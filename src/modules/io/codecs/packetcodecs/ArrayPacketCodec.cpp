@@ -8,11 +8,11 @@ module ArrayPacketCodec;
 
 // PUBLIC
 template <typename T>
-ArrayPacketCodec<T>& ArrayPacketCodec<T>::getInstance(Codec<T>& codec)
+ArrayPacketCodec<T>& ArrayPacketCodec<T>::getInstance(PacketCodec<T>& codec)
 {
     static
     std::unordered_map
-    <Codec<T>*, ArrayPacketCodec<T>> codecInstances;
+    <PacketCodec<T>*, ArrayPacketCodec<T>> codecInstances;
 
     static std::shared_mutex codecInstancesMutex;
     std::shared_lock lock(codecInstancesMutex);
@@ -26,7 +26,7 @@ ArrayPacketCodec<T>& ArrayPacketCodec<T>::getInstance(Codec<T>& codec)
         {
             std::unique_lock uniqueLock(codecInstancesMutex);
 
-            codecInstances.insert(codec, ArrayCodec());
+            codecInstances.insert(codec, ArrayPacketCodec());
         }
         lock.lock();
     }
@@ -48,7 +48,7 @@ std::vector<T> ArrayPacketCodec<T>::deserialize(TypedInputStream& in)
 
 // PRIVATE
 template <typename T>
-ArrayPacketCodec<T>::ArrayPacketCodec(Codec<T>& codec)
+ArrayPacketCodec<T>::ArrayPacketCodec(PacketCodec<T>& codec)
 : codec(codec)
 {
 }

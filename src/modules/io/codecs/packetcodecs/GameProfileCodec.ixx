@@ -2,19 +2,19 @@ module;
 #include <string>
 
 export module GameProfileCodec;
-import Codec;
+import PacketCodec;
 import GameProfile;
 import TypedOutputStream;
 import TypedInputStream;
-import PrefixedOptionalCodec;
+import PrefixedOptionalPacketCodec;
 
-export class GameProfileCodec : public Codec<GameProfile>
+export class GameProfileCodec : public PacketCodec<GameProfile>
 {
 public:
    static GameProfileCodec& getInstance();
 
-   using Codec::serialize;
-   using Codec::deserialize;
+   using PacketCodec::serialize;
+   using PacketCodec::deserialize;
 public:
    void serialize(const GameProfile& obj, TypedOutputStream& out) override;
    GameProfile deserialize(TypedInputStream& in) override;

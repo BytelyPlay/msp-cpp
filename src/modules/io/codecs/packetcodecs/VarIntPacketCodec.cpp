@@ -2,19 +2,19 @@ module;
 #include <string>
 #include <cstdint>
 
-module VarIntCodec;
+module VarIntPacketCodec;
 import EndiannessUtils;
 import Logger;
 import CodecParsingException;
 
 // PUBLIC
-VarIntCodec& VarIntCodec::getInstance()
+VarIntPacketCodec& VarIntPacketCodec::getInstance()
 {
-    static VarIntCodec codec;
+    static VarIntPacketCodec codec;
     return codec;
 }
 
-void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
+void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out)
 {
     // This makes sure to preserve all memory perfectly.
     uint val = reinterpret_cast<const uint&>(valRef);
@@ -33,7 +33,7 @@ void VarIntCodec::serialize(const int& valRef, TypedOutputStream& out)
         valBytes + sizeof(uint));
 }
 
-int VarIntCodec::deserialize(TypedInputStream& in)
+int VarIntPacketCodec::deserialize(TypedInputStream& in)
 {
     int result = 0;
     int shift = 0;
@@ -64,4 +64,4 @@ int VarIntCodec::deserialize(TypedInputStream& in)
     return result;
 }
 // PRIVATE
-VarIntCodec::VarIntCodec() = default;
+VarIntPacketCodec::VarIntPacketCodec() = default;

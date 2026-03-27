@@ -2,7 +2,7 @@ module;
 #include <string>
 
 module GameProfileCodec;
-import PrefixedOptionalCodec;
+import PrefixedOptionalPacketCodec;
 
 // PUBLIC
 

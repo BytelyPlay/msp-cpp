@@ -5,7 +5,7 @@ module;
 module MinecraftClient;
 import MinecraftProtocol;
 import Logger;
-import VarIntCodec;
+import VarIntPacketCodec;
 import TypedInputStream;
 import MinecraftServer;
 import Packets;
@@ -242,7 +242,7 @@ bool MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
 
         // TODO: Handle edge case: not the whole packet length was sent.
         currentPacketLength =
-            VarIntCodec::getInstance().deserialize(newData, bytesConsumedByVarInt);
+            VarIntPacketCodec::getInstance().deserialize(newData, bytesConsumedByVarInt);
 
         if (currentPacketLength <= 0)
         {

@@ -41,8 +41,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/streams/inputstream/TypedInputStream.ixx
         src/modules/utils/EndiannessUtils.ixx
         src/modules/utils/EndiannessUtils.cpp
-        src/modules/io/codecs/packetcodecs/VarIntCodec.ixx
-        "src/modules/io/codecs/packetcodecs/VarIntCodec.cpp"
+        src/modules/io/codecs/packetcodecs/VarIntPacketCodec.ixx
+        "src/modules/io/codecs/packetcodecs/VarIntPacketCodec.cpp"
         src/modules/io/codecs/packetcodecs/base/PacketCodec.cpp
         src/modules/io/streams/inputstream/TypedInputStream.cpp
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
@@ -65,20 +65,20 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/types/GameProfile.ixx
         src/modules/types/UUID.ixx
         src/modules/types/Property.ixx
-        src/modules/io/codecs/packetcodecs/PrefixedOptionalCodec.ixx
-        src/modules/io/codecs/packetcodecs/PrefixedOptionalCodec.cpp
+        src/modules/io/codecs/packetcodecs/PrefixedOptionalPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/PrefixedOptionalPacketCodec.cpp
         src/modules/utils/Base64Utils.ixx
         src/modules/utils/Base64Utils.cpp
-        src/modules/io/codecs/packetcodecs/StringCodec.ixx
-        src/modules/io/codecs/packetcodecs/UUIDCodec.ixx
-        src/modules/io/codecs/packetcodecs/StringCodec.cpp
-        src/modules/io/codecs/packetcodecs/UUIDCodec.cpp
+        src/modules/io/codecs/packetcodecs/StringPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/UUIDPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/StringPacketCodec.cpp
+        src/modules/io/codecs/packetcodecs/UUIDPacketCodec.cpp
         src/modules/utils/RandUtils.ixx
         src/modules/utils/RandUtils.cpp
         src/modules/io/codecs/packetcodecs/ArrayPacketCodec.ixx
         src/modules/io/codecs/packetcodecs/ArrayPacketCodec.cpp
-        src/modules/io/codecs/packetcodecs/Codecs.ixx
-        src/modules/io/codecs/packetcodecs/Codecs.cpp
+        src/modules/io/codecs/packetcodecs/PacketCodecs.ixx
+        src/modules/io/codecs/packetcodecs/PacketCodecs.cpp
         src/modules/utils/Concepts.ixx
         src/modules/utils/Concepts.cpp
 )

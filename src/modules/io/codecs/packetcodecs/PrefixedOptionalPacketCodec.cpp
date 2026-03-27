@@ -4,14 +4,14 @@ module;
 #include <cstdint>
 #include <sys/types.h>
 
-module PrefixedOptionalCodec;
+module PrefixedOptionalPacketCodec;
 import CodecParsingException;
 
 // PUBLIC
 template <typename T>
-void PrefixedOptionalCodec<T>::serialize(
+void PrefixedOptionalPacketCodec<T>::serialize(
     const std::optional<T>& opt,
-    Codec<T>& codec,
+    PacketCodec<T>& codec,
     TypedOutputStream& out
 )
 {
@@ -28,9 +28,9 @@ void PrefixedOptionalCodec<T>::serialize(
 template <typename T>
 std::optional<T>
 
-PrefixedOptionalCodec<T>::deserialize(
+PrefixedOptionalPacketCodec<T>::deserialize(
     TypedInputStream& in,
-    Codec<T>& codec
+    PacketCodec<T>& codec
 )
 {
     bool hasValue;
@@ -44,9 +44,9 @@ PrefixedOptionalCodec<T>::deserialize(
 }
 // PUBLIC
 template <typename T>
-std::vector<unsigned char> PrefixedOptionalCodec<T>::serialize(
+std::vector<unsigned char> PrefixedOptionalPacketCodec<T>::serialize(
     const std::optional<T>& opt,
-    Codec<T>& codec
+    PacketCodec<T>& codec
 )
 {
     TypedOutputStream out;
@@ -56,9 +56,9 @@ std::vector<unsigned char> PrefixedOptionalCodec<T>::serialize(
 }
 
 template <typename T>
-T PrefixedOptionalCodec<T>::deserialize(
+T PrefixedOptionalPacketCodec<T>::deserialize(
     const std::vector<unsigned char>& data,
-    Codec<T>& codec,
+    PacketCodec<T>& codec,
 
     uint& bytesConsumed
 )
