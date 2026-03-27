@@ -10,18 +10,13 @@ import TypedInputStream;
 import TypedOutputStream;
 
 export template<typename T>
-/* This Codec is a bit of an exception,
-since you're supposed to initialize it. And then reuse it...
-and it also doesn't inherit from PacketCodec , due to it having requirements that force that.
-
-TODO: Replace with a MapCodec-like thing or something,
-point is, a subclass of PacketCodec ... Or not just yeah
-There is a possibility that this is just an exception
-that won't be a subclass...
-maybe it's best that way
+/*
+TODO: Replace with the pattern, where it
+also uses a template. But the Codec is set at construction...
+This HAS to be a subclass of PacketCodec
 */
 
-class PrefixedOptionalPacketCodec
+/* export */ class PrefixedOptionalPacketCodec
 {
 public:
     void serialize(
