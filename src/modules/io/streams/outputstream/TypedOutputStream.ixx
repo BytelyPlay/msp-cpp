@@ -5,6 +5,7 @@ module;
 
 export module TypedOutputStream;
 import EndiannessUtils;
+import Concepts;
 
 /**
  * An output stream with types,
@@ -24,7 +25,7 @@ public:
 public:
     void operator<<(const std::vector<unsigned char>& bytes);
 
-    template<typename T>
+    template<Concepts::Fundamental T>
     void operator<<(T num);
 private:
     std::vector<unsigned char> data;
@@ -37,11 +38,9 @@ public:
 // PUBLIC
 // PUBLIC
 // PUBLIC
-template <typename T>
+template <Concepts::Fundamental T>
 void TypedOutputStream::operator<<(T num)
 {
-    static_assert(std::is_fundamental_v<T>);
-
     if (!EndiannessUtils::isBigEndian() && !std::is_floating_point_v<T>)
         num = std::byteswap(num);
 
