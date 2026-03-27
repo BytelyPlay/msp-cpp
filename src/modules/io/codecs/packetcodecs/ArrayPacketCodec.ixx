@@ -7,6 +7,7 @@ import PacketCodec;
 import TypedInputStream;
 import TypedOutputStream;
 
+// TODO: To be replaced with a FIXED array packet codec...
 export template<typename T>
 class ArrayPacketCodec : public PacketCodec<std::vector<T>>
 {

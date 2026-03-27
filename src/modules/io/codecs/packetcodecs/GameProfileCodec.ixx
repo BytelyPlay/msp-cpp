@@ -8,6 +8,7 @@ import TypedOutputStream;
 import TypedInputStream;
 import PrefixedOptionalPacketCodec;
 
+// TODO: Replace with one-liner to make a PacketCodec without a separate class.
 export class GameProfileCodec : public PacketCodec<GameProfile>
 {
 public:
