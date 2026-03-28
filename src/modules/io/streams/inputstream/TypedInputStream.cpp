@@ -5,7 +5,7 @@ module;
 module TypedInputStream;
 // PUBLIC
 TypedInputStream::TypedInputStream(const unsigned char* begin, const unsigned char* end) :
-begin(begin), current(begin), end(end)
+begin(begin), next(begin), end(end)
 {
 }
 
@@ -14,16 +14,16 @@ size_t TypedInputStream::readBytes(size_t amount,
     std::vector<unsigned char>& buffer,
     bool peek)
 {
-    ptrdiff_t dataLeft = this->end - this->current;
+    ptrdiff_t dataLeft = this->end - this->next;
 
     if (amount > dataLeft)
         amount = dataLeft;
 
     if (buffer.size() < amount) buffer.resize(amount);
 
-    memcpy(buffer.data(), this->current, amount);
+    memcpy(buffer.data(), this->next, amount);
 
-    if (!peek) current += amount;
+    if (!peek) next += amount;
 
     return amount;
 }
@@ -33,38 +33,38 @@ size_t TypedInputStream::readBytes(unsigned char* begin,
     bool peek)
 {
     ptrdiff_t amount = end - begin;
-    ptrdiff_t dataLeft = this->end - this->current;
+    ptrdiff_t dataLeft = this->end - this->next;
 
     if (amount > dataLeft)
         amount = dataLeft;
 
-    memcpy(begin, this->current, amount);
+    memcpy(begin, this->next, amount);
 
-    if (!peek) current += amount;
+    if (!peek) next += amount;
     return amount;
 }
 
 unsigned char TypedInputStream::peek()
 {
-    return *current;
+    return *next;
 }
 
 uint TypedInputStream::getBytesConsumed()
 {
-    return current - begin;
+    return next - begin;
 }
 
 uint TypedInputStream::getBytesLeft()
 {
-    return end - current;
+    return end - next;
 }
 
 // PUBLIC
 bool TypedInputStream::operator>>(unsigned char& byte)
 {
-    if (current < end)
+    if (next < end)
     {
-        byte = *(current++);
+        byte = *(next++);
         return true;
     }
     return false;

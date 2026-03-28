@@ -63,7 +63,7 @@ public:
     template<Concepts::Fundamental T>
     bool operator>>(T&);
 private:
-    const unsigned char *begin, *current, *end;
+    const unsigned char *begin, *next, *end;
 public:
     TypedInputStream operator=(const TypedInputStream&) = delete;
     TypedInputStream(const TypedInputStream&) = delete;

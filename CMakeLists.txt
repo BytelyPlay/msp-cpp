@@ -75,8 +75,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/packetcodecs/UUIDPacketCodec.cpp
         src/modules/utils/RandUtils.ixx
         src/modules/utils/RandUtils.cpp
-        src/modules/io/codecs/packetcodecs/ArrayPacketCodec.ixx
-        src/modules/io/codecs/packetcodecs/ArrayPacketCodec.cpp
+        src/modules/io/codecs/packetcodecs/FixedArrayPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/FixedArrayPacketCodec.cpp
         src/modules/io/codecs/packetcodecs/PacketCodecs.ixx
         src/modules/io/codecs/packetcodecs/PacketCodecs.cpp
         src/modules/utils/Concepts.ixx
