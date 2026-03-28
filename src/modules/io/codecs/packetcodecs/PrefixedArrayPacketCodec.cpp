@@ -4,16 +4,16 @@ module;
 #include <unordered_map>
 #include <vector>
 
-module FixedArrayPacketCodec;
+module PrefixedArrayPacketCodec;
 import VarIntPacketCodec;
 
 // PUBLIC
 template <typename T>
-FixedArrayPacketCodec<T>& FixedArrayPacketCodec<T>::getInstance(PacketCodec<T>& codec)
+PrefixedArrayPacketCodec<T>& PrefixedArrayPacketCodec<T>::getInstance(PacketCodec<T>& codec)
 {
     static
     std::unordered_map
-    <PacketCodec<T>*, FixedArrayPacketCodec<T>> codecInstances;
+    <PacketCodec<T>*, PrefixedArrayPacketCodec<T>> codecInstances;
 
     static std::shared_mutex codecInstancesMutex;
     std::shared_lock lock(codecInstancesMutex);
@@ -27,7 +27,7 @@ FixedArrayPacketCodec<T>& FixedArrayPacketCodec<T>::getInstance(PacketCodec<T>& 
         {
             std::unique_lock uniqueLock(codecInstancesMutex);
 
-            codecInstances.insert(codec, FixedArrayPacketCodec());
+            codecInstances.insert(codec, PrefixedArrayPacketCodec());
         }
         lock.lock();
     }
@@ -35,7 +35,7 @@ FixedArrayPacketCodec<T>& FixedArrayPacketCodec<T>::getInstance(PacketCodec<T>& 
 }
 
 template <typename T>
-void FixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec, TypedOutputStream& out)
+void PrefixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec, TypedOutputStream& out)
 {
     VarIntPacketCodec& varIntCodec =
         VarIntPacketCodec::getInstance();
@@ -46,7 +46,7 @@ void FixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec, TypedOutp
 }
 
 template <typename T>
-std::vector<T> FixedArrayPacketCodec<T>::deserialize(TypedInputStream& in)
+std::vector<T> PrefixedArrayPacketCodec<T>::deserialize(TypedInputStream& in)
 {
     VarIntPacketCodec& varIntCodec =
         VarIntPacketCodec::getInstance();
@@ -61,7 +61,7 @@ std::vector<T> FixedArrayPacketCodec<T>::deserialize(TypedInputStream& in)
 
 // PRIVATE
 template <typename T>
-FixedArrayPacketCodec<T>::FixedArrayPacketCodec(PacketCodec<T>& codec)
+PrefixedArrayPacketCodec<T>::PrefixedArrayPacketCodec(PacketCodec<T>& codec)
 : codec(codec)
 {
 }

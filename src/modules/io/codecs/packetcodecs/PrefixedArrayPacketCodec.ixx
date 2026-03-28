@@ -2,17 +2,17 @@ module;
 #include <optional>
 #include <vector>
 
-export module FixedArrayPacketCodec;
+export module PrefixedArrayPacketCodec;
 import PacketCodec;
 import TypedInputStream;
 import TypedOutputStream;
 
 // TODO: To be replaced with a FIXED array packet codec...
 export template<typename T>
-class FixedArrayPacketCodec : public PacketCodec<std::vector<T>>
+class PrefixedArrayPacketCodec : public PacketCodec<std::vector<T>>
 {
 public:
-    static FixedArrayPacketCodec& getInstance(PacketCodec<T>& codec);
+    static PrefixedArrayPacketCodec& getInstance(PacketCodec<T>& codec);
 
     void serialize(
         const std::vector<T>& obj,
@@ -24,11 +24,11 @@ public:
 private:
     PacketCodec<T>& codec;
 private:
-    FixedArrayPacketCodec(PacketCodec<T>& codec);
+    PrefixedArrayPacketCodec(PacketCodec<T>& codec);
 public:
-    FixedArrayPacketCodec(const FixedArrayPacketCodec&) = delete;
-    FixedArrayPacketCodec operator=(const FixedArrayPacketCodec&) = delete;
+    PrefixedArrayPacketCodec(const PrefixedArrayPacketCodec&) = delete;
+    PrefixedArrayPacketCodec operator=(const PrefixedArrayPacketCodec&) = delete;
 
-    FixedArrayPacketCodec(FixedArrayPacketCodec&&) = delete;
-    FixedArrayPacketCodec operator=(FixedArrayPacketCodec&&) = delete;
+    PrefixedArrayPacketCodec(PrefixedArrayPacketCodec&&) = delete;
+    PrefixedArrayPacketCodec operator=(PrefixedArrayPacketCodec&&) = delete;
 };

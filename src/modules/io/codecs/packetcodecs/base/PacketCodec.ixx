@@ -31,6 +31,8 @@ public:
     );
 public:
     virtual ~PacketCodec() = default;
+protected:
+    PacketCodec() = default;
 };
 
 // PUBLIC
