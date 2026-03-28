@@ -1,4 +1,4 @@
-module;
+/* module;
 
 module PacketCodecs;
 
@@ -10,3 +10,4 @@ PacketCodec<T> PacketCodecs::createSequencedCodec(Pairs... getterAndCodec)
 {
     g
 }
+*/

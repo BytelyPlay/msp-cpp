@@ -11,6 +11,7 @@ import VarIntPacketCodec;
 template <typename T>
 PrefixedArrayPacketCodec<T>& PrefixedArrayPacketCodec<T>::getInstance(PacketCodec<T>& codec)
 {
+    // TODO: Don't duplicate code...
     static
     std::unordered_map
     <PacketCodec<T>*, PrefixedArrayPacketCodec<T>> codecInstances;

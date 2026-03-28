@@ -18,10 +18,4 @@ public:
     std::string deserialize(TypedInputStream& in) override;
 private:
     StringPacketCodec();
-public:
-    StringPacketCodec(const StringPacketCodec&) = delete;
-    StringPacketCodec operator=(const StringPacketCodec&) = delete;
-
-    StringPacketCodec(StringPacketCodec&&) = delete;
-    StringPacketCodec operator=(StringPacketCodec&&) = delete;
 };

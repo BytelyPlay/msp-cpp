@@ -18,10 +18,4 @@ public:
     int deserialize(TypedInputStream& in) override;
 private:
     VarIntPacketCodec();
-public:
-    VarIntPacketCodec(const VarIntPacketCodec&) = delete;
-    VarIntPacketCodec operator=(const VarIntPacketCodec&) = delete;
-
-    VarIntPacketCodec(VarIntPacketCodec&&) = delete;
-    VarIntPacketCodec operator=(VarIntPacketCodec&&) = delete;
 };

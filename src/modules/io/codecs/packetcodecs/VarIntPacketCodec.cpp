@@ -42,7 +42,7 @@ int VarIntPacketCodec::deserialize(TypedInputStream& in)
     while (!isLastByte) {
         unsigned char b = 0;
         if (!(in >> b)) throw CodecParsingException(
-            "Couldn't read from TypedInputStream. "
+            "Couldn't read from TypedInputStream to deserialize VarInt."
             "Perhaps EoF has been reached."
         );
 

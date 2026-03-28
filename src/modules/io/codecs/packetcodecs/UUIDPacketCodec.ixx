@@ -19,10 +19,4 @@ public:
     UUID deserialize(TypedInputStream& in) override;
 private:
     UUIDPacketCodec();
-public:
-    UUIDPacketCodec(const UUIDPacketCodec&) = delete;
-    UUIDPacketCodec operator=(const UUIDPacketCodec&) = delete;
-
-    UUIDPacketCodec(UUIDPacketCodec&&) = delete;
-    UUIDPacketCodec operator=(UUIDPacketCodec&&) = delete;
 };

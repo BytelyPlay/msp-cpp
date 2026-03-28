@@ -60,8 +60,6 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packettypes/s2c/login/S2CLoginFinishedPacketType.cpp
         src/modules/networking/packet/packets/s2c/login/S2CLoginFinishedPacket.ixx
         src/modules/networking/packet/packets/s2c/login/S2CLoginFinishedPacket.cpp
-        src/modules/io/codecs/packetcodecs/GameProfileCodec.ixx
-        src/modules/io/codecs/packetcodecs/GameProfileCodec.cpp
         src/modules/types/GameProfile.ixx
         src/modules/types/UUID.ixx
         src/modules/types/Property.ixx
@@ -81,6 +79,10 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/packetcodecs/PacketCodecs.cpp
         src/modules/utils/Concepts.ixx
         src/modules/utils/Concepts.cpp
+        src/modules/io/codecs/packetcodecs/GameProfilePacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/GameProfilePacketCodec.cpp
+        src/modules/io/codecs/packetcodecs/PropertyPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/PropertyPacketCodec.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

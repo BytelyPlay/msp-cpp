@@ -33,6 +33,12 @@ public:
     virtual ~PacketCodec() = default;
 protected:
     PacketCodec() = default;
+public:
+    PacketCodec(const PacketCodec&) = delete;
+    PacketCodec& operator=(const PacketCodec&) = delete;
+
+    PacketCodec(PacketCodec&&) = delete;
+    PacketCodec& operator=(PacketCodec&&) = delete;
 };
 
 // PUBLIC

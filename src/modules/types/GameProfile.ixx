@@ -5,6 +5,7 @@ module;
 export module GameProfile;
 import UUID;
 import Property;
+import PacketCodec;
 
 export struct GameProfile
 {

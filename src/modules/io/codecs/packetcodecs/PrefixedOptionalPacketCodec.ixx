@@ -10,24 +10,18 @@ import TypedInputStream;
 import TypedOutputStream;
 
 export template<typename T>
-/*
-TODO: Replace with the pattern, where it
-also uses a template. But the Codec is set at construction...
-This HAS to be a subclass of PacketCodec
-*/
-
-/* export */ class PrefixedOptionalPacketCodec
+class PrefixedOptionalPacketCodec : public PacketCodec<std::optional<T>>
 {
 public:
+    static PrefixedOptionalPacketCodec& getInstance(PacketCodec<T>& codec);
+
     void serialize(
         const std::optional<T>& opt,
-        PacketCodec<T>& codec ,
         TypedOutputStream& out
-    );
+    ) override;
     std::optional<T> deserialize(
-        TypedInputStream& in,
-        PacketCodec <T>& codec
-    );
+        TypedInputStream& in
+    ) override;
 public:
     std::vector<unsigned char> serialize(
         const std::optional<T>& opt,
@@ -39,4 +33,8 @@ public:
 
         uint& bytesConsumed
     );
+private:
+    PrefixedOptionalPacketCodec(PacketCodec<T> codec);
+private:
+    PacketCodec<T>& codec;
 };

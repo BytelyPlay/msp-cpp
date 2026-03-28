@@ -25,10 +25,4 @@ private:
     PacketCodec<T>& codec;
 private:
     PrefixedArrayPacketCodec(PacketCodec<T>& codec);
-public:
-    PrefixedArrayPacketCodec(const PrefixedArrayPacketCodec&) = delete;
-    PrefixedArrayPacketCodec operator=(const PrefixedArrayPacketCodec&) = delete;
-
-    PrefixedArrayPacketCodec(PrefixedArrayPacketCodec&&) = delete;
-    PrefixedArrayPacketCodec operator=(PrefixedArrayPacketCodec&&) = delete;
 };

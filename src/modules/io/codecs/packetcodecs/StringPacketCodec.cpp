@@ -5,6 +5,7 @@ module;
 module StringPacketCodec;
 import VarIntPacketCodec;
 import Logger;
+import CodecParsingException;
 
 // PUBLIC
 StringPacketCodec& StringPacketCodec::getInstance()
@@ -33,7 +34,7 @@ std::string StringPacketCodec::deserialize(TypedInputStream& in)
     size_t bytesRead = in.readBytes(size, string);
 
     if (bytesRead < size)
-        Logger::warn("unable to read the full string in StringCodec");
+        throw CodecParsingException("Couldn't fully read String.");
 
     return { string.begin(), string.end() };
 }

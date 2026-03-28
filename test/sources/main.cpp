@@ -15,6 +15,7 @@ import PacketC2S;
 import C2SIntentionPacket;
 import Base64Utils;
 import UUID;
+import UUIDPacketCodec;
 
 int main() {
     Logger::debug("Is Big Endian: " +

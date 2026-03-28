@@ -1,11 +1,13 @@
-module;
+/* module;
 #include <functional>
 #include <utility>
-
-export module PacketCodecs;
+*/
+export module PacketCodecs; /*
 import PacketCodec;
 
 // The Codec system is HEAVILY inspired by Minecraft.
+/* TODO: Some easier way to make a codec,
+like an std::function that you just give to serialize an deserialize */ /*
 export class PacketCodecs
 {
 public:
@@ -19,4 +21,4 @@ public:
     template<typename T, typename... Pairs>
     requires (IsValidPair<std::decay_t<Pairs>>::value && ...)
     PacketCodec<T> createSequencedCodec(Pairs... getterAndCodec);
-};
+}; */
