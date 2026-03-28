@@ -10,6 +10,8 @@ import MinecraftServer;
 import MinecraftProtocol;
 import MinecraftClient;
 import C2SIntentionPacketType;
+import S2CLoginFinishedPacketType;
+import C2SLoginStartPacketType;
 
 #define DEFINE_PACKET(variableName, type) \
         const auto& variableName = \
@@ -59,12 +61,15 @@ export namespace Packets
 
     namespace S2C
     {
-
+        DEFINE_PACKET(S2C_LOGIN_FINISHED_PACKET,
+            S2CLoginFinishedPacketType::getInstance());
     }
     namespace C2S
     {
         DEFINE_PACKET(C2S_INTENTION_PACKET,
             C2SIntentionPacketType::getInstance());
+        DEFINE_PACKET(C2S_LOGIN_START_PACKET,
+            C2SLoginStartPacketType::getInstance());
     }
 }
 

@@ -83,6 +83,10 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/packetcodecs/GameProfilePacketCodec.cpp
         src/modules/io/codecs/packetcodecs/PropertyPacketCodec.ixx
         src/modules/io/codecs/packetcodecs/PropertyPacketCodec.cpp
+        src/modules/networking/packet/packettypes/c2s/login/C2SLoginStartPacketType.ixx
+        src/modules/networking/packet/packettypes/c2s/login/C2SLoginStartPacketType.cpp
+        src/modules/networking/packet/packets/c2s/login/C2SLoginStartPacket.ixx
+        src/modules/networking/packet/packets/c2s/login/C2SLoginStartPacket.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
