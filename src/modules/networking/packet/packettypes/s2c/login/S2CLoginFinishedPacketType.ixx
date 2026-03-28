@@ -6,15 +6,15 @@ export module S2CLoginFinishedPacketType;
 import PacketTypeS2C;
 import PacketS2C;
 import Phase;
+import TypedOutputStream;
 
 export class S2CLoginFinishedPacketType : public PacketTypeS2C
 {
 public:
     static S2CLoginFinishedPacketType& getInstance();
 public:
-    std::vector<unsigned char> serialize(
-        std::unique_ptr<PacketS2C>
-    );
+    void serialize(std::unique_ptr<PacketS2C> packet,
+        TypedOutputStream& out) override;
 public:
     int getPacketID() override;
     std::string getPacketIdentifier() override;

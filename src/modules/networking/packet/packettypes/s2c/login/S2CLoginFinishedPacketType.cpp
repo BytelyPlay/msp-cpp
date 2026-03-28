@@ -5,6 +5,8 @@ module;
 
 module S2CLoginFinishedPacketType;
 import S2CLoginFinishedPacket;
+import GameProfile;
+import GameProfilePacketCodec;
 
 // PUBLIC
 S2CLoginFinishedPacketType& S2CLoginFinishedPacketType::getInstance()
@@ -14,16 +16,21 @@ S2CLoginFinishedPacketType& S2CLoginFinishedPacketType::getInstance()
 }
 
 // PUBLIC
-std::vector<unsigned char> S2CLoginFinishedPacketType::serialize
-(std::unique_ptr<PacketS2C> basePacket)
+void S2CLoginFinishedPacketType::serialize
+(
+    std::unique_ptr<PacketS2C> basePacket,
+    TypedOutputStream& out
+)
 {
     assert(dynamic_cast<S2CLoginFinishedPacket*>(basePacket.get()));
+    GameProfilePacketCodec& gameProfileCodec = GameProfilePacketCodec::getInstance();
 
-    S2CLoginFinishedPacket* packetPtr =
-        static_cast<S2CLoginFinishedPacket*>(basePacket.get());
+    auto* packetPtr =
+        static_cast<S2CLoginFinishedPacket*>
+    (basePacket.get());
     S2CLoginFinishedPacket& packet = *packetPtr;
 
-
+    gameProfileCodec.serialize(packet.profile, out);
 }
 
 // PUBLIC

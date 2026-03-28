@@ -7,13 +7,19 @@ import PacketType;
 import PacketS2C;
 import Packet;
 import Phase;
+import TypedOutputStream;
 
 export class PacketTypeS2C : public PacketType
 {
 public:
-    virtual std::vector<unsigned char> serialize(
-        std::unique_ptr<PacketS2C>
+    virtual void serialize(
+        std::unique_ptr<PacketS2C> packet,
+        TypedOutputStream& out
     ) = 0;
+
+    std::vector<unsigned char> serialize(
+        std::unique_ptr<PacketS2C>
+    );
 public:
     int getPacketID() override = 0;
     std::string getPacketIdentifier() override = 0;
