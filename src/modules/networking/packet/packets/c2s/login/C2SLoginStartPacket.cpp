@@ -6,6 +6,6 @@ import Packets;
 // PUBLIC
 PacketType& C2SLoginStartPacket::getPacketType()
 {
-    return C2SLoginStartPacketType::getinst
+    return C2SLoginStartPacketType::getInstance();
 }
 // PUBLIC
