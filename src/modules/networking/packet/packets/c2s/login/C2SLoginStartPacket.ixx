@@ -1,4 +1,5 @@
 module;
+#include <string>
 
 export module C2SLoginStartPacket;
 import PacketC2S;

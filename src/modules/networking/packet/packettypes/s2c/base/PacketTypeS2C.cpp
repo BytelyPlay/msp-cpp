@@ -1,4 +1,6 @@
 module;
+#include <vector>
+#include <memory>
 
 module PacketTypeS2C;
 

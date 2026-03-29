@@ -12,34 +12,6 @@ import CodecParsingException;
 
 // PUBLIC
 template <typename T>
-PrefixedOptionalPacketCodec<T>&
-    PrefixedOptionalPacketCodec<T>::getInstance(PacketCodec<T>& codec)
-{
-    // TODO: Don't duplicate code...
-    static
-    std::unordered_map
-    <PacketCodec<T>*, PrefixedOptionalPacketCodec> codecInstances;
-
-    static std::shared_mutex codecInstancesMutex;
-    std::shared_lock lock(codecInstancesMutex);
-
-    if (!codecInstances.contains(&codec))
-    {
-        // Yeah, could this be any worse...
-        // unlocking and locking smart locks defeats the whole purpose
-
-        lock.unlock();
-        {
-            std::unique_lock uniqueLock(codecInstancesMutex);
-
-            codecInstances.insert(codec, PrefixedOptionalPacketCodec(codec));
-        }
-        lock.lock();
-    }
-    return *codecInstances.find(&codec);
-}
-
-template <typename T>
 void PrefixedOptionalPacketCodec<T>::serialize(
     const std::optional<T>& opt,
     TypedOutputStream& out
