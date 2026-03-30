@@ -28,11 +28,11 @@ PrefixedArrayPacketCodec<T>& PrefixedArrayPacketCodec<T>::getInstance(PacketCode
         {
             std::unique_lock uniqueLock(codecInstancesMutex);
 
-            codecInstances.insert(codec, PrefixedArrayPacketCodec());
+            codecInstances.insert(codec, PrefixedArrayPacketCodec(codec));
         }
         lock.lock();
     }
-    return *codecInstances.find(&codec);
+    return codecInstances.find(&codec)->second;
 }
 
 template <typename T>

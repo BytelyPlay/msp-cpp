@@ -64,4 +64,5 @@ int VarIntPacketCodec::deserialize(TypedInputStream& in)
     return result;
 }
 // PRIVATE
-VarIntPacketCodec::VarIntPacketCodec() = default;
+VarIntPacketCodec::VarIntPacketCodec()
+= default;

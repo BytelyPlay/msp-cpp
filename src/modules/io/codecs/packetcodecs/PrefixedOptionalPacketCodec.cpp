@@ -74,7 +74,8 @@ T PrefixedOptionalPacketCodec<T>::deserialize(
 }
 // PRIVATE
 template <typename T>
-PrefixedOptionalPacketCodec<T>::PrefixedOptionalPacketCodec(PacketCodec<T> codec)
+PrefixedOptionalPacketCodec<T>::PrefixedOptionalPacketCodec(PacketCodec<T>& codec)
+: codec(codec)
 {
 
 }

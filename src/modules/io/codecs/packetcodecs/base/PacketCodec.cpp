@@ -6,4 +6,7 @@
 module PacketCodec;
 
 // PUBLIC
+// PUBLIC
+// PUBLIC
+// PROTECTED
 // PUBLIC */

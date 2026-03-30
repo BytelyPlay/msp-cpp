@@ -37,7 +37,7 @@ public:
         uint& bytesConsumed
     );
 private:
-    PrefixedOptionalPacketCodec(PacketCodec<T> codec);
+    PrefixedOptionalPacketCodec(PacketCodec<T>& codec);
 private:
     const PacketCodec<T>& codec;
 };
@@ -67,7 +67,7 @@ PrefixedOptionalPacketCodec<T>&
         }
         lock.lock();
     }
-    return *codecInstances.find(&codec);
+    return codecInstances.find(&codec)->second;
 }
 // PUBLIC
 // PRIVATE
