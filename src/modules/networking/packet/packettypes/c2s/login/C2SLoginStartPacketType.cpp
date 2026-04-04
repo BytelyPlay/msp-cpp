@@ -33,6 +33,21 @@ std::unique_ptr<PacketC2S> C2SLoginStartPacketType::deserialize(TypedInputStream
     return packet;
 }
 // PUBLIC
+Phase C2SLoginStartPacketType::getPhase()
+{
+    return LOGIN;
+}
+
+int C2SLoginStartPacketType::getPacketID()
+{
+    return 0x00;
+}
+
+std::string C2SLoginStartPacketType::getPacketIdentifier()
+{
+    return "minecraft:hello";
+}
+
 // PRIVATE
 C2SLoginStartPacketType::C2SLoginStartPacketType()
 {

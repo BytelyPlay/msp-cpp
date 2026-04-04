@@ -1,16 +1,15 @@
 module;
-#include <vector>
-#include <string>
-#include <cstdint>
 #include <optional>
 #include <unordered_map>
 #include <shared_mutex>
 #include <mutex>
+#include <memory>
 
 export module PrefixedOptionalPacketCodec;
 import PacketCodec;
 import TypedInputStream;
 import TypedOutputStream;
+import CodecParsingException;
 
 export template<typename T>
 class PrefixedOptionalPacketCodec : public PacketCodec<std::optional<T>>
@@ -26,20 +25,10 @@ public:
         TypedInputStream& in
     ) override;
 public:
-    std::vector<unsigned char> serialize(
-        const std::optional<T>& opt,
-        PacketCodec<T>& codec
-    );
-    T deserialize(
-        const std::vector<unsigned char>& data,
-        PacketCodec<T>& codec,
-
-        uint& bytesConsumed
-    );
 private:
     PrefixedOptionalPacketCodec(PacketCodec<T>& codec);
 private:
-    const PacketCodec<T>& codec;
+    PacketCodec<T>& codec;
 };
 // PUBLIC
 template <typename T>
@@ -49,26 +38,57 @@ PrefixedOptionalPacketCodec<T>&
     // TODO: Don't duplicate code...
     static
     std::unordered_map
-    <PacketCodec<T>*, PrefixedOptionalPacketCodec> codecInstances;
+    <PacketCodec<T>*, std::unique_ptr<PrefixedOptionalPacketCodec>> codecInstances;
 
-    static std::shared_mutex codecInstancesMutex;
-    std::shared_lock lock(codecInstancesMutex);
+    static std::mutex codecInstancesMutex;
+    std::unique_lock lock(codecInstancesMutex);
 
-    if (!codecInstances.contains(&codec))
+    codecInstances.try_emplace
+    (&codec,
+        std::move
+        (std::unique_ptr
+            <PrefixedOptionalPacketCodec>
+            (new PrefixedOptionalPacketCodec(codec))));
+
+    return *codecInstances.find(&codec)->second.get();
+}
+template <typename T>
+void PrefixedOptionalPacketCodec<T>::serialize(
+    const std::optional<T>& opt,
+    TypedOutputStream& out
+)
+{
+    if (!opt.has_value())
     {
-        // Yeah, could this be any worse...
-        // unlocking and locking smart locks defeats the whole purpose
-
-        lock.unlock();
-        {
-            std::unique_lock uniqueLock(codecInstancesMutex);
-
-            codecInstances.insert(codec, PrefixedOptionalPacketCodec(codec));
-        }
-        lock.lock();
+        out << false;
+    } else
+    {
+        out << true;
+        codec.serialize(opt.value(), out);
     }
-    return codecInstances.find(&codec)->second;
+}
+
+template <typename T>
+std::optional<T>
+PrefixedOptionalPacketCodec<T>::deserialize(
+    TypedInputStream& in
+)
+{
+    bool hasValue;
+    if (!(in >> hasValue))
+        throw CodecParsingException("Couldn't check a boolean.");
+
+    if (!hasValue) return {};
+
+    T obj = codec.deserialize(in);
+    return obj;
 }
 // PUBLIC
 // PRIVATE
+template <typename T>
+PrefixedOptionalPacketCodec<T>::PrefixedOptionalPacketCodec(PacketCodec<T>& codec)
+: codec(codec)
+{
+
+}
 // PRIVATE
