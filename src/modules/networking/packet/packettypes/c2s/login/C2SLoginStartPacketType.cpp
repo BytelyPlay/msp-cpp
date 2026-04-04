@@ -12,6 +12,7 @@ import GameProfile;
 import MinecraftClient;
 import MinecraftServer;
 import MinecraftProtocol;
+import Logger;
 
 // PUBLIC
 C2SLoginStartPacketType& C2SLoginStartPacketType::getInstance()
@@ -58,6 +59,8 @@ C2SLoginStartPacketType::C2SLoginStartPacketType()
         MinecraftClient& client
     )
     {
+        Logger::debug("a");
+
         auto loginFinishedPacket = std::make_unique<S2CLoginFinishedPacket>();
         auto* loginStartPacket = static_cast<C2SLoginStartPacket*>(packet.get());
 

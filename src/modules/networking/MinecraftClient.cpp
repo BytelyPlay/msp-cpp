@@ -12,6 +12,7 @@ import Packets;
 import CodecParsingException;
 import PacketTypeS2C;
 import PacketType;
+import TypedOutputStream;
 
 // PUBLIC
 std::shared_ptr<MinecraftClient> MinecraftClient::create(
@@ -30,6 +31,7 @@ std::shared_ptr<MinecraftClient> MinecraftClient::create(
 void MinecraftClient::init()
 {
     initRead();
+    initWrite();
 }
 
 void MinecraftClient::setPhase(Phase phase)
@@ -70,8 +72,21 @@ void MinecraftClient::initWrite()
     <PacketTypeS2C&>
     (nextPacket->getPacketType());
 
+    TypedOutputStream sendablePacket;
+    TypedOutputStream packetData;
+
+    VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
+
+    varIntCodec.serialize(nextPacketType.getPacketID(), packetData);
+    nextPacketType.serialize(std::move(nextPacket), packetData);
+
+    std::vector<unsigned char> packetDataVec = packetData.getData();
+
+    varIntCodec.serialize(packetDataVec.size(), sendablePacket);
+    sendablePacket.writeBytes(packetDataVec);
+
     async_write(getSocket(), buffer(
-            nextPacketType.serialize(std::move(nextPacket))
+            sendablePacket.getData()
         ), std::bind(
         &MinecraftClient::handleWrite,
         shared_from_this(),
@@ -285,8 +300,13 @@ std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,
 // PUBLIC
 void MinecraftClient::queue(std::unique_ptr<PacketS2C> packet)
 {
+    Logger::debug("queuing");
+
     std::unique_lock lock(packetQueueMutex);
     packetQueue.push(std::move(packet));
+    cv.notify_all();
+
+    Logger::debug("queued");
 }
 
 // PUBLIC

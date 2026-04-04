@@ -16,25 +16,26 @@ VarIntPacketCodec& VarIntPacketCodec::getInstance()
 
 void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out)
 {
-    // This makes sure to preserve all memory perfectly.
     uint val = reinterpret_cast<const uint&>(valRef);
+    if (EndiannessUtils::isBigEndian()) val = std::byteswap(val);
 
-    if (EndiannessUtils::isBigEndian())
-        val = std::byteswap(val);
+    while (true)
+    {
+        // ~SEGMENT_BITS = 1000 0000
+        if ((val & ~SEGMENT_BITS) == 0)
+        {
+            out << getFirstByte(val);
+            return;
+        }
+        out << getFirstByte(val | CONTINUE_BIT);
 
-    while ((val & ~0x7F) != 0) {
-        out << (val | 0x80);
         val >>= 7;
     }
-    // operator<< was used previously, but I do not want changes there to affect this Codec.
-    auto* valBytes = reinterpret_cast<unsigned char*>(&val);
-
-    out.writeBytes(valBytes,
-        valBytes + sizeof(uint));
 }
 
 int VarIntPacketCodec::deserialize(TypedInputStream& in)
 {
+    // TODO: rewrite
     int result = 0;
     int shift = 0;
     bool isLastByte = false;
@@ -66,3 +67,9 @@ int VarIntPacketCodec::deserialize(TypedInputStream& in)
 // PRIVATE
 VarIntPacketCodec::VarIntPacketCodec()
 = default;
+
+// PRIVATE
+unsigned char VarIntPacketCodec::getFirstByte(uint val)
+{
+    return reinterpret_cast<unsigned char*>(&val)[0];
+}

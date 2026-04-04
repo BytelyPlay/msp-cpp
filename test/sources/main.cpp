@@ -1,6 +1,7 @@
 #include <chrono>
 #include <string>
 #include <cstdint>
+#include <thread>
 
 import MinecraftProtocol;
 import MinecraftServer;
@@ -16,8 +17,21 @@ import C2SIntentionPacket;
 import Base64Utils;
 import UUID;
 import UUIDPacketCodec;
+import VarIntPacketCodec;
 
 int main() {
+    VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        uint consumed;
+
+        std::vector<unsigned char> varInt = varIntCodec.serialize(i);
+        if (varIntCodec.deserialize(varInt, consumed) != i)
+            Logger::warn(
+                "VarIntPacketCodec has something wrong with it:" +
+                    i);
+    }
     Logger::debug("Is Big Endian: " +
         std::string((EndiannessUtils::isBigEndian() ? "Yes" : "No")));
 

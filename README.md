@@ -15,4 +15,8 @@ On Ubuntu (and likely other debian-based distributions):
 
 # Current Version
 It is not yet versioned since it is in the very early development phase.
-It should target Minecraft 1.21.11. ()
+It should target Minecraft 1.21.11 (for now)
+
+# Packets with predefined listeners
+1. C2SLoginStartPacket
+2. C2SIntentionPacket

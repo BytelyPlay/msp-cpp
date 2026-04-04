@@ -13,19 +13,19 @@ TypedOutputStream::TypedOutputStream()
 // PUBLIC
 void TypedOutputStream::writeBytes(const unsigned char* begin, const unsigned char* end)
 {
-    std::copy(
+    data.insert(
+        data.end(),
         begin,
-        end,
-        data.end()
+        end
     );
 }
 
 void TypedOutputStream::writeBytes(const std::vector<unsigned char>& bytes)
 {
-    std::copy(
+    data.insert(
+        data.end(),
         bytes.begin(),
-        bytes.end(),
-        data.end()
+        bytes.end()
     );
 }
 
