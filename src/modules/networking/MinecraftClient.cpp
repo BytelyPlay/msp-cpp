@@ -98,7 +98,7 @@ void MinecraftClient::initWrite()
 // PUBLIC
 void MinecraftClient::disconnect(std::string reason)
 {
-    // TODO: Use reason and actually send a disconnect packet.
+    // TODO: Use the reason and actually send a disconnect packet.
 
     if (disconnected)
     {

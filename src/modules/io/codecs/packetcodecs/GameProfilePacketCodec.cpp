@@ -27,7 +27,7 @@ void GameProfilePacketCodec::serialize(const GameProfile& obj,
     ::getInstance(propertyCodec);
 
     uuidCodec.serialize(obj.uuid, out);
-    stringCodec.serialize(obj.username);
+    stringCodec.serialize(obj.username, out);
     prefixedArrayCodec.serialize(obj.properties, out);
 }
 
