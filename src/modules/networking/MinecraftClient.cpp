@@ -141,7 +141,8 @@ void MinecraftClient::handleWrite(
 {
     if (ec == error::eof)
     {
-        Logger::debug("Client abruptly disconnected.");
+        Logger::info("Client abruptly disconnected.");
+
         disconnected = true;
         getSocket().shutdown(socket_base::shutdown_both);
         getSocket().close();
@@ -167,13 +168,6 @@ void MinecraftClient::handleRead(const error_code ec, size_t bytesTransferred)
             readBuffer.begin(),
             readBuffer.begin() + bytesTransferred
         );
-        // Temporary for debugging.
-        std::string hexBytes;
-        for (unsigned char& newByte : newBytes)
-        {
-            hexBytes += std::format("{:02X} ", newByte);
-        }
-        Logger::debug(hexBytes);
 
         accumulateOrReceive(
             std::move(newBytes)
@@ -300,13 +294,9 @@ std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,
 // PUBLIC
 void MinecraftClient::queue(std::unique_ptr<PacketS2C> packet)
 {
-    Logger::debug("queuing");
-
     std::unique_lock lock(packetQueueMutex);
     packetQueue.push(std::move(packet));
     cv.notify_all();
-
-    Logger::debug("queued");
 }
 
 // PUBLIC

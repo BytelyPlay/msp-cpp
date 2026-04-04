@@ -59,8 +59,6 @@ C2SLoginStartPacketType::C2SLoginStartPacketType()
         MinecraftClient& client
     )
     {
-        Logger::debug("a");
-
         auto loginFinishedPacket = std::make_unique<S2CLoginFinishedPacket>();
         auto* loginStartPacket = static_cast<C2SLoginStartPacket*>(packet.get());
 
@@ -69,6 +67,8 @@ C2SLoginStartPacketType::C2SLoginStartPacketType()
             loginStartPacket->uuid };
 
         client.queue(std::move(loginFinishedPacket));
+        // I'm suspicious of this phase switch, therefore it's commented out
+        // client.setPhase(CONFIGURATION);
     });
 }
 // PUBLIC

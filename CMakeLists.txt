@@ -87,6 +87,7 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packettypes/c2s/login/C2SLoginStartPacketType.cpp
         src/modules/networking/packet/packets/c2s/login/C2SLoginStartPacket.ixx
         src/modules/networking/packet/packets/c2s/login/C2SLoginStartPacket.cpp
+        src/modules/types/UUID.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
