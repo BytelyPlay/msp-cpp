@@ -67,8 +67,7 @@ C2SLoginStartPacketType::C2SLoginStartPacketType()
             loginStartPacket->uuid };
 
         client.queue(std::move(loginFinishedPacket));
-        // I'm suspicious of this phase switch, therefore it's commented out
-        // client.setPhase(CONFIGURATION);
+        client.setPhase(CONFIGURATION);
     });
 }
 // PUBLIC

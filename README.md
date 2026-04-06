@@ -14,8 +14,9 @@ On Ubuntu (and likely other debian-based distributions):
 3. TODO
 
 # Current Version
-It is not yet versioned since it is in the very early development phase.
-It should target Minecraft 1.21.11 (for now)
+It is not yet versioned since it is in the very early development phase. \
+It should target Minecraft 1.21.10 \ 
+(for now, once I can get documentation for a newer version, I'll jump on it)
 
 # Packets with predefined listeners
 1. C2SLoginStartPacket
