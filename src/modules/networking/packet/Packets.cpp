@@ -33,21 +33,16 @@ void Packets::PacketsRegister::receivedPacket(
         data.data() + data.size());
     int id = VarIntPacketCodec::getInstance().deserialize(in);
 
+    // TODO: Replace with std::unordered_map
     for (auto typeWrapper : types)
     {
         PacketType& type = typeWrapper.get();
 
         if (type.getPacketID() == id &&
             type.getPhase() ==
-            client.getPhase())
+            client.getPhase() &&
+            type.isC2S())
         {
-            if (!type.isC2S())
-            {
-                Logger::warn("Discarding packet: " +
-                    type.getPacketIdentifier() +
-                    " because it is an S2C packet sent to the server.");
-                return;
-            }
             // Type is a PacketTypeC2S
             auto& c2sType = static_cast<PacketTypeC2S&>(type);
 

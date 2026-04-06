@@ -251,7 +251,8 @@ bool MinecraftClient::createNewPacket(std::vector<unsigned char> newData)
 
         // TODO: Handle edge case: not the whole packet length was sent.
         currentPacketLength =
-            VarIntPacketCodec::getInstance().deserialize(newData, bytesConsumedByVarInt);
+            VarIntPacketCodec::getInstance()
+        .deserialize(newData, bytesConsumedByVarInt);
 
         if (currentPacketLength <= 0)
         {
