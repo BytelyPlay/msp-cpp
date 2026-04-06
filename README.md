@@ -21,3 +21,7 @@ It should target Minecraft 1.21.10 \
 # Packets with predefined listeners
 1. C2SLoginStartPacket
 2. C2SIntentionPacket
+
+# Credits
+https://minecraft.wiki/w/Java_Edition_protocol/Packets for the spec, \
+and inspiration for the VarInt serialization

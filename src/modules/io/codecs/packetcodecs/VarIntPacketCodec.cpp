@@ -19,30 +19,17 @@ void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out)
     uint val = reinterpret_cast<const uint&>(valRef);
     if (EndiannessUtils::isBigEndian()) val = std::byteswap(val);
 
-    // val = 0b0000 0000 0000 0000 0000 0000 1000 0001
-
-    while (true)
+    // Inspiration from https://minecraft.wiki/w/Java_Edition_protocol/Packets
+    while ((val & 0xFFFFFF80) == 0)
     {
-        if ((val & 0xFFFFFF80) == 0)
-        {
-            // 0000 0001
-            out << getFirstByte(val);
-            break;
-        }
-        // val = 1000 0001
         out.writeByte(getFirstByte(val) | 0x80);
-
-        // val = 0b0000 0000 0000 0000 0000 0000 0000 0001
         val >>= 7;
-
-        // 0000 0000 0000 0000
     }
+    out << getFirstByte(val);
 }
 
 int VarIntPacketCodec::deserialize(TypedInputStream& in)
 {
-    // TODO: rewrite if needed
-
     int result = 0;
     int shift = 0;
     bool isLastByte = false;
