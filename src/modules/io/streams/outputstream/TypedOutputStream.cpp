@@ -28,6 +28,11 @@ void TypedOutputStream::writeBytes(const std::vector<unsigned char>& bytes)
         bytes.end()
     );
 }
+// PUBLIC
+void TypedOutputStream::writeByte(unsigned char byte)
+{
+    *this << byte;
+}
 
 // PUBLIC
 std::vector<unsigned char> TypedOutputStream::getData()

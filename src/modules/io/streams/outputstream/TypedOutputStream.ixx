@@ -21,6 +21,8 @@ public:
         const unsigned char* end);
     void writeBytes(const std::vector<unsigned char>& bytes);
 public:
+    void writeByte(unsigned char byte);
+public:
     std::vector<unsigned char> getData();
 public:
     void operator<<(const std::vector<unsigned char>& bytes);

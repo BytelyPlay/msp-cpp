@@ -29,8 +29,11 @@ int main() {
         std::vector<unsigned char> varInt = varIntCodec.serialize(i);
         if (varIntCodec.deserialize(varInt, consumed) != i)
             Logger::warn(
-                "VarIntPacketCodec has something wrong with it:" +
-                    i);
+                std::format(
+                    "VarIntPacketCodec has something wrong with it: "
+                    "{} produced: {}", i,
+                    varIntCodec.deserialize(varInt, consumed)
+                    ));
     }
     Logger::debug("Is Big Endian: " +
         std::string((EndiannessUtils::isBigEndian() ? "Yes" : "No")));

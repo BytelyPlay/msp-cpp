@@ -9,9 +9,6 @@ import TypedOutputStream;
 
 export class VarIntPacketCodec : public PacketCodec<int>
 {
-private:
-    static constexpr unsigned char SEGMENT_BITS = 0x7F; // 0111 1111
-    static constexpr unsigned char CONTINUE_BIT = 0x80; // 1000 0000
 public:
     static VarIntPacketCodec& getInstance();
 
