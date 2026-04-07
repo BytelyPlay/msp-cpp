@@ -24,4 +24,5 @@ It should target Minecraft 1.21.10 \
 
 # Credits
 https://minecraft.wiki/w/Java_Edition_protocol/Packets for the spec, \
-and inspiration for the VarInt serialization.
+and helping me understand how Minecraft encodes VarInts \
+(A.K.A. The exact same way as the standard).
