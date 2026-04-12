@@ -20,7 +20,7 @@ void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out)
     if (EndiannessUtils::isBigEndian()) val = std::byteswap(val);
 
     // This website helped: https://minecraft.wiki/w/Java_Edition_protocol/Packets
-    while ((val & 0xFFFFFF80) == 0)
+    while ((val & 0xFFFFFF80) != 0)
     {
         out.writeByte(getFirstByte(val) | 0x80);
         val >>= 7;

@@ -31,7 +31,10 @@ std::shared_ptr<MinecraftClient> MinecraftClient::create(
 void MinecraftClient::init()
 {
     initRead();
-    initWrite();
+    post(protocol.getIo(), [this]
+    {
+        initWrite();
+    });
 }
 
 void MinecraftClient::setPhase(Phase phase)
