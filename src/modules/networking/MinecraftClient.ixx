@@ -8,6 +8,7 @@ export module MinecraftClient;
 import MinecraftProtocol;
 import Phase;
 import PacketS2C;
+import GameProfile;
 
 #include "BoostNamespaces.hpp"
 
@@ -21,10 +22,16 @@ public:
         std::function<void(MinecraftClient&)> shutdownListener
     );
 public:
+    /**
+     * Call only once, required to receive or send data.
+     */
     void init();
-
+public:
     void setPhase(Phase phase);
     Phase getPhase() const;
+
+    void setGameProfile(GameProfile uuid);
+    GameProfile getGameProfile();
 private:
     void initRead();
     void initWrite();
@@ -37,7 +44,11 @@ private:
     tcp::socket socket;
 
     size_t currentPacketLength = 0;
-    Phase currentPhase = HANDSHAKE;
+
+    std::atomic<Phase> currentPhase = HANDSHAKE;
+
+    std::shared_mutex gameProfileMutex;
+    GameProfile gameProfile;
 
     std::vector<unsigned char> readBuffer =
         std::vector<unsigned char>(1024);

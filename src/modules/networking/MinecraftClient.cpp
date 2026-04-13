@@ -1,6 +1,7 @@
 module;
 #include <memory>
 #include <boost/asio.hpp>
+#include <shared_mutex>
 
 module MinecraftClient;
 import MinecraftProtocol;
@@ -36,7 +37,7 @@ void MinecraftClient::init()
         initWrite();
     });
 }
-
+// PUBLIC
 void MinecraftClient::setPhase(Phase phase)
 {
     this->currentPhase = phase;
@@ -46,6 +47,19 @@ Phase MinecraftClient::getPhase() const
 {
     return this->currentPhase;
 }
+
+void MinecraftClient::setGameProfile(GameProfile gameProfile)
+{
+    std::unique_lock lock(gameProfileMutex);
+    this->gameProfile = gameProfile;
+}
+
+GameProfile MinecraftClient::getGameProfile()
+{
+    std::shared_lock lock(gameProfileMutex);
+    return gameProfile;
+}
+
 // PRIVATE
 void MinecraftClient::initRead()
 {
