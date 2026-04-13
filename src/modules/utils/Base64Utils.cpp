@@ -1,4 +1,4 @@
-module;
+/*module;
 #include <complex>
 #include <stdexcept>
 #include <openssl/bio.h>
@@ -12,6 +12,7 @@ import Logger;
 
 std::string Base64Utils::encode(std::vector<unsigned char> bytes, bool& success)
 {
+    // TODO: Replace the old OpenSSL implementation.
     std::vector<unsigned char>
     base64String(4 * ((bytes.size() + 2) / 3));
 
@@ -56,9 +57,11 @@ std::string Base64Utils::encode(std::vector<unsigned char> bytes, bool& success)
     if (bio) BIO_free(bio);
 
     return "";
+
 }
 std::vector<unsigned char> Base64Utils::decode(std::string base64, bool& success)
 {
+    // TODO: Replace the old OpenSSL implementation.
     BIO *bio, *b64;
     int padding;
 
@@ -116,4 +119,4 @@ std::vector<unsigned char> Base64Utils::decode(std::string base64, bool& success
     if (bio) BIO_free(bio);
 
     return {};
-}
+}*/
