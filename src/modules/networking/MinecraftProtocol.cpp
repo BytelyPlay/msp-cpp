@@ -1,5 +1,6 @@
 module;
 #include <boost/asio.hpp>
+#include <sodium.h>
 
 module MinecraftProtocol;
 import Logger;
@@ -8,6 +9,8 @@ import Logger;
 MinecraftProtocol::MinecraftProtocol(const uint8_t threadCount) :
   threadCount(threadCount)
 {
+    if (sodium_init() < 0)
+        throw std::runtime_error("LibSodium unable to init.");
 }
 
 void MinecraftProtocol::init()
