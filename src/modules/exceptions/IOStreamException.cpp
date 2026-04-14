@@ -1,4 +1,5 @@
 module;
+#include <string>
 
 module IOStreamException;
 import IOException;

@@ -23,6 +23,7 @@ Packets::PacketsRegister& Packets::PacketsRegister::getInstance()
     return packetsRegister;
 }
 // PUBLIC
+// TODO: Handle exceptions.
 void Packets::PacketsRegister::receivedPacket(
     std::vector<unsigned char> data,
     MinecraftServer& server,

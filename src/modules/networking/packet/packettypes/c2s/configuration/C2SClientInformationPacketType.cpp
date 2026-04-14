@@ -17,6 +17,7 @@ import VarIntPacketCodec;
 import PacketParsingException;
 import ChatMode;
 import MainHand;
+import ParticleStatus;
 
 // PUBLIC
 C2SClientInformationPacketType& C2SClientInformationPacketType::getInstance()
@@ -34,15 +35,27 @@ std::unique_ptr<PacketC2S> C2SClientInformationPacketType::deserialize(TypedInpu
     VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
 
     packet->locale = stringCodec.deserialize(in);
+
     in.readOrThrow(packet->viewDistance,
-        "Couldn't deserialize view distance.")
+        "Couldn't deserialize view distance.");
+
     packet->chatMode = static_cast<ChatMode>(varIntCodec.deserialize(in));
+
     in.readOrThrow(packet->chatColors,
         "Couldn't deserialize chat colors.");
+
     in.readOrThrow(packet->displayedSkinParts,
         "Couldn't deserialize displayed skin parts.");
+
     packet->mainHand =
         static_cast<MainHand>(varIntCodec.deserialize(in));
+
+    in.readOrThrow(packet->allowServerListings,
+        "Couldn't deserialize allow server listings.");
+
+    packet->particleStatus =
+        static_cast<ParticleStatus>(varIntCodec.deserialize(in));
+    return std::move(packet);
 }
 // PUBLIC
 Phase C2SClientInformationPacketType::getPhase()
