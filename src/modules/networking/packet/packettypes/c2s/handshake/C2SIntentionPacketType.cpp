@@ -8,6 +8,8 @@ import VarIntPacketCodec;
 import MinecraftClient;
 import MinecraftProtocol;
 import MinecraftServer;
+import Logger;
+import StringPacketCodec;
 
 // PUBLIC
 C2SIntentionPacketType& C2SIntentionPacketType::getInstance()
@@ -33,33 +35,47 @@ std::string C2SIntentionPacketType::getPacketIdentifier()
 }
 
 // PUBLIC
-std::unique_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream& in)
+std::optional<std::unique_ptr<PacketC2S>>
+C2SIntentionPacketType::deserialize(TypedInputStream& in)
 {
     // START PROTOCOL VERSION
     VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
+    StringPacketCodec& stringCodec = StringPacketCodec::getInstance();
+
     std::unique_ptr<C2SIntentionPacket> packet =
         std::make_unique<C2SIntentionPacket>();
 
-    packet->protocolVersion = varIntCodec.deserialize(in);
+    auto optProtocolVersion = varIntCodec.deserialize(in);
+    if (!optProtocolVersion.has_value()) return {};
+    packet->protocolVersion = optProtocolVersion.value();
     // END PROTOCOL VERSION
 
     // START SERVER ADDRESS
-    int stringLength = varIntCodec.deserialize(in);
+    std::optional<std::string> optString = stringCodec.deserialize(in);
+    if (!optString.has_value())
+    {
+        Logger::warn("Unable to read string in server address during handshake.");
+        return {};
+    }
 
-    std::vector<unsigned char> serverAddressBytes;
-    in.readBytes(stringLength, serverAddressBytes);
-
-    packet->serverAddress = std::string(
-        serverAddressBytes.begin(), serverAddressBytes.end()
-    );
+    packet->serverAddress = optString.value();
     // END SERVER ADDRESS
     // START SERVER PORT
     if (!(in >> packet->serverPort))
-        throw PacketParsingException("Couldn't read serverPort, possible EoF");
+    {
+        Logger::warn("Couldn't read serverPort, possible EoF");
+        return {};
+    }
     // END SERVER PORT
     // START INTENT
+    auto optIntentInt = varIntCodec.deserialize(in);
+    if (!optIntentInt.has_value())
+    {
+        Logger::warn("Unable to parse int for intent.");
+        return {};
+    }
     packet->intent = static_cast<C2SIntentionPacket::Intent>(
-        varIntCodec.deserialize(in)
+        optIntentInt.value()
     );
     // END INTENT
     return packet;

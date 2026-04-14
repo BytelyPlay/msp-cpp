@@ -40,7 +40,10 @@ public:
      * @param server The server object.
      * @param protocol The protocol object.
      * @param client The client object.
-     * @return True if it was successful, false otherwise. Would likely log if it wasn't successful.
+     * @return True if it was successful, false otherwise.
+      Would likely log if it wasn't successful.
+      The function itself doesn't log anything,
+      but the deserialization function might.
      */
     bool deserializeAndCall(TypedInputStream& in,
                             MinecraftServer& server,
@@ -54,7 +57,7 @@ public:
 
     bool isC2S() override;
 public:
-    std::unique_ptr<PacketC2S>
+    std::optional<std::unique_ptr<PacketC2S>>
     deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
 
     /**

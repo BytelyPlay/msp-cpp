@@ -31,7 +31,13 @@ void Packets::PacketsRegister::receivedPacket(
 {
     TypedInputStream in = TypedInputStream(data.data(),
         data.data() + data.size());
-    int id = VarIntPacketCodec::getInstance().deserialize(in);
+    auto optId = VarIntPacketCodec::getInstance().deserialize(in);
+    if (!optId.has_value())
+    {
+        Logger::warn("Couldn't deserialize Packet ID.");
+        return;
+    }
+    int id = optId.value();
 
     // TODO: Replace with std::unordered_map
     for (auto typeWrapper : types)
@@ -46,12 +52,13 @@ void Packets::PacketsRegister::receivedPacket(
             // Type is a PacketTypeC2S
             auto& c2sType = static_cast<PacketTypeC2S&>(type);
 
-            c2sType.deserializeAndCallIfPresent(
+            if (c2sType.deserializeAndCall(
                 in,
                 server,
                 protocol,
                 client
-            );
+            ))
+                Logger::warn("Couldn't deserialize and call a C2S packet.");
             return;
         }
     }

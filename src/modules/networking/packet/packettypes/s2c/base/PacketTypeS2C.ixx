@@ -14,11 +14,13 @@ export class PacketTypeS2C : public PacketType
 public:
     virtual void serialize(
         std::unique_ptr<PacketS2C> packet,
-        TypedOutputStream& out
+        TypedOutputStream& out,
+        bool& success
     ) = 0;
 
     std::vector<unsigned char> serialize(
-        std::unique_ptr<PacketS2C>
+        std::unique_ptr<PacketS2C>,
+        bool& success
     );
 public:
     int getPacketID() override = 0;

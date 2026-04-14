@@ -19,7 +19,8 @@ S2CLoginFinishedPacketType& S2CLoginFinishedPacketType::getInstance()
 void S2CLoginFinishedPacketType::serialize
 (
     std::unique_ptr<PacketS2C> basePacket,
-    TypedOutputStream& out
+    TypedOutputStream& out,
+    bool& successful
 )
 {
     assert(dynamic_cast<S2CLoginFinishedPacket*>(basePacket.get()));
@@ -30,10 +31,7 @@ void S2CLoginFinishedPacketType::serialize
     (basePacket.get());
     S2CLoginFinishedPacket& packet = *packetPtr;
 
-    bool success;
-
-    gameProfileCodec.serialize(packet.profile, out, success);
-    if (!
+    gameProfileCodec.serialize(packet.profile, out, successful);
 }
 
 // PUBLIC

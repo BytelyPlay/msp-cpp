@@ -1,5 +1,6 @@
 module;
 #include <string>
+#include <optional>
 
 module GameProfilePacketCodec;
 import UUIDPacketCodec;
@@ -8,6 +9,7 @@ import StringPacketCodec;
 import PrefixedArrayPacketCodec;
 import Property;
 import PropertyPacketCodec;
+import Logger;
 
 // PUBLIC
 GameProfilePacketCodec& GameProfilePacketCodec::getInstance()
@@ -44,9 +46,20 @@ std::optional<GameProfile> GameProfilePacketCodec::deserialize(TypedInputStream&
         PrefixedArrayPacketCodec<Property>
     ::getInstance(propertyCodec);
 
-    profile.uuid = uuidCodec.deserialize(in);
-    profile.username = stringCodec.deserialize(in);
-    profile.properties = prefixedArrayCodec.deserialize(in);
+    auto optUUID = uuidCodec.deserialize(in);
+    auto optUsername = stringCodec.deserialize(in);
+    auto optProperties = prefixedArrayCodec.deserialize(in);
+
+    if (!optUUID.has_value() ||
+        !optUsername.has_value() ||
+        !optProperties.has_value())
+    {
+        Logger::warn("Couldn't deserialize something in GameProfile.");
+        return {};
+    }
+    profile.uuid = optUUID.value();
+    profile.username = optUsername.value();
+    profile.properties = optProperties.value();
 
     return profile;
 }

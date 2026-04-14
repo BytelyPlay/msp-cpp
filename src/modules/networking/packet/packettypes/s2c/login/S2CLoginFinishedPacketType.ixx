@@ -14,7 +14,7 @@ public:
     static S2CLoginFinishedPacketType& getInstance();
 public:
     void serialize(std::unique_ptr<PacketS2C> packet,
-        TypedOutputStream& out) override;
+        TypedOutputStream& out, bool& success) override;
 public:
     int getPacketID() override;
     std::string getPacketIdentifier() override;

@@ -1,6 +1,7 @@
 module;
 #include <memory>
 #include <string>
+#include <optional>
 
 module C2SClientInformationPacketType;
 import C2SClientInformationPacket;
@@ -13,7 +14,6 @@ import MinecraftClient;
 import MinecraftServer;
 import MinecraftProtocol;
 import Logger;
-import PacketParsingException;
 import VarIntPacketCodec;
 import ChatMode;
 
@@ -24,7 +24,8 @@ C2SClientInformationPacketType& C2SClientInformationPacketType::getInstance()
     return type;
 }
 
-std::unique_ptr<PacketC2S> C2SClientInformationPacketType::deserialize(TypedInputStream& in)
+std::optional<std::unique_ptr<PacketC2S>>
+C2SClientInformationPacketType::deserialize(TypedInputStream& in)
 {
     auto packet = std::make_unique<C2SClientInformationPacket>();
 
@@ -34,14 +35,16 @@ std::unique_ptr<PacketC2S> C2SClientInformationPacketType::deserialize(TypedInpu
 
     packet->locale = stringCodec.deserialize(in);
     if (!(in >> packet->viewDistance))
-        throw PacketParsingException(
-            "Couldn't read view distance, possible EoF"
-        );
+    {
+        Logger::warn("Couldn't read view distance, possible EoF");
+        return {};
+    }
     packet->chatMode = static_cast<ChatMode>(varIntCodec.deserialize(in));
     if (!(in >> packet->chatColors))
-        throw PacketParsingException(
-            "Couldn't read chat colors, possible EoF"
-        );
+    {
+        Logger::warn("Couldn't read chat colors, possible EoF");
+        return {};
+    }
     return packet;
 }
 // PUBLIC

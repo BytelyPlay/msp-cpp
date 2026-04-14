@@ -11,6 +11,7 @@ import PacketCodec;
 import TypedInputStream;
 import TypedOutputStream;
 import VarIntPacketCodec;
+import Logger;
 
 // TODO: To be replaced with a FIXED array packet codec...
 export template<typename T>
@@ -24,7 +25,7 @@ public:
         TypedOutputStream& out,
         bool& successful
     ) override;
-    std::vector<T> deserialize(
+    std::optional<std::vector<T>> deserialize(
         TypedInputStream& in
     ) override;
 private:
@@ -61,23 +62,52 @@ void PrefixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec,
 {
     VarIntPacketCodec& varIntCodec =
         VarIntPacketCodec::getInstance();
-    varIntCodec.serialize(objVec.size(), out);
+    varIntCodec.serialize(objVec.size(), out, successful);
+
+    if (!successful)
+    {
+        Logger::warn("Couldn't serialize prefixed array size.");
+        return;
+    }
 
     for (T obj : objVec)
-        codec.serialize(obj, out);
+    {
+        codec.serialize(obj, out, successful);
+
+        if (!successful)
+        {
+            Logger::warn("Couldn't serialize an object in the Prefixed Array.");
+            return;
+        }
+    }
 }
 
 template <typename T>
-std::optional<std::vector<T>> PrefixedArrayPacketCodec<T>::deserialize(TypedInputStream& in)
+std::optional<std::vector<T>> PrefixedArrayPacketCodec<T>::deserialize(
+    TypedInputStream& in
+)
 {
     VarIntPacketCodec& varIntCodec =
         VarIntPacketCodec::getInstance();
 
-    int length = varIntCodec.deserialize(in);
+    std::optional<int> optLength = varIntCodec.deserialize(in);
     std::vector<T> result;
+    if (!optLength.has_value())
+    {
+        Logger::warn("Couldn't deserialize length of prefixed array.");
+        return {};
+    }
 
-    for (int i = 0; i < length; i++)
-        result.push_back(codec.deserialize(in));
+    for (int i = 0; i < optLength.value(); i++)
+    {
+        auto optObj = codec.deserialize(in);
+        if (!optObj.has_value())
+        {
+            Logger::warn(std::string("No object for index: ") + std::to_string(i));
+            return {};
+        }
+        result.push_back(optObj.value());
+    }
     return result;
 }
 // PRIVATE

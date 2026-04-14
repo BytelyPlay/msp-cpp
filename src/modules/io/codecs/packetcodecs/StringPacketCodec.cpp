@@ -1,6 +1,7 @@
 module;
 #include <vector>
 #include <string>
+#include <optional>
 
 module StringPacketCodec;
 import VarIntPacketCodec;

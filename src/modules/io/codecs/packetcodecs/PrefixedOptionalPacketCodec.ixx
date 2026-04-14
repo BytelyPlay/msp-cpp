@@ -87,13 +87,13 @@ PrefixedOptionalPacketCodec<T>::deserialize(
     if (!hasValue) return { {} };
 
     std::optional<T> optObj = codec.deserialize(in);
-    if (!obj.has_value())
+    if (!optObj.has_value())
     {
         Logger::warn("Something went wrong during the "
                      "deserialization of the optional that was there.");
         return {};
     }
-    return { obj };
+    return { optObj };
 }
 // PUBLIC
 // PRIVATE
