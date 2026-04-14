@@ -102,6 +102,8 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/exceptions/PacketParsingException.cpp
         src/modules/exceptions/IOException.ixx
         src/modules/exceptions/IOException.cpp
+        src/modules/exceptions/IOStreamException.ixx
+        src/modules/exceptions/IOStreamException.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

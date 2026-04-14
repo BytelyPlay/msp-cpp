@@ -14,6 +14,9 @@ import MinecraftServer;
 import MinecraftProtocol;
 import Logger;
 import VarIntPacketCodec;
+import PacketParsingException;
+import ChatMode;
+import MainHand;
 
 // PUBLIC
 C2SClientInformationPacketType& C2SClientInformationPacketType::getInstance()
@@ -29,6 +32,17 @@ std::unique_ptr<PacketC2S> C2SClientInformationPacketType::deserialize(TypedInpu
     StringPacketCodec& stringCodec = StringPacketCodec::getInstance();
     UUIDPacketCodec& uuidCodec = UUIDPacketCodec::getInstance();
     VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
+
+    packet->locale = stringCodec.deserialize(in);
+    in.readOrThrow(packet->viewDistance,
+        "Couldn't deserialize view distance.")
+    packet->chatMode = static_cast<ChatMode>(varIntCodec.deserialize(in));
+    in.readOrThrow(packet->chatColors,
+        "Couldn't deserialize chat colors.");
+    in.readOrThrow(packet->displayedSkinParts,
+        "Couldn't deserialize displayed skin parts.");
+    packet->mainHand =
+        static_cast<MainHand>(varIntCodec.deserialize(in));
 }
 // PUBLIC
 Phase C2SClientInformationPacketType::getPhase()

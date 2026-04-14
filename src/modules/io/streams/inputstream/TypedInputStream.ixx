@@ -7,6 +7,7 @@ export module TypedInputStream;
 import EndiannessUtils;
 import Concepts;
 import Logger;
+import IOStreamException;
 
 export class TypedInputStream
 {
@@ -44,6 +45,12 @@ public:
      */
     unsigned char peek();
 
+    template<Concepts::Fundamental T>
+    void readOrThrow(T& num, std::string extraInfo = "");
+
+    template<Concepts::Fundamental T>
+    T readOrThrow(std::string extraInfo = "");
+
     uint getBytesConsumed();
     uint getBytesLeft();
 public:
@@ -71,6 +78,24 @@ public:
 
 // PUBLIC
 // PUBLIC
+template <Concepts::Fundamental T>
+void TypedInputStream::readOrThrow(T& num, std::string extraInfo)
+{
+    if (!(*this >> num))
+        throw IOStreamException("readOrThrow wasn't "
+                                "successful, extra information "
+                                "if present: " + extraInfo);
+}
+
+template <Concepts::Fundamental T>
+T TypedInputStream::readOrThrow(std::string extraInfo)
+{
+    unsigned char byte;
+    readOrThrow(byte, extraInfo);
+
+    return byte;
+}
+
 // PUBLIC
 template <Concepts::Fundamental T>
 bool TypedInputStream::operator>>(T& ref)

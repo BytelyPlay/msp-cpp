@@ -3,6 +3,7 @@ module;
 #include <fstream>
 
 module TypedInputStream;
+
 // PUBLIC
 TypedInputStream::TypedInputStream(const unsigned char* begin, const unsigned char* end) :
 begin(begin), next(begin), end(end)
