@@ -8,6 +8,7 @@ import VarIntPacketCodec;
 import MinecraftClient;
 import MinecraftProtocol;
 import MinecraftServer;
+import PacketParsingException;
 
 // PUBLIC
 C2SIntentionPacketType& C2SIntentionPacketType::getInstance()
@@ -54,7 +55,8 @@ std::unique_ptr<PacketC2S> C2SIntentionPacketType::deserialize(TypedInputStream&
     );
     // END SERVER ADDRESS
     // START SERVER PORT
-    in >> packet->serverPort;
+    if (!(in >> packet->serverPort))
+        throw PacketParsingException("Couldn't read serverPort, possible EoF");
     // END SERVER PORT
     // START INTENT
     packet->intent = static_cast<C2SIntentionPacket::Intent>(

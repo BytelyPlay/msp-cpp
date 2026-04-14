@@ -14,8 +14,8 @@ public:
     using PacketCodec::serialize;
     using PacketCodec::deserialize;
 
-    void serialize(const std::string& obj, TypedOutputStream& out) override;
-    std::string deserialize(TypedInputStream& in) override;
+    void serialize(const std::string& obj, TypedOutputStream& out, bool& successful) override;
+    std::string deserialize(TypedInputStream& in, bool& successful) override;
 private:
     StringPacketCodec();
 };

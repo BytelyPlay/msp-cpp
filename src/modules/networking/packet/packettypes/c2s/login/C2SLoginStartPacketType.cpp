@@ -21,7 +21,7 @@ C2SLoginStartPacketType& C2SLoginStartPacketType::getInstance()
     return type;
 }
 
-std::unique_ptr<PacketC2S> C2SLoginStartPacketType::deserialize(TypedInputStream& in)
+std::optional<std::unique_ptr<PacketC2S>> C2SLoginStartPacketType::deserialize(TypedInputStream& in)
 {
     auto packet = std::make_unique<C2SLoginStartPacket>();
 

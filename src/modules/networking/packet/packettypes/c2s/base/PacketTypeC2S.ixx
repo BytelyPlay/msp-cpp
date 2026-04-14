@@ -2,6 +2,7 @@ module;
 #include <functional>
 #include <memory>
 #include <vector>
+#include <optional>
 
 export module PacketTypeC2S;
 
@@ -33,10 +34,18 @@ public:
                       MinecraftServer& server,
                       MinecraftProtocol& protocol,
                       MinecraftClient& client);
-    void deserializeAndCall(TypedInputStream& in,
-                      MinecraftServer& server,
-                      MinecraftProtocol& protocol,
-                      MinecraftClient& client);
+    /**
+     * Deserializes the packet and calls its listeners if it was able to deserialize it
+     * @param in The input stream containing the packet.
+     * @param server The server object.
+     * @param protocol The protocol object.
+     * @param client The client object.
+     * @return True if it was successful, false otherwise. Would likely log if it wasn't successful.
+     */
+    bool deserializeAndCall(TypedInputStream& in,
+                            MinecraftServer& server,
+                            MinecraftProtocol& protocol,
+                            MinecraftClient& client);
 public:
     Phase getPhase() override = 0;
     int getPacketID() override = 0;
@@ -48,7 +57,12 @@ public:
     std::unique_ptr<PacketC2S>
     deserialize(std::vector<unsigned char> bytes, uint& bytesConsumed);
 
-    virtual std::unique_ptr<PacketC2S>
+    /**
+     * Deserializes the packet.
+     * @param in The input stream containing the packet.
+     * @return An optional containing the packet if it was able to be parsed.
+     */
+    virtual std::optional<std::unique_ptr<PacketC2S>>
     deserialize(TypedInputStream& in) = 0;
 private:
     // TODO: An option to make default listeners not get set.

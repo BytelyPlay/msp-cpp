@@ -1,5 +1,6 @@
 module;
 #include <memory>
+#include <optional>
 
 export module C2SClientInformationPacketType;
 import PacketTypeC2S;
@@ -12,7 +13,7 @@ export class C2SClientInformationPacketType : public PacketTypeC2S
 public:
     static C2SClientInformationPacketType& getInstance();
 
-    std::unique_ptr<PacketC2S> deserialize(TypedInputStream& in) override;
+    std::optional<std::unique_ptr<PacketC2S>> deserialize(TypedInputStream& in) override;
 public:
     Phase getPhase() override;
     int getPacketID() override;

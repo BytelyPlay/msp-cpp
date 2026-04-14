@@ -17,7 +17,7 @@ GameProfilePacketCodec& GameProfilePacketCodec::getInstance()
 }
 
 void GameProfilePacketCodec::serialize(const GameProfile& obj,
-                                       TypedOutputStream& out)
+                                       TypedOutputStream& out, bool& successful)
 {
     auto& uuidCodec = UUIDPacketCodec::getInstance();
     auto& stringCodec = StringPacketCodec::getInstance();
@@ -31,7 +31,7 @@ void GameProfilePacketCodec::serialize(const GameProfile& obj,
     prefixedArrayCodec.serialize(obj.properties, out);
 }
 
-GameProfile GameProfilePacketCodec::deserialize(TypedInputStream& in)
+GameProfile GameProfilePacketCodec::deserialize(TypedInputStream& in, bool& successful)
 {
     GameProfile profile;
 

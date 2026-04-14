@@ -48,8 +48,6 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/codecs/packetcodecs/base/PacketCodec.cpp
         src/modules/io/streams/inputstream/TypedInputStream.cpp
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
-        src/modules/exceptions/CodecParsingException.ixx
-        src/modules/exceptions/CodecParsingException.cpp
         src/modules/utils/enums/Phase.ixx
         src/modules/networking/packet/packettypes/c2s/handshake/C2SIntentionPacketType.ixx
         src/modules/networking/packet/packettypes/c2s/handshake/C2SIntentionPacketType.cpp
@@ -98,6 +96,7 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/utils/enums/MainHand.ixx
         src/modules/utils/enums/ParticleStatus.ixx
         src/modules/utils/enums/DisplayedSkinParts.ixx
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SClientInformationPacketType.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

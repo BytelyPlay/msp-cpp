@@ -15,8 +15,8 @@ public:
     using PacketCodec::serialize;
     using PacketCodec::deserialize;
 
-    void serialize(const UUID& obj, TypedOutputStream& out) override;
-    UUID deserialize(TypedInputStream& in) override;
+    void serialize(const UUID& obj, TypedOutputStream& out, bool& successful) override;
+    UUID deserialize(TypedInputStream& in, bool& successful) override;
 private:
     UUIDPacketCodec();
 };

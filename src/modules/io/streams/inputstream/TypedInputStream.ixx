@@ -44,6 +44,12 @@ public:
      */
     unsigned char peek();
 
+    /**
+     * Throws a
+     * @return The next byte
+     */
+    unsigned char readOrThrow();
+
     uint getBytesConsumed();
     uint getBytesLeft();
 public:

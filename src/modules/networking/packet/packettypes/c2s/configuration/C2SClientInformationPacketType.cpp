@@ -13,6 +13,9 @@ import MinecraftClient;
 import MinecraftServer;
 import MinecraftProtocol;
 import Logger;
+import PacketParsingException;
+import VarIntPacketCodec;
+import ChatMode;
 
 // PUBLIC
 C2SClientInformationPacketType& C2SClientInformationPacketType::getInstance()
@@ -27,7 +30,18 @@ std::unique_ptr<PacketC2S> C2SClientInformationPacketType::deserialize(TypedInpu
 
     StringPacketCodec& stringCodec = StringPacketCodec::getInstance();
     UUIDPacketCodec& uuidCodec = UUIDPacketCodec::getInstance();
+    VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
 
+    packet->locale = stringCodec.deserialize(in);
+    if (!(in >> packet->viewDistance))
+        throw PacketParsingException(
+            "Couldn't read view distance, possible EoF"
+        );
+    packet->chatMode = static_cast<ChatMode>(varIntCodec.deserialize(in));
+    if (!(in >> packet->chatColors))
+        throw PacketParsingException(
+            "Couldn't read chat colors, possible EoF"
+        );
     return packet;
 }
 // PUBLIC

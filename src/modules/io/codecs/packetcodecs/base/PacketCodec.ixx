@@ -16,18 +16,22 @@ class PacketCodec
 public:
     virtual void serialize(
         const T& obj,
-        TypedOutputStream& out
+        TypedOutputStream& out,
+        bool& successful
     ) = 0;
     virtual T deserialize(
-        TypedInputStream& in
+        TypedInputStream& in,
+        bool& successful
     ) = 0;
 public:
     std::vector<unsigned char> serialize(
-        const T& obj
+        const T& obj,
+        bool& successful
     );
     T deserialize(
         const std::vector<unsigned char>& data,
-        uint& bytesConsumed
+        uint& bytesConsumed,
+        bool& successful
     );
 public:
     virtual ~PacketCodec() = default;
@@ -44,20 +48,21 @@ public:
 // PUBLIC
 // PUBLIC
 template <typename T>
-std::vector<unsigned char> PacketCodec<T>::serialize(const T& obj)
+std::vector<unsigned char> PacketCodec<T>::serialize(const T& obj, bool& successful)
 {
     TypedOutputStream out;
-    serialize(obj, out);
+    serialize(obj, out, successful);
     return out.getData();
 }
 
 template <typename T>
-T PacketCodec<T>::deserialize(const std::vector<unsigned char>& data, uint& bytesConsumed)
+T PacketCodec<T>::deserialize(const std::vector<unsigned char>& data,
+    uint& bytesConsumed, bool& successful)
 {
     TypedInputStream in(data.data(),
         data.data() + data.size());
 
-    T val = deserialize(in);
+    T val = deserialize(in, successful);
     bytesConsumed = in.getBytesConsumed();
 
     return val;

@@ -46,7 +46,7 @@ void Packets::PacketsRegister::receivedPacket(
             // Type is a PacketTypeC2S
             auto& c2sType = static_cast<PacketTypeC2S&>(type);
 
-            c2sType.deserializeAndCall(
+            c2sType.deserializeAndCallIfPresent(
                 in,
                 server,
                 protocol,

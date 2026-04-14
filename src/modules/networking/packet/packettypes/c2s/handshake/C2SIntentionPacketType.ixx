@@ -1,6 +1,7 @@
 module;
 #include <memory>
 #include <string>
+#include <optional>
 
 export module C2SIntentionPacketType;
 import PacketTypeC2S;
@@ -19,7 +20,7 @@ public:
 
     std::string getPacketIdentifier() override;
 public:
-    std::unique_ptr<PacketC2S>
+    std::optional<std::unique_ptr<PacketC2S>>
     deserialize(TypedInputStream& in) override;
 private:
     C2SIntentionPacketType();

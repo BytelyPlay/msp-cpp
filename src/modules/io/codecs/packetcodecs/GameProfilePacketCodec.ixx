@@ -11,8 +11,8 @@ export class GameProfilePacketCodec : public PacketCodec<GameProfile>
 public:
     static GameProfilePacketCodec& getInstance();
 
-    void serialize(const GameProfile& obj, TypedOutputStream& out) override;
-    GameProfile deserialize(TypedInputStream& in) override;
+    void serialize(const GameProfile& obj, TypedOutputStream& out, bool& successful) override;
+    GameProfile deserialize(TypedInputStream& in, bool& successful) override;
 private:
     GameProfilePacketCodec();
 };

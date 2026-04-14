@@ -6,7 +6,7 @@ module;
 module PacketTypeC2S;
 
 // PUBLIC
-void PacketTypeC2S::deserializeAndCall(
+void PacketTypeC2S::deserializeAndCallIfPresent(
     TypedInputStream& in, MinecraftServer& server,
     MinecraftProtocol& protocol, MinecraftClient& client
 )
