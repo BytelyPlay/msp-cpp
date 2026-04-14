@@ -1,8 +1,8 @@
 module;
+#include <optional>
 
 module UUIDPacketCodec;
-import CodecParsingException;
-
+import Logger;
 // PUBLIC
 UUIDPacketCodec& UUIDPacketCodec::getInstance()
 {
@@ -10,18 +10,21 @@ UUIDPacketCodec& UUIDPacketCodec::getInstance()
     return codec;
 }
 
-void UUIDPacketCodec::serialize(const UUID& obj, TypedOutputStream& out)
+void UUIDPacketCodec::serialize(const UUID& obj, TypedOutputStream& out, bool& successful)
 {
     out.writeBytes(obj.uuid.data(),
         obj.uuid.data() + obj.uuid.size());
 }
 
-UUID UUIDPacketCodec::deserialize(TypedInputStream& in)
+std::optional<UUID> UUIDPacketCodec::deserialize(TypedInputStream& in)
 {
     UUID uuid {};
     if (in.readBytes(uuid.uuid.data(),
         uuid.uuid.data() + uuid.uuid.size()) < uuid.uuid.size())
-        throw CodecParsingException("Couldn't deserialize UUID, Likely EoF");
+    {
+        Logger::warn("Couldn't deserialize UUID, Likely EoF");
+        return {};
+    }
     return uuid;
 }
 

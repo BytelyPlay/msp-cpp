@@ -5,6 +5,7 @@ module;
 module PropertyPacketCodec;
 import StringPacketCodec;
 import PrefixedOptionalPacketCodec;
+import Logger;
 
 // PUBLIC
 PropertyPacketCodec& PropertyPacketCodec::getInstance()
@@ -14,30 +15,43 @@ PropertyPacketCodec& PropertyPacketCodec::getInstance()
 }
 
 void PropertyPacketCodec::serialize
-(const Property& obj, TypedOutputStream& out)
+(const Property& obj, TypedOutputStream& out, bool& successful)
 {
     StringPacketCodec& stringCodec = StringPacketCodec::getInstance();
     auto& prefixedOptionalCodec =
         PrefixedOptionalPacketCodec<std::string>
     ::getInstance(stringCodec);
 
-    stringCodec.serialize(obj.name, out);
-    stringCodec.serialize(obj.value, out);
-    prefixedOptionalCodec.serialize(obj.signature, out);
+    stringCodec.serialize(obj.name, out, successful);
+    if (!successful) return;
+    stringCodec.serialize(obj.value, out, successful);
+    if (!successful) return;
+    prefixedOptionalCodec.serialize(obj.signature, out, successful);
 }
 
-Property PropertyPacketCodec::deserialize(TypedInputStream& in)
+std::optional<Property> PropertyPacketCodec::deserialize(TypedInputStream& in)
 {
     StringPacketCodec& stringCodec = StringPacketCodec::getInstance();
     auto& prefixedOptionalCodec =
         PrefixedOptionalPacketCodec<std::string>
     ::getInstance(stringCodec);
 
-    std::string name = stringCodec.deserialize(in);
-    std::string key = stringCodec.deserialize(in);
-    std::optional<std::string> signature = prefixedOptionalCodec.deserialize(in);
+    auto name = stringCodec.deserialize(in);
+    auto key = stringCodec.deserialize(in);
+    auto signature = prefixedOptionalCodec.deserialize(in);
 
-    return { name, key, signature };
+    if (!name.has_value() || !key.has_value() || !signature.has_value())
+    {
+        Logger::warn("Unable to read property.");
+        return {};
+    }
+
+    return {
+        {
+            name.value(),
+            key.value(),
+            signature.value()
+        } };
 }
 
 // PRIVATE

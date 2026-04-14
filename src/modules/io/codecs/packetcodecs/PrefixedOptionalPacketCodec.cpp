@@ -1,7 +1,6 @@
 module;
 
 module PrefixedOptionalPacketCodec;
-import CodecParsingException;
 
 // PUBLIC
 // PUBLIC

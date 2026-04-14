@@ -8,7 +8,6 @@ import VarIntPacketCodec;
 import MinecraftClient;
 import MinecraftProtocol;
 import MinecraftServer;
-import PacketParsingException;
 
 // PUBLIC
 C2SIntentionPacketType& C2SIntentionPacketType::getInstance()

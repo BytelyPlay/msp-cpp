@@ -5,7 +5,7 @@ module;
 module StringPacketCodec;
 import VarIntPacketCodec;
 import Logger;
-import CodecParsingException;
+import VarIntPacketCodec;
 
 // PUBLIC
 StringPacketCodec& StringPacketCodec::getInstance()
@@ -14,9 +14,10 @@ StringPacketCodec& StringPacketCodec::getInstance()
     return codec;
 }
 
-void StringPacketCodec::serialize(const std::string& obj, TypedOutputStream& out)
+void StringPacketCodec::serialize(const std::string& obj, TypedOutputStream& out, bool& successful)
 {
-    VarIntPacketCodec::getInstance().serialize(obj.size(), out);
+    VarIntPacketCodec::getInstance().serialize(obj.size(), out, successful);
+    if (!successful) return;
     out.writeBytes(
         reinterpret_cast
         <const unsigned char*>(obj.data()),
@@ -24,19 +25,30 @@ void StringPacketCodec::serialize(const std::string& obj, TypedOutputStream& out
         reinterpret_cast
         <const unsigned char*>(obj.data() + obj.size())
     );
+    successful = true;
 }
 
-std::string StringPacketCodec::deserialize(TypedInputStream& in)
+std::optional<std::string> StringPacketCodec::deserialize(TypedInputStream& in)
 {
     std::vector<unsigned char> string;
 
-    int size = VarIntPacketCodec::getInstance().deserialize(in);
+    std::optional<int> optSize = VarIntPacketCodec::getInstance().deserialize(in);
+    if (!optSize.has_value())
+    {
+        Logger::warn("VarIntPacketCodec can't read VarInt for prefixed String.");
+        return {};
+    };
+    int size = optSize.value();
+
     size_t bytesRead = in.readBytes(size, string);
 
     if (bytesRead < size)
-        throw CodecParsingException("Couldn't fully read String.");
+    {
+        Logger::warn("Couldn't fully read String.");
+        return {};
+    }
 
-    return { string.begin(), string.end() };
+    return { { string.begin(), string.end() } };
 }
 
 // PRIVATE

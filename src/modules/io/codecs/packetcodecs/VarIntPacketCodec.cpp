@@ -1,11 +1,11 @@
 module;
 #include <string>
 #include <cstdint>
+#include <optional>
 
 module VarIntPacketCodec;
 import EndiannessUtils;
 import Logger;
-import CodecParsingException;
 
 // PUBLIC
 VarIntPacketCodec& VarIntPacketCodec::getInstance()
@@ -14,7 +14,7 @@ VarIntPacketCodec& VarIntPacketCodec::getInstance()
     return codec;
 }
 
-void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out)
+void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out, bool& successful)
 {
     uint val = reinterpret_cast<const uint&>(valRef);
     if (EndiannessUtils::isBigEndian()) val = std::byteswap(val);
@@ -26,9 +26,11 @@ void VarIntPacketCodec::serialize(const int& valRef, TypedOutputStream& out)
         val >>= 7;
     }
     out << getFirstByte(val);
+
+    successful = true;
 }
 
-int VarIntPacketCodec::deserialize(TypedInputStream& in)
+std::optional<int> VarIntPacketCodec::deserialize(TypedInputStream& in)
 {
     int result = 0;
     int shift = 0;
@@ -36,10 +38,14 @@ int VarIntPacketCodec::deserialize(TypedInputStream& in)
 
     while (!isLastByte) {
         unsigned char b = 0;
-        if (!(in >> b)) throw CodecParsingException(
-            "Couldn't read from TypedInputStream to deserialize VarInt."
+        if (!(in >> b))
+        {
+            Logger::warn(
+                "Couldn't read from TypedInputStream to deserialize VarInt."
             "Perhaps EoF has been reached."
-        );
+            );
+            return {};
+        }
 
         // cheat sheet for hex: 0 = 0000 1 = 0001 2 = 0010 3 = 0011 4 = 0100
         // 5 = 0101 6 = 0110 7 = 0111 8 = 1000 9 = 1001

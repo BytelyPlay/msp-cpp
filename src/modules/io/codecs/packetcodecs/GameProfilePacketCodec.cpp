@@ -26,12 +26,14 @@ void GameProfilePacketCodec::serialize(const GameProfile& obj,
         PrefixedArrayPacketCodec<Property>
     ::getInstance(propertyCodec);
 
-    uuidCodec.serialize(obj.uuid, out);
-    stringCodec.serialize(obj.username, out);
-    prefixedArrayCodec.serialize(obj.properties, out);
+    uuidCodec.serialize(obj.uuid, out, successful);
+    if (!successful) return;
+    stringCodec.serialize(obj.username, out, successful);
+    if (!successful) return;
+    prefixedArrayCodec.serialize(obj.properties, out, successful);
 }
 
-GameProfile GameProfilePacketCodec::deserialize(TypedInputStream& in, bool& successful)
+std::optional<GameProfile> GameProfilePacketCodec::deserialize(TypedInputStream& in)
 {
     GameProfile profile;
 

@@ -1,5 +1,6 @@
 module;
 #include <string>
+#include <optional>
 
 export module StringPacketCodec;
 import PacketCodec;
@@ -15,7 +16,7 @@ public:
     using PacketCodec::deserialize;
 
     void serialize(const std::string& obj, TypedOutputStream& out, bool& successful) override;
-    std::string deserialize(TypedInputStream& in, bool& successful) override;
+    std::optional<std::string> deserialize(TypedInputStream& in) override;
 private:
     StringPacketCodec();
 };

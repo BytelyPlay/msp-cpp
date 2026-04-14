@@ -1,5 +1,5 @@
 module;
-
+#include <optional>
 export module PropertyPacketCodec;
 import PacketCodec;
 import Property;
@@ -12,7 +12,7 @@ public:
     static PropertyPacketCodec& getInstance();
 
     void serialize(const Property& obj, TypedOutputStream& out, bool& successful) override;
-    Property deserialize(TypedInputStream& in, bool& successful) override;
+    std::optional<Property> deserialize(TypedInputStream& in) override;
 private:
     PropertyPacketCodec();
 };

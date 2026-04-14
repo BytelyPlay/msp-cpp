@@ -1,9 +1,9 @@
 module;
 #include <sys/types.h>
+#include <optional>
 
 export module VarIntPacketCodec;
 import PacketCodec;
-
 import TypedInputStream;
 import TypedOutputStream;
 
@@ -16,7 +16,7 @@ public:
     using PacketCodec::serialize;
 
     void serialize(const int& obj, TypedOutputStream& out, bool& successful) override;
-    int deserialize(TypedInputStream& in, bool& successful) override;
+    std::optional<int> deserialize(TypedInputStream& in) override;
 private:
     VarIntPacketCodec();
 private:

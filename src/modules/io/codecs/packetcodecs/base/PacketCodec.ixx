@@ -1,8 +1,7 @@
 module;
 #include <vector>
 #include <string>
-#include <cstdint>
-
+#include <optional>
 export module PacketCodec;
 
 import TypedInputStream;
@@ -19,19 +18,17 @@ public:
         TypedOutputStream& out,
         bool& successful
     ) = 0;
-    virtual T deserialize(
-        TypedInputStream& in,
-        bool& successful
+    virtual std::optional<T> deserialize(
+        TypedInputStream& in
     ) = 0;
 public:
     std::vector<unsigned char> serialize(
         const T& obj,
         bool& successful
     );
-    T deserialize(
+    std::optional<T> deserialize(
         const std::vector<unsigned char>& data,
-        uint& bytesConsumed,
-        bool& successful
+        uint& bytesConsumed
     );
 public:
     virtual ~PacketCodec() = default;
@@ -56,14 +53,14 @@ std::vector<unsigned char> PacketCodec<T>::serialize(const T& obj, bool& success
 }
 
 template <typename T>
-T PacketCodec<T>::deserialize(const std::vector<unsigned char>& data,
-    uint& bytesConsumed, bool& successful)
+std::optional<T> PacketCodec<T>::deserialize(const std::vector<unsigned char>& data,
+    uint& bytesConsumed)
 {
     TypedInputStream in(data.data(),
         data.data() + data.size());
 
-    T val = deserialize(in, successful);
+    std::optional<T> optionalVal = deserialize(in);
     bytesConsumed = in.getBytesConsumed();
 
-    return val;
+    return optionalVal;
 }

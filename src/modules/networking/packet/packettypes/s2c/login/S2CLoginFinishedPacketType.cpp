@@ -30,7 +30,10 @@ void S2CLoginFinishedPacketType::serialize
     (basePacket.get());
     S2CLoginFinishedPacket& packet = *packetPtr;
 
-    gameProfileCodec.serialize(packet.profile, out);
+    bool success;
+
+    gameProfileCodec.serialize(packet.profile, out, success);
+    if (!
 }
 
 // PUBLIC

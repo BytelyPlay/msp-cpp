@@ -1,4 +1,5 @@
 module;
+#include <optional>
 
 export module GameProfilePacketCodec;
 import PacketCodec;
@@ -11,8 +12,14 @@ export class GameProfilePacketCodec : public PacketCodec<GameProfile>
 public:
     static GameProfilePacketCodec& getInstance();
 
-    void serialize(const GameProfile& obj, TypedOutputStream& out, bool& successful) override;
-    GameProfile deserialize(TypedInputStream& in, bool& successful) override;
+    void serialize(
+        const GameProfile& obj,
+        TypedOutputStream& out,
+        bool& successful
+    ) override;
+    std::optional<GameProfile> deserialize(
+        TypedInputStream& in
+    ) override;
 private:
     GameProfilePacketCodec();
 };

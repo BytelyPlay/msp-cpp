@@ -4,6 +4,7 @@ module;
 #include <shared_mutex>
 #include <unordered_map>
 #include <memory>
+#include <optional>
 
 export module PrefixedArrayPacketCodec;
 import PacketCodec;
@@ -20,7 +21,8 @@ public:
 
     void serialize(
         const std::vector<T>& obj,
-        TypedOutputStream& out
+        TypedOutputStream& out,
+        bool& successful
     ) override;
     std::vector<T> deserialize(
         TypedInputStream& in
@@ -53,7 +55,9 @@ PrefixedArrayPacketCodec<T>& PrefixedArrayPacketCodec<T>::getInstance(PacketCode
     return *codecInstances.find(&codec)->second.get();
 }
 template <typename T>
-void PrefixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec, TypedOutputStream& out)
+void PrefixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec,
+    TypedOutputStream& out,
+    bool& successful)
 {
     VarIntPacketCodec& varIntCodec =
         VarIntPacketCodec::getInstance();
@@ -64,7 +68,7 @@ void PrefixedArrayPacketCodec<T>::serialize(const std::vector<T>& objVec, TypedO
 }
 
 template <typename T>
-std::vector<T> PrefixedArrayPacketCodec<T>::deserialize(TypedInputStream& in)
+std::optional<std::vector<T>> PrefixedArrayPacketCodec<T>::deserialize(TypedInputStream& in)
 {
     VarIntPacketCodec& varIntCodec =
         VarIntPacketCodec::getInstance();

@@ -1,5 +1,6 @@
 module;
 #include <vector>
+#include <optional>
 
 export module UUIDPacketCodec;
 import PacketCodec;
@@ -16,7 +17,7 @@ public:
     using PacketCodec::deserialize;
 
     void serialize(const UUID& obj, TypedOutputStream& out, bool& successful) override;
-    UUID deserialize(TypedInputStream& in, bool& successful) override;
+    std::optional<UUID> deserialize(TypedInputStream& in) override;
 private:
     UUIDPacketCodec();
 };
