@@ -13,6 +13,7 @@ import MinecraftClient;
 import MinecraftServer;
 import MinecraftProtocol;
 import Logger;
+import VarIntPacketCodec;
 
 // PUBLIC
 C2SClientInformationPacketType& C2SClientInformationPacketType::getInstance()
@@ -27,8 +28,7 @@ std::unique_ptr<PacketC2S> C2SClientInformationPacketType::deserialize(TypedInpu
 
     StringPacketCodec& stringCodec = StringPacketCodec::getInstance();
     UUIDPacketCodec& uuidCodec = UUIDPacketCodec::getInstance();
-
-    return packet;
+    VarIntPacketCodec& varIntCodec = VarIntPacketCodec::getInstance();
 }
 // PUBLIC
 Phase C2SClientInformationPacketType::getPhase()
