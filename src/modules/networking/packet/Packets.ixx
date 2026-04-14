@@ -12,6 +12,7 @@ import MinecraftClient;
 import C2SIntentionPacketType;
 import S2CLoginFinishedPacketType;
 import C2SLoginStartPacketType;
+import C2SClientInformationPacketType;
 
 #define DEFINE_PACKET(variableName, type) \
         const auto& variableName = \
@@ -70,6 +71,8 @@ export namespace Packets
             C2SIntentionPacketType::getInstance());
         DEFINE_PACKET(C2S_LOGIN_START_PACKET,
             C2SLoginStartPacketType::getInstance());
+        DEFINE_PACKET(C2S_CLIENT_INFORMATION_PACKET,
+            C2SClientInformationPacketType::getInstance());
     }
 }
 

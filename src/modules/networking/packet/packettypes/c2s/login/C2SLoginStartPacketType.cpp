@@ -62,9 +62,11 @@ C2SLoginStartPacketType::C2SLoginStartPacketType()
         auto loginFinishedPacket = std::make_unique<S2CLoginFinishedPacket>();
         auto* loginStartPacket = static_cast<C2SLoginStartPacket*>(packet.get());
 
-        loginFinishedPacket->profile = GameProfile
-        { loginStartPacket->username,
-            loginStartPacket->uuid };
+        client.setGameProfile(
+            { loginStartPacket->username,
+                loginStartPacket->uuid }
+        );
+        loginFinishedPacket->profile = client.getGameProfile();
 
         client.queue(std::move(loginFinishedPacket));
         client.setPhase(CONFIGURATION);

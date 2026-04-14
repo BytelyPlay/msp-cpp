@@ -50,7 +50,7 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/io/streams/outputstream/TypedOutputStream.cpp
         src/modules/exceptions/CodecParsingException.ixx
         src/modules/exceptions/CodecParsingException.cpp
-        src/modules/networking/Phases.ixx
+        src/modules/utils/enums/Phase.ixx
         src/modules/networking/packet/packettypes/c2s/handshake/C2SIntentionPacketType.ixx
         src/modules/networking/packet/packettypes/c2s/handshake/C2SIntentionPacketType.cpp
         src/modules/networking/packet/packets/c2s/handshake/C2SIntentionPacket.ixx
@@ -90,6 +90,14 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packets/c2s/login/C2SLoginStartPacket.ixx
         src/modules/networking/packet/packets/c2s/login/C2SLoginStartPacket.cpp
         src/modules/types/UUID.cpp
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SClientInformationPacketType.ixx
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SClientInformationPacketType.cpp
+        src/modules/networking/packet/packets/c2s/configuration/C2SClientInformationPacket.ixx
+        src/modules/networking/packet/packets/c2s/configuration/C2SClientInformationPacket.cpp
+        src/modules/utils/enums/ChatMode.ixx
+        src/modules/utils/enums/MainHand.ixx
+        src/modules/utils/enums/ParticleStatus.ixx
+        src/modules/utils/enums/DisplayedSkinParts.ixx
 )
 
 add_executable(MinecraftServerProtocolCPPTests
