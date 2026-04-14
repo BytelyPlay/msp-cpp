@@ -1,9 +1,8 @@
 module;
 #include <string>
-#include <stdexcept>
-
 module CodecParsingException;
+import IOException;
 
 // PUBLIC
 CodecParsingException::CodecParsingException(std::string what) :
-std::runtime_error(what) {}
+IOException(what) {}

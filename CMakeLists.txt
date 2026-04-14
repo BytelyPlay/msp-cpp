@@ -98,6 +98,10 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/utils/enums/MainHand.ixx
         src/modules/utils/enums/ParticleStatus.ixx
         src/modules/utils/enums/DisplayedSkinParts.ixx
+        src/modules/exceptions/PacketParsingException.ixx
+        src/modules/exceptions/PacketParsingException.cpp
+        src/modules/exceptions/IOException.ixx
+        src/modules/exceptions/IOException.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
