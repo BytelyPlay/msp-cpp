@@ -104,6 +104,14 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/exceptions/IOException.cpp
         src/modules/exceptions/IOStreamException.ixx
         src/modules/exceptions/IOStreamException.cpp
+        src/modules/types/Identifier.ixx
+        src/modules/types/Identifier.cpp
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SCustomPayloadPacketType.cpp
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SCustomPayloadPacketType.ixx
+        src/modules/networking/packet/packets/c2s/configuration/C2SCustomPayloadPacket.ixx
+        src/modules/networking/packet/packets/c2s/configuration/C2SCustomPayloadPacket.cpp
+        src/modules/io/codecs/packetcodecs/IdentifierPacketCodec.ixx
+        src/modules/io/codecs/packetcodecs/IdentifierPacketCodec.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

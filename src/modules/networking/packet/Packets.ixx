@@ -13,6 +13,7 @@ import C2SIntentionPacketType;
 import S2CLoginFinishedPacketType;
 import C2SLoginStartPacketType;
 import C2SClientInformationPacketType;
+import C2SCustomPayloadPacketType;
 
 #define DEFINE_PACKET(variableName, type) \
         const auto& variableName = \
@@ -67,12 +68,22 @@ export namespace Packets
     }
     namespace C2S
     {
-        DEFINE_PACKET(C2S_INTENTION_PACKET,
-            C2SIntentionPacketType::getInstance());
-        DEFINE_PACKET(C2S_LOGIN_START_PACKET,
-            C2SLoginStartPacketType::getInstance());
-        DEFINE_PACKET(C2S_CLIENT_INFORMATION_PACKET,
-            C2SClientInformationPacketType::getInstance());
+        DEFINE_PACKET(
+            C2S_INTENTION_PACKET,
+            C2SIntentionPacketType::getInstance()
+        );
+        DEFINE_PACKET(
+            C2S_LOGIN_START_PACKET,
+            C2SLoginStartPacketType::getInstance()
+        );
+        DEFINE_PACKET(
+            C2S_CLIENT_INFORMATION_PACKET,
+            C2SClientInformationPacketType::getInstance()
+        );
+        DEFINE_PACKET(
+            C2S_CUSTOM_PAYLOAD_PACKET,
+            C2SCustomPayloadPacketType::getInstance()
+        )
     }
 }
 

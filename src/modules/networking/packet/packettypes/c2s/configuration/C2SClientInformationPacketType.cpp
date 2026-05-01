@@ -75,15 +75,5 @@ std::string C2SClientInformationPacketType::getPacketIdentifier()
 
 // PRIVATE
 C2SClientInformationPacketType::C2SClientInformationPacketType()
-{
-    this->setListener([](
-        std::unique_ptr<PacketC2S> packet,
-        MinecraftServer& server,
-        MinecraftProtocol& protocol,
-        MinecraftClient& client
-    )
-    {
-        Logger::debug("Received C2SClientInformationPacketType");
-    });
-}
+= default;
 // PUBLIC
