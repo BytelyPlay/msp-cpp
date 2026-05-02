@@ -43,10 +43,14 @@ public:
 template <Concepts::Fundamental T>
 void TypedOutputStream::operator<<(T num)
 {
-    if (!EndiannessUtils::isBigEndian() && !std::is_floating_point_v<T>)
-        num = std::byteswap(num);
+    // This isn't one if, because the is floating point thing, has to be evaluated at compile-time.
+    if constexpr (!std::is_floating_point_v<T>)
+    {
+        if (!EndiannessUtils::isBigEndian())
+            num = std::byteswap(num);
+    }
 
-    const auto bytes = reinterpret_cast<const unsigned char*>(&num);
+    const auto* bytes = reinterpret_cast<const unsigned char*>(&num);
 
     data.insert(
     data.end(),

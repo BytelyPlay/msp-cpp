@@ -312,6 +312,11 @@ std::vector<unsigned char> MinecraftClient::removeFirstBytes(size_t amount,
 // PUBLIC
 void MinecraftClient::queue(std::unique_ptr<PacketS2C> packet)
 {
+    if (packet->getPacketType().getPhase() != this->getPhase())
+    {
+        Logger::warn("Discarding to queue, wrong phase.");
+        return;
+    }
     std::unique_lock lock(packetQueueMutex);
     packetQueue.push(std::move(packet));
     cv.notify_all();

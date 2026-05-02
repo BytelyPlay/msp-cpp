@@ -15,6 +15,9 @@ import C2SLoginStartPacketType;
 import C2SClientInformationPacketType;
 import C2SCustomPayloadPacketType;
 import C2SFinishConfigurationPacketType;
+import S2CFinishConfigurationPacketType;
+import S2CPlayerPositionPacketType;
+import C2SLoginAcknowledgedPacketType;
 
 #define DEFINE_PACKET(variableName, type) \
         const auto& variableName = \
@@ -64,8 +67,18 @@ export namespace Packets
 
     namespace S2C
     {
-        DEFINE_PACKET(S2C_LOGIN_FINISHED_PACKET,
-            S2CLoginFinishedPacketType::getInstance());
+        DEFINE_PACKET(
+            S2C_LOGIN_FINISHED_PACKET,
+            S2CLoginFinishedPacketType::getInstance()
+        );
+        DEFINE_PACKET(
+            S2C_FINISH_CONFIGURATION_PACKET,
+            S2CFinishConfigurationPacketType::getInstance()
+        );
+        DEFINE_PACKET(
+            S2C_PLAYER_POSITION_PACKET,
+            S2CPlayerPositionPacketType::getInstance()
+        );
     }
     namespace C2S
     {
@@ -88,6 +101,10 @@ export namespace Packets
         DEFINE_PACKET(
             C2S_FINISH_CONFIGURATION_PACKET,
             C2SFinishConfigurationPacketType::getInstance()
+        )
+        DEFINE_PACKET(
+            C2S_LOGIN_ACKNOWLEDGED_PACKET,
+            C2SLoginAcknowledgedPacketType::getInstance()
         )
     }
 }

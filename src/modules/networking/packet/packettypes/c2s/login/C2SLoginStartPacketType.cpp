@@ -69,7 +69,6 @@ C2SLoginStartPacketType::C2SLoginStartPacketType()
         loginFinishedPacket->profile = client.getGameProfile();
 
         client.queue(std::move(loginFinishedPacket));
-        client.setPhase(CONFIGURATION);
     });
 }
 // PUBLIC

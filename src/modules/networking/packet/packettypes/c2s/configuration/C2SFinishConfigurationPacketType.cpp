@@ -48,4 +48,14 @@ std::unique_ptr<PacketC2S> C2SFinishConfigurationPacketType::deserialize(
 }
 // PRIVATE
 C2SFinishConfigurationPacketType::C2SFinishConfigurationPacketType()
-= default;
+{
+    this->setListener([](
+    std::unique_ptr<PacketC2S> packet,
+    MinecraftServer& server,
+    MinecraftProtocol& protocol,
+    MinecraftClient& client
+   )
+   {
+        client.setPhase(PLAY);
+   });
+}

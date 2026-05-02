@@ -115,6 +115,15 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packettypes/c2s/configuration/C2SFinishConfigurationPacketType.ixx
         src/modules/networking/packet/packettypes/c2s/configuration/C2SFinishConfigurationPacketType.cpp
         src/modules/networking/packet/packets/c2s/configuration/C2SFinishConfigurationPacket.cpp
+        src/modules/networking/packet/packettypes/s2c/configuration/S2CFinishConfigurationPacketType.cpp
+        src/modules/networking/packet/packets/s2c/configuration/S2CFinishConfigurationPacket.cpp
+        src/modules/networking/packet/packettypes/s2c/play/S2CPlayerPositionPacketType.ixx
+        src/modules/networking/packet/packets/s2c/play/S2CPlayerPositionPacket.cpp
+        src/modules/networking/packet/packettypes/s2c/play/S2CPlayerPositionPacketType.cpp
+        src/modules/utils/enums/TeleportFlags.ixx
+        src/modules/networking/packet/packettypes/c2s/login/C2SLoginAcknowledgedPacketType.ixx
+        src/modules/networking/packet/packettypes/c2s/login/C2SLoginAcknowledgedPacketType.cpp
+        src/modules/networking/packet/packets/c2s/login/C2SLoginAcknowledgedPacket.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests
