@@ -18,6 +18,8 @@ import Base64Utils;
 import UUID;
 import UUIDPacketCodec;
 import VarIntPacketCodec;
+import C2SCustomPayloadPacketType;
+import C2SFinishConfigurationPacketType;
 
 int main() {
     MinecraftProtocol protocol(4);

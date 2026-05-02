@@ -14,6 +14,7 @@ import S2CLoginFinishedPacketType;
 import C2SLoginStartPacketType;
 import C2SClientInformationPacketType;
 import C2SCustomPayloadPacketType;
+import C2SFinishConfigurationPacketType;
 
 #define DEFINE_PACKET(variableName, type) \
         const auto& variableName = \
@@ -83,6 +84,10 @@ export namespace Packets
         DEFINE_PACKET(
             C2S_CUSTOM_PAYLOAD_PACKET,
             C2SCustomPayloadPacketType::getInstance()
+        )
+        DEFINE_PACKET(
+            C2S_FINISH_CONFIGURATION_PACKET,
+            C2SFinishConfigurationPacketType::getInstance()
         )
     }
 }

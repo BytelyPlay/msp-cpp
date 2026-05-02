@@ -112,6 +112,9 @@ add_library(MinecraftServerProtocolCPP STATIC
         src/modules/networking/packet/packets/c2s/configuration/C2SCustomPayloadPacket.cpp
         src/modules/io/codecs/packetcodecs/IdentifierPacketCodec.ixx
         src/modules/io/codecs/packetcodecs/IdentifierPacketCodec.cpp
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SFinishConfigurationPacketType.ixx
+        src/modules/networking/packet/packettypes/c2s/configuration/C2SFinishConfigurationPacketType.cpp
+        src/modules/networking/packet/packets/c2s/configuration/C2SFinishConfigurationPacket.cpp
 )
 
 add_executable(MinecraftServerProtocolCPPTests

@@ -32,7 +32,7 @@ Identifier IdentifierPacketCodec::deserialize(TypedInputStream& in)
     size_t posOfColon = identifier.find_first_of(':');
 
     id.identifierNameSpace = identifier.substr(0, posOfColon);
-    id.identifierValue = identifier.substr(posOfColon);
+    id.identifierValue = identifier.substr(posOfColon + 1);
 
     return id;
 }
